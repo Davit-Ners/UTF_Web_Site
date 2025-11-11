@@ -93,6 +93,7 @@ a:hover {
 }
 .button:hover {
   background: var(--color-accent-hover);
+  color: white;
   transform: translateY(-1px);
 }
 
