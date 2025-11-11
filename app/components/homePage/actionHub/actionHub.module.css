@@ -1,0 +1,112 @@
+.wrap{ margin: 28px 0 8px }
+
+/* ===== GRID ===== */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 980px){ .grid{ grid-template-columns: 1fr } }
+
+/* ===== CARD BASE (gradient border + glass) ===== */
+.card{
+  position:relative; overflow:hidden; border-radius: calc(var(--radius) + 2px);
+  padding: 2px; /* gradient border */
+  background: linear-gradient(120deg, rgba(217,43,43,.95), rgba(123,44,255,.7));
+  box-shadow: 0 18px 55px rgba(0,0,0,.35), 0 0 20px var(--color-glow);
+  transform: translateZ(0); /* fix paint */
+}
+.card > *{
+  /* background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-alt) 100%); */
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.card::after{
+  /* subtle glow bottom-right */
+  content:""; position:absolute; right:-24px; bottom:-24px; width:220px; height:220px;
+  background: radial-gradient(closest-side, var(--color-glow), transparent);
+  filter: blur(8px); opacity:.35; pointer-events:none;
+}
+.card:hover{ filter: saturate(1.03) }
+
+/* entire link area (no separate CTA needed) */
+.fullLink{
+  position:absolute; inset:0; /* makes whole card clickable */
+  border-radius: var(--radius);
+}
+
+/* ===== CARD CONTENT ===== */
+.cardTour, .cardShop, .cardMail{
+  padding: 18px 18px 16px;
+  border: 1px solid var(--color-border);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 92%, transparent) 0%, var(--color-surface-alt) 100%);
+}
+
+.head{ display:flex; align-items:center; gap:.6rem; margin-bottom: .35rem }
+.icon{
+  display:grid; place-items:center; width:36px; height:36px; border-radius:10px;
+  background: color-mix(in oklab, var(--color-accent) 20%, var(--color-surface));
+  color: var(--color-text-primary); border: 1px solid var(--color-border);
+  box-shadow: inset 0 0 18px color-mix(in oklab, var(--color-accent) 25%, transparent);
+}
+.title{
+  font-family: var(--font-title, inherit);
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--color-text-primary);
+}
+.desc{ color: var(--color-text-secondary); margin:.25rem 0 .7rem }
+
+/* ===== BADGES / PILLS ===== */
+.badge{
+  display:inline-flex; align-items:center; gap:.4rem;
+  background: color-mix(in oklab, var(--color-accent) 16%, var(--color-surface));
+  color: var(--color-text-primary);
+  padding:.45rem .6rem; border-radius: 999px;
+  border:1px solid var(--color-border);
+}
+.badge .dot{
+  width:8px; height:8px; border-radius:999px; background: var(--color-accent);
+  box-shadow: 0 0 10px var(--color-glow);
+}
+.badgeTxt{ font-weight:600; font-size:.92rem }
+
+.badgeMuted{
+  display:inline-block; color: var(--color-text-muted);
+  border:1px dashed var(--color-border); padding:.45rem .6rem; border-radius:999px;
+}
+
+.pills{ display:flex; gap:.5rem; flex-wrap:wrap }
+.pillHot, .pillStock{
+  display:inline-block; padding:.38rem .6rem; border-radius:999px; font-weight:600; font-size:.9rem;
+  border: 1px solid var(--color-border);
+}
+.pillHot{
+  background: color-mix(in oklab, var(--color-accent) 18%, var(--color-surface));
+}
+.pillStock{
+  background: color-mix(in oklab, var(--color-surface-alt) 80%, transparent);
+  color: var(--color-text-secondary);
+}
+
+/* newsletter form wrapper for spacing harmony */
+.formWrap{ margin-top:.3rem }
+
+/* ===== HOVER EFFECTS ===== */
+.card:hover .icon{
+  background: color-mix(in oklab, var(--color-accent) 28%, var(--color-surface));
+}
+.card:hover .title{ text-shadow: 0 0 14px var(--color-glow) }
+
+/* avant: .card > * { ... }  */
+.panel{
+  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-alt) 100%);
+  border-radius: var(--radius);
+  display:block;
+  border: 1px solid color-mix(in oklab, var(--color-border) 85%, transparent);
+  padding: 18px 18px 16px;
+}
+
+/* retire totalement .fullLink */
+.fullLink{ display:none }
