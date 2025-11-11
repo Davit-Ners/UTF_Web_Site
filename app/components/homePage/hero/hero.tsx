@@ -1,9 +1,18 @@
+'use client';
+import { useEffect, useState } from "react";
 import styles from "./hero.module.css";
 import Link from "next/link";
 
 export default function Hero(){
+    const [offset, setOffset] = useState(0);
+        useEffect(() => {
+            const handleScroll = () => setOffset(window.scrollY * 0.25);
+            window.addEventListener("scroll", handleScroll);
+            return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
-        <section className={styles.hero}>
+        <section className={styles.hero} style={{ backgroundPositionY: `${offset}px` }}>
         {/* FX background layers */}
         <div className={styles.fx}>
             <div className={styles.glowLeft} />
