@@ -1,0 +1,83 @@
+.header{
+  position: sticky; top: 0; z-index: 60;
+  background: color-mix(in oklab, var(--color-bg) 70%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+  transition: background .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.headerScrolled{
+  background: color-mix(in oklab, var(--color-bg) 92%, transparent);
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.row{ height: 68px; display:flex; align-items:center; justify-content:space-between; gap:12px }
+
+.brand{ display:flex; gap:.6rem; align-items:center }
+.logo{ display:block; border-radius:8px }
+.brandText{
+  font-family: var(--font-title, inherit);
+  letter-spacing:.04em; text-transform:uppercase;
+  color: var(--color-text-primary);
+}
+
+/* Desktop nav */
+.nav{ display:flex; gap: 1.1rem }
+.link{
+  position:relative; padding:.4rem .2rem; color: var(--color-text-secondary);
+  transition: color .2s ease;
+}
+.link::after{
+  content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px;
+  background: var(--color-accent); transform: scaleX(0); transform-origin: left;
+  transition: transform .2s ease; border-radius:2px; box-shadow: 0 0 10px var(--color-glow);
+}
+.link:hover{ color: var(--color-text-primary) }
+.link:hover::after{ transform: scaleX(1) }
+.active{ color: var(--color-text-primary) }
+.active::after{ transform: scaleX(1) }
+
+/* Actions (desktop) */
+.actions{ display:flex; align-items:center; gap:.6rem }
+.tickets{ padding:.6rem 1rem }
+.theme{
+  background: var(--color-surface); color: var(--color-text-primary);
+  border:1px solid var(--color-border); border-radius: var(--radius);
+  height: 38px; width: 42px; display:grid; place-items:center;
+  cursor:pointer; transition: transform .15s ease, background .2s ease;
+}
+.theme:hover{ transform: translateY(-1px) }
+
+/* Burger only on mobile */
+.burger{
+  display:none; background:transparent; border:0; cursor:pointer; padding:.4rem;
+}
+.burger span{
+  display:block; width:24px; height:2px; background: var(--color-text-primary);
+  margin:5px 0; transition: transform .2s ease, opacity .2s ease;
+}
+
+/* Mobile menu */
+.mobile{
+  position: fixed; inset: 68px 0 auto 0; height: 0; overflow:hidden;
+  background: color-mix(in oklab, var(--color-bg) 98%, transparent);
+  border-bottom:1px solid var(--color-border);
+  transition: height .25s ease;
+}
+.mobileOpen{ height: calc(100vh - 68px) }
+
+.mobileNav{
+  display:flex; flex-direction:column; gap: 12px;
+  padding: 16px; max-width: 1200px; margin:0 auto;
+}
+.mobileLink{
+  display:block; padding: 12px; border-radius: 10px; font-size: 1.05rem;
+  color: var(--color-text-primary); background: var(--color-surface);
+  border:1px solid var(--color-border);
+}
+.mobileCTA{ width: 100%; margin-top: 8px }
+
+/* Responsive */
+@media (max-width: 980px){
+  .nav{ display:none }
+  .tickets{ display:none }
+  .burger{ display:inline-block }
+}
