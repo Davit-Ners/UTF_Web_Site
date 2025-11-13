@@ -1,0 +1,85 @@
+.wrap {
+  width: 100%;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+}
+
+@media (max-width: 700px) {
+  .card {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+  }
+}
+
+.date {
+  width: 68px;
+  height: 68px;
+  border-radius: var(--radius);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.month {
+  font-size: .75rem;
+  color: var(--color-text-muted);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.city {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--color-text-primary);
+}
+
+.venue {
+  margin: 0;
+  font-size: .9rem;
+  color: var(--color-text-secondary);
+}
+
+.meta {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.status {
+  font-size: .88rem;
+  color: var(--color-text-muted);
+}
+
+/* empty state */
+.emptyCard {
+  padding: 16px 16px 14px;
+}
+.emptyTitle {
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.emptyText {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
