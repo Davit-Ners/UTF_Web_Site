@@ -1,0 +1,97 @@
+.wrap {
+  width: 100%;
+}
+
+.card {
+  padding: 14px 14px 12px;
+}
+
+.title {
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .9rem;
+  color: var(--color-text-muted);
+}
+
+.subtitle {
+  margin: 0 0 10px;
+  font-size: .9rem;
+  color: var(--color-text-secondary);
+}
+
+.empty {
+  margin-top: 6px;
+  color: var(--color-text-secondary);
+}
+
+.months {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.monthBlock {
+  padding-top: 4px;
+  border-top: 1px solid var(--color-border);
+}
+
+.monthHeader {
+  font-weight: 600;
+  font-size: .92rem;
+  margin-bottom: 6px;
+  color: var(--color-text-primary);
+}
+
+.days {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dayRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.dayBadge {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.day {
+  font-weight: 700;
+}
+
+.weekday {
+  font-size: .75rem;
+  color: var(--color-text-muted);
+}
+
+.dayInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.city {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.venue {
+  font-size: .88rem;
+  color: var(--color-text-secondary);
+}
