@@ -12,7 +12,7 @@ const NAV = [
     { href: "/merch", label: "Merch" },
     { href: "/gallery", label: "Gallery" },
     { href: "/about", label: "About" },
-    { href: "/contact", label: "Booking" },
+    { href: "/booking", label: "Booking" },
 ];
 
 export default function Header() {

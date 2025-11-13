@@ -1,0 +1,75 @@
+.page { padding-bottom: 40px }
+
+.hero{ padding: 28px 0 10px }
+.header{ text-align:left; max-width: 920px }
+.eyebrow{
+  display:inline-block; font-size:.75rem; letter-spacing:.14em; text-transform:uppercase;
+  color: var(--color-text-muted); margin-bottom:6px;
+}
+.title{
+  font-family: var(--font-title, inherit);
+  color: var(--color-text-primary);
+  text-transform: uppercase; letter-spacing: .06em;
+  font-size: clamp(26px, 4vw, 44px);
+  line-height: 1.1;
+}
+.title span{ color: var(--color-accent) }
+.subtitle{ color: var(--color-text-secondary); margin-top:10px; max-width: 70ch }
+
+.infoGrid{
+  margin-top:16px;
+  display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:12px;
+}
+@media (max-width: 900px){ .infoGrid{ grid-template-columns: repeat(2, minmax(0,1fr)) } }
+
+.infoCard dl{ display:grid; grid-template-columns: 1fr; gap:6px; padding:14px }
+.infoCard dt{ color: var(--color-text-muted); font-size:.8rem; letter-spacing:.1em; text-transform:uppercase }
+.infoCard dd{ color: var(--color-text-primary); font-weight:700; font-size:1rem }
+
+.actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px }
+.actionBtn{ padding:.7rem 1.1rem }
+
+/* Form */
+.formSection{ margin: 22px 0 }
+.formCard{ padding: 18px }
+.formIntro{ margin-bottom: 8px }
+.formTitle{ margin:0; text-transform:uppercase; letter-spacing:.06em }
+
+.form{ margin-top: 8px }
+.grid{ display:grid; gap:12px; grid-template-columns: repeat(2, minmax(0,1fr)) }
+@media (max-width: 900px){ .grid{ grid-template-columns: 1fr } }
+
+.group{ display:flex; flex-direction:column; gap:6px }
+.group label{ color: var(--color-text-primary); font-weight:600 }
+.req{ color: var(--color-accent) }
+
+.group input,
+.group select,
+.group textarea{
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: .8rem .9rem;
+  outline: none; transition: var(--transition);
+}
+.group input:focus,
+.group select:focus,
+.group textarea:focus{ border-color: var(--color-accent) }
+
+.error{ color: var(--color-accent); font-weight:600; margin-top:6px }
+.success{ color: #16a34a; font-weight:700; margin-top:6px }
+
+.actionsRow{ display:flex; align-items:center; gap:12px; margin-top: 8px; flex-wrap:wrap }
+.altContact a{ color: var(--color-text-primary) }
+.altContact a:hover{ color: var(--color-accent-hover) }
+
+.honey{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden }
+
+/* FAQ */
+.faqSection{ margin: 18px 0 }
+.faqGrid{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px }
+@media (max-width: 900px){ .faqGrid{ grid-template-columns: 1fr } }
+.faq{ padding: 14px }
+.faq summary{ cursor:pointer; font-weight:700; color: var(--color-text-primary) }
+.faq p{ margin-top:8px }
