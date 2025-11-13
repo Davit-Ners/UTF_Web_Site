@@ -5,6 +5,7 @@ import styles from "./booking.module.css";
 import BookingForm from "../components/bookingPage/bookingForm";
 import BookingFAQ from "../components/bookingPage/bookingFAQ";
 import BookingHero from "../components/bookingPage/bookingHero";
+import WhyBookUs from "../components/bookingPage/whyBookUs";
 
 export default function BookingPage() {
     const [loading, setLoading] = useState(false);
@@ -55,11 +56,13 @@ export default function BookingPage() {
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
         <main className={styles.page}>
             <BookingHero />
+
+            <WhyBookUs />
 
             <BookingForm handleSubmit={handleSubmit} error={error} loading={loading} ok={ok}/>
             
