@@ -1,0 +1,189 @@
+.page {
+  padding-bottom: 40px;
+}
+
+/* HERO */
+.hero {
+  padding: 28px 0 10px;
+}
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 900px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.heroText {
+  max-width: 640px;
+}
+.eyebrow {
+  display: inline-block;
+  font-size: .75rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+.title {
+  font-family: var(--font-title, inherit);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--color-text-primary);
+  font-size: clamp(26px, 4vw, 42px);
+  line-height: 1.1;
+}
+.title span {
+  color: var(--color-accent);
+}
+.subtitle {
+  color: var(--color-text-secondary);
+  margin-top: 10px;
+  max-width: 60ch;
+}
+
+.heroMedia {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.heroImageWrap {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--color-surface-alt);
+}
+.heroImageWrap :global(img) {
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform .3s ease;
+}
+.heroImageWrap:hover :global(img) {
+  transform: scale(1.05);
+}
+
+.heroBadge {
+  padding: 10px 12px;
+  max-width: 260px;
+}
+.heroBadgeLabel {
+  font-size: .74rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--color-text-muted);
+}
+.heroBadgeTitle {
+  font-weight: 700;
+  margin-top: 4px;
+  color: var(--color-text-primary);
+}
+.heroBadgeMeta {
+  font-size: .88rem;
+  margin-top: 2px;
+}
+
+/* STORY */
+.storySection {
+  margin: 26px 0 18px;
+}
+.storyCard {
+  padding: 18px;
+}
+.sectionTitle {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.storyCard p + p {
+  margin-top: 8px;
+}
+
+/* MEMBERS */
+.membersSection {
+  margin: 18px 0 22px;
+}
+.membersHeader {
+  margin-bottom: 12px;
+}
+.membersGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 1100px) {
+  .membersGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .membersGrid { grid-template-columns: 1fr; }
+}
+
+.memberCard {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.memberAvatar {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--color-surface-alt);
+}
+.memberAvatar :global(img) {
+  object-fit: cover;
+}
+
+.memberBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.memberName {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+.memberRole {
+  margin: 0;
+  font-size: .9rem;
+  color: var(--color-text-muted);
+}
+.memberBlurb {
+  margin: 0;
+  font-size: .9rem;
+  color: var(--color-text-secondary);
+}
+
+/* HIGHLIGHTS */
+.highlightSection {
+  margin: 10px 0 32px;
+}
+.highlightGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 1100px) {
+  .highlightGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .highlightGrid { grid-template-columns: 1fr; }
+}
+
+.highlightCard {
+  padding: 14px;
+}
+.highlightCard h3 {
+  margin: 0 0 6px;
+}
+.highlightCard p {
+  margin: 0;
+}
