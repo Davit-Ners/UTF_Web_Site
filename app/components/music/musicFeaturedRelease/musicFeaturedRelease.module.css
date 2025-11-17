@@ -1,0 +1,127 @@
+.wrap {
+  margin-bottom: 16px;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1.4fr) minmax(260px, 1.3fr);
+  gap: 18px;
+  padding: 16px;
+}
+
+.coverWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover {
+  position: relative;
+  width: 100%;
+  max-width: 240px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.cover :global(img) {
+  object-fit: cover;
+  transform: scale(1.03);
+  transition: transform .25s ease;
+}
+
+.card:hover .cover :global(img) {
+  transform: scale(1.07);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.eyebrow {
+  font-size: .75rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.title {
+  font-family: var(--font-title, inherit);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: clamp(20px, 3vw, 26px);
+}
+
+.meta {
+  font-size: .9rem;
+  color: var(--color-text-secondary);
+}
+
+.blurb {
+  color: var(--color-text-secondary);
+  font-size: .9rem;
+  margin-top: 2px;
+}
+
+.highlight {
+  font-size: .86rem;
+  color: var(--color-text-primary);
+}
+
+.actions {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  padding: 0.6rem 1.1rem;
+  font-size: .85rem;
+  background: var(--color-surface-alt);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.secondaryBtn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-text-primary);
+}
+
+.player {
+  min-height: 220px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #000;
+}
+
+@media (max-width: 1100px) {
+  .card {
+    grid-template-columns: minmax(220px, 260px) minmax(0, 1.6fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "cover info"
+      "player player";
+  }
+  .coverWrap { grid-area: cover; }
+  .body { grid-area: info; }
+  .player { grid-area: player; min-height: 180px; }
+}
+
+@media (max-width: 800px) {
+  .card {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "cover"
+      "info"
+      "player";
+  }
+}
