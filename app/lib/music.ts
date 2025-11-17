@@ -21,6 +21,8 @@ export type Release = {
     youtubeMusicUrl?: string;
     bandcampUrl?: string;
     tracks?: Track[];
+    story?: string;
+    recordingNotes?: string[];
 };
 
 export const latestRelease: Release = {
@@ -53,15 +55,23 @@ export const latestRelease: Release = {
 
 export const discography: Release[] = [
     latestRelease,
-    {
-        id: "early-ep",
-        title: "Early Wounds",
-        subtitle: "First EP",
-        year: 2021,
-        type: "EP",
-        cover: "/images/music/early-ep-cover.jpg",
-        blurb:
-        "The first chapter of Until They Fall. Raw energy, early versions of songs that made it to the album.",
-        spotifyUrl: "https://open.spotify.com/album/XXXXXXXX",
-    },
+    // {
+    //     id: "early-ep",
+    //     title: "Early Wounds",
+    //     subtitle: "First EP",
+    //     year: 2021,
+    //     type: "EP",
+    //     cover: "/images/music/early-ep-cover.jpg",
+    //     blurb:
+    //     "The first chapter of Until They Fall. Raw energy, early versions of songs that made it to the album.",
+    //     spotifyUrl: "https://open.spotify.com/album/XXXXXXXX",
+    // },
 ];
+
+export function getReleaseBySlug(slug: string): Release | undefined {
+    return discography.find((r) => r.id === slug);
+};
+
+export function getOtherReleases(slug: string): Release[] {
+    return discography.filter((r) => r.id !== slug);
+};

@@ -1,0 +1,148 @@
+.page {
+  padding-bottom: 40px;
+}
+
+/* breadcrumb */
+
+.breadcrumbWrap {
+  padding-top: 18px;
+}
+
+.breadcrumb {
+  font-size: .8rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumb a {
+  color: var(--color-text-secondary);
+}
+
+.breadcrumb a:hover {
+  color: var(--color-accent-hover);
+}
+
+.sep {
+  opacity: .7;
+}
+
+.current {
+  color: var(--color-text-primary);
+}
+
+/* sections */
+
+.heroSection {
+  margin: 10px 0 8px;
+}
+
+.section {
+  margin: 20px 0 26px;
+}
+
+/* milieu : tracklist + streaming + story */
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.3fr) minmax(220px, 1fr) minmax(260px, 1.3fr);
+  gap: 16px;
+  align-items: flex-start;
+}
+
+@media (max-width: 1100px) {
+  .split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: auto;
+  }
+}
+
+@media (max-width: 800px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Story card */
+
+.storyCard {
+  padding: 12px 12px 10px;
+}
+
+.storyTitle {
+  font-family: var(--font-title, inherit);
+  font-size: .9rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+
+.storyText {
+  font-size: .88rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+}
+
+.notesList {
+  margin: 0;
+  padding-left: 16px;
+  font-size: .84rem;
+  color: var(--color-text-secondary);
+}
+
+.notesList li + li {
+  margin-top: 4px;
+}
+
+.storyCta {
+  margin-top: 10px;
+}
+
+/* Merch CTA */
+
+.merchCta {
+  padding: 14px 14px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.merchEyebrow {
+  display: inline-block;
+  font-size: .75rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.merchTitle {
+  font-family: var(--font-title, inherit);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.merchText {
+  font-size: .86rem;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+  max-width: 50ch;
+}
+
+.merchActions {
+  margin-left: auto;
+}
+
+@media (max-width: 700px) {
+  .merchCta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .merchActions {
+    margin-left: 0;
+  }
+}
