@@ -1,0 +1,86 @@
+.hero {
+  padding: 24px 0 10px;
+}
+
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 18px 18px 14px;
+}
+
+.text {
+  flex: 3;
+  min-width: 260px;
+}
+
+.side {
+  flex: 2;
+  min-width: 230px;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: .75rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+
+.title {
+  font-family: var(--font-title, inherit);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--color-text-primary);
+  font-size: clamp(24px, 4vw, 32px);
+  line-height: 1.1;
+}
+
+.subtitle {
+  margin-top: 8px;
+  color: var(--color-text-secondary);
+  max-width: 60ch;
+}
+
+.forFans {
+  margin-top: 8px;
+  font-size: .9rem;
+  color: var(--color-text-muted);
+}
+
+.forFans span {
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .72rem;
+  color: var(--color-text-secondary);
+  margin-right: 4px;
+}
+
+.highlight {
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-size: .9rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: .85rem;
+  color: var(--color-text-secondary);
+}
+
+.list li + li {
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .card {
+    padding: 16px 14px;
+  }
+}
