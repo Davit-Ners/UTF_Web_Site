@@ -1,0 +1,32 @@
+.page {
+  padding-bottom: 40px;
+}
+
+.section {
+  margin: 24px 0 32px;
+}
+
+.layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* produits à gauche, panier à droite */
+.productsColumn {
+  flex: 3;
+}
+
+.cartColumn {
+  flex: 2;
+}
+
+/* mobile = colonne */
+@media (max-width: 980px) {
+  .layout {
+    flex-direction: column;
+  }
+  .cartColumn {
+    width: 100%;
+  }
+}
