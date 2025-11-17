@@ -1,0 +1,122 @@
+.card {
+  padding: 14px 14px 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-family: var(--font-title, inherit);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: .95rem;
+}
+
+.count {
+  font-size: .85rem;
+  color: var(--color-text-muted);
+}
+
+.body {
+  min-height: 80px;
+  margin-bottom: 10px;
+}
+
+.empty {
+  font-size: .9rem;
+  color: var(--color-text-secondary);
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.rowInfo {
+  flex: 1;
+}
+
+.rowName {
+  display: block;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.rowPrice {
+  display: block;
+  font-size: .8rem;
+  color: var(--color-text-muted);
+}
+
+.rowActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.qtyInput {
+  width: 52px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  color: var(--color-text-primary);
+  font-size: .85rem;
+}
+
+.remove {
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: .8rem;
+  cursor: pointer;
+}
+
+.remove:hover {
+  color: var(--color-accent);
+}
+
+.footer {
+  border-top: 1px solid var(--color-border);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.line,
+.lineSub,
+.lineTotal {
+  display: flex;
+  justify-content: space-between;
+  font-size: .9rem;
+}
+
+.lineSub span:first-child {
+  color: var(--color-text-muted);
+}
+
+.lineTotal {
+  font-weight: 700;
+}
+
+.notice {
+  font-size: .78rem;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
