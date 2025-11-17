@@ -91,6 +91,12 @@ a:hover {
   box-shadow: 0 0 12px var(--color-glow);
   transition: var(--transition);
 }
+
+.button.small {
+  padding: 0.55rem 1rem;  
+  font-size: .78rem;
+}
+
 .button:hover {
   background: var(--color-accent-hover);
   color: white;

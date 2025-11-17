@@ -1,11 +1,12 @@
 .grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 14px;
+  justify-content: flex-start;
 }
 
-/* chaque card occupe une largeur mini, max 3 / ligne en desktop */
+/* chaque card prend une largeur raisonnable */
 .grid > * {
-  flex: 1 1 220px;
-  max-width: 320px;
+  flex: 1 1 180px;    /* largeur minimale */
+  max-width: 240px;   /* largeur maximale */
 }

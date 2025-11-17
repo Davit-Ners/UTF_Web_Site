@@ -6,7 +6,7 @@
 
 .media {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 4;
   background: var(--color-surface-alt);
   overflow: hidden;
 }
@@ -59,14 +59,15 @@
 }
 
 .body {
-  padding: 12px 12px 10px;
+  padding: 10px 10px 8px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  flex: 1;
 }
 
 .name {
-  font-size: .98rem;
+  font-size: .90rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .04em;
@@ -74,12 +75,12 @@
 }
 
 .desc {
-  font-size: .86rem;
+  font-size: .78rem;
   color: var(--color-text-secondary);
 }
 
 .footer {
-  margin-top: 6px;
+  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -98,6 +99,6 @@
 }
 
 .stock {
-  font-size: .78rem;
+  font-size: .7rem;
   color: var(--color-text-muted);
 }
