@@ -1,0 +1,103 @@
+.card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: var(--color-surface-alt);
+  overflow: hidden;
+}
+
+.media :global(img) {
+  object-fit: cover;
+  transform: scale(1.04);
+  transition: transform .25s ease;
+}
+
+.card:hover .media :global(img) {
+  transform: scale(1.08);
+}
+
+/* badges */
+.badge,
+.badgeOut {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 600;
+}
+
+.badge {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-hover);
+}
+
+.badge_New {
+  background: var(--color-accent-soft);
+}
+
+.badge_Limited {
+  background: #2b1a1a;
+  color: var(--color-accent-hover);
+}
+
+.badge_Pre-order {
+  background: #151528;
+}
+
+.badgeOut {
+  right: 10px;
+  left: auto;
+  background: #333;
+  color: #eee;
+}
+
+.body {
+  padding: 12px 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.name {
+  font-size: .98rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--color-text-primary);
+}
+
+.desc {
+  font-size: .86rem;
+  color: var(--color-text-secondary);
+}
+
+.footer {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.price {
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.stock {
+  font-size: .78rem;
+  color: var(--color-text-muted);
+}
