@@ -1,0 +1,73 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex: 1 1 260px;
+  max-width: 360px;
+  padding: 10px;
+}
+
+.cover {
+  position: relative;
+  width: 90px;
+  min-width: 90px;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-surface-alt);
+}
+
+.cover :global(img) {
+  object-fit: cover;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.type {
+  font-size: .75rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.title {
+  font-size: .96rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: .82rem;
+  color: var(--color-text-secondary);
+}
+
+.blurb {
+  font-size: .8rem;
+  color: var(--color-text-secondary);
+}
+
+.actions {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.linkPrimary {
+  font-size: .8rem;
+  color: var(--color-accent-hover);
+}
+
+.linkSecondary {
+  font-size: .78rem;
+  color: var(--color-text-muted);
+}
