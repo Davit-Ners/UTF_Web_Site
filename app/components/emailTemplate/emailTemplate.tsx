@@ -34,7 +34,7 @@ export function EmailTemplate(props: EmailContent) {
                 letterSpacing: "1px",
             }}
             >
-            New Booking Request
+            Nouvelle Demande de Booking
             </h2>
 
             <p
@@ -44,7 +44,7 @@ export function EmailTemplate(props: EmailContent) {
                 marginBottom: "18px",
             }}
             >
-            You just received a new booking request for <strong>Until They Fall</strong>.
+            Voici une nouvelle demande de booking pour <strong>Until They Fall</strong>.
             </p>
 
             {/* Details */}
@@ -58,14 +58,14 @@ export function EmailTemplate(props: EmailContent) {
                 marginBottom: "20px",
             }}
             >
-            <Detail label="Name" value={name} />
+            <Detail label="Nom" value={name} />
             <Detail label="Email" value={email} />
             <Detail label="Date" value={date} />
-            <Detail label="Event Type" value={type} />
+            <Detail label="Type d'évenement" value={type} />
             <Detail label="Budget" value={budget} />
-            <Detail label="Capacity" value={capacity} />
-            <Detail label="City" value={city} />
-            <Detail label="Org" value={org} />
+            <Detail label="Capacité" value={capacity} />
+            <Detail label="Ville" value={city} />
+            <Detail label="Orga" value={org} />
             </div>
 
             {/* Message */}
@@ -109,7 +109,7 @@ export function EmailTemplate(props: EmailContent) {
                 letterSpacing: "0.5px",
             }}
             >
-            Reply to {name}
+            Répondre à {name}
             </a>
 
             {/* Footer */}
