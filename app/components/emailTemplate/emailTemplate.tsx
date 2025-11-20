@@ -1,7 +1,7 @@
 import { EmailContent } from "@/app/api/send/route";
 
 export function EmailTemplate(props: EmailContent) {
-    const { name, email, message, date, type, budget } = props;
+    const { name, email, message, date, type, budget, capacity, city, org } = props;
 
     return (
         <div
@@ -63,6 +63,9 @@ export function EmailTemplate(props: EmailContent) {
             <Detail label="Date" value={date} />
             <Detail label="Event Type" value={type} />
             <Detail label="Budget" value={budget} />
+            <Detail label="Capacity" value={capacity} />
+            <Detail label="City" value={city} />
+            <Detail label="Org" value={org} />
             </div>
 
             {/* Message */}
