@@ -36,12 +36,12 @@ export const latestRelease: Release = {
     blurb:
         "Our debut album — modern melodic death metal with big hooks, cinematic atmospheres and relentless riffs.",
     spotifyUrl:
-        "https://open.spotify.com/album/XXXXXXXXXXXXXX", // à remplacer
+        "https://open.spotify.com/album/2xtq2hwcacYHSi5MHAm40s",
     appleMusicUrl:
-        "https://music.apple.com/album/XXXXXXXXXXXXXX", // à remplacer
+        "https://music.apple.com/album/1718447538",
     youtubeMusicUrl:
-        "https://music.youtube.com/playlist?list=XXXXXXXXXXXXXX", // à remplacer
-    bandcampUrl: "https://untiltheyfall.bandcamp.com", // si tu as
+        "https://www.youtube.com/watch?v=rtEFcJMtlJE&list=OLAK5uy_lWQtwuyyilIDmtt9zLDjKAJ-Rj-VP75T4",
+    bandcampUrl: "",
     tracks: [
         { id: "t1", title: "Sent To Die", length: "4:32", isSingle: true },
         { id: "t2", title: "Doppelgänger", length: "3:58" },

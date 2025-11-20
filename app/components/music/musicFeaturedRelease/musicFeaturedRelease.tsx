@@ -68,10 +68,10 @@ export default function FeaturedRelease({ release }: Props) {
             </div>
             </div>
 
-            {release.spotifyUrl && (
+            {release.spotifyUrl && false && (
             <div className={styles.player}>
                 <iframe
-                src={release.spotifyUrl.replace(
+                src={release.spotifyUrl?.replace(
                     "open.spotify.com/album",
                     "open.spotify.com/embed/album"
                 )}
