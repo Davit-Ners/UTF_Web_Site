@@ -50,7 +50,7 @@
 .blurb{ color: var(--color-text-secondary); margin: 0 0 10px }
 
 .links{ display:flex; flex-wrap:wrap; gap:8px }
-.btnAlt{ background: transparent; border:1px solid var(--color-accent) }
+.btnAlt{ background: transparent; border:1px solid var(--color-accent); color: var(--color-text-primary); }
 .btnAlt:hover{ background: var(--color-accent) }
 
 /* player compact */
