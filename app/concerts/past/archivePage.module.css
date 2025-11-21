@@ -1,0 +1,175 @@
+.page {
+  padding-bottom: 40px;
+}
+
+.hero {
+  padding: 26px 0 12px;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: .75rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+
+.title {
+  font-family: var(--font-title, inherit);
+  font-size: clamp(22px, 4vw, 36px);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--color-text-primary);
+}
+
+.subtitle {
+  margin-top: 8px;
+  color: var(--color-text-secondary);
+  max-width: 60ch;
+}
+
+/* sections */
+
+.section {
+  margin: 10px 0 30px;
+}
+
+.empty {
+  margin-top: 12px;
+  color: var(--color-text-muted);
+}
+
+/* Year block */
+
+.yearBlock + .yearBlock {
+  margin-top: 26px;
+}
+
+.yearHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.yearTitle {
+  font-family: var(--font-title, inherit);
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.yearCount {
+  font-size: .8rem;
+  color: var(--color-text-muted);
+}
+
+/* show list */
+
+.listWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* carte concert */
+
+.showCard {
+  padding: 10px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.showMain {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.showDate {
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.day {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.month {
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--color-text-muted);
+}
+
+.showInfo {
+  min-width: 0;
+}
+
+.showCity {
+  font-size: .98rem;
+  color: var(--color-text-primary);
+}
+
+.showVenue {
+  font-size: .86rem;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+/* meta / actions */
+
+.showMeta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-left: auto;
+}
+
+@media (max-width: 700px) {
+  .showMeta {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+.detailsBtn {
+  font-size: .85rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.detailsBtn:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+.linkMuted {
+  font-size: .8rem;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.linkMuted:hover {
+  color: var(--color-accent);
+}
