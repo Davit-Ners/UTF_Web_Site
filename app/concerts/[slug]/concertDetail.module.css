@@ -200,7 +200,82 @@
 .sideCol {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+}
+
+.sideBlock {
+  padding: 18px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sideTitle {
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 2px;
+  position: relative;
+}
+.sideTitle::after {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 2px;
+  margin-top: 6px;
+  background: var(--color-border);
+}
+
+/* liste des lignes */
+.sideList {
+  list-style: none;
+  margin: 4px 0 6px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+}
+
+/* chaque ligne "label / value" */
+.sideRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  column-gap: 16px;
+}
+
+.sideLabel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+}
+
+.sideValue {
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+  text-align: right;
+  white-space: pre-line;
+}
+
+/* bouton retour plus discret, style pill */
+.backButton {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-surface-alt) 80%, transparent);
+  color: var(--color-text-primary);
+  box-shadow: none;
+  border: 1px solid var(--color-border);
+}
+
+.backButton:hover {
+  background: color-mix(in oklab, var(--color-surface-alt) 60%, var(--color-accent-soft));
+  color: var(--color-accent);
+  transform: translateY(-1px);
 }
 
 /* blocks */
