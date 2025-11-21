@@ -41,3 +41,14 @@ export const concerts: Concert[] = [
 export function getConcertById(id: string): Concert | undefined {
     return concerts.find((c) => c.id === id);
 };
+
+export function isPastConcert(concert: Concert): boolean {
+    if (!concert?.date) return false;
+    
+    const concertDate = new Date(concert.date + "T00:00:00");
+    const today = new Date();
+    
+    today.setHours(0, 0, 0, 0);
+
+    return concertDate < today;
+};

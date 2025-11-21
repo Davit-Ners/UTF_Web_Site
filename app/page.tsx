@@ -5,7 +5,7 @@ import FeaturedVideo from "./components/homePage/featuredVideo/featuredVideo";
 import Hero from "./components/homePage/hero/hero";
 import ProductGrid from "./components/productGrid/productGrid";
 import SectionHeading from "./components/sectionHeading/sectionHeading";
-import { concerts } from "./lib/concerts";
+import { concerts, isPastConcert } from "./lib/concerts";
 import { products } from "./lib/products";
 
 export default function Home() {
@@ -32,7 +32,7 @@ export default function Home() {
         />
 
         <div className="concertsGrid">
-          {concerts.slice(0, 3).map((c) => (
+          {concerts.filter(c => !isPastConcert(c)).slice(0, 3).map((c) => (
             <ConcertCard key={c.id} concert={c} />
           ))}
         </div>
