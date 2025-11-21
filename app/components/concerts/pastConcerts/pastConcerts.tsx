@@ -34,11 +34,11 @@ export default function PastConcerts({ shows }: Props) {
         ) : (
           <ul className={styles.list}>
             {recent.map((show) => (
-              <li key={show.id} className={styles.item}>
+              <Link key={show.id} className={styles.item} href={`concerts/${show.id}`}>
                 <span className={styles.date}>{formatShort(show.date)}</span>
                 <span className={styles.city}>{show.city}</span>
                 <span className={styles.venue}>{show.venue}</span>
-              </li>
+              </Link>
             ))}
           </ul>
         )}

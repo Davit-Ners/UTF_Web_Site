@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styles from "./concertCalendar.module.css";
 import { Concert } from "@/app/lib/concerts";
 
@@ -36,7 +37,7 @@ export default function ConcertCalendar({ shows }: Props) {
                     const weekday = d.toLocaleString("en", { weekday: "short" });
 
                     return (
-                        <li key={show.id} className={styles.dayRow}>
+                        <Link key={show.id} className={styles.dayRow} href={`concerts/${show.id}`}>
                         <div className={styles.dayBadge}>
                             <span className={styles.day}>{day}</span>
                             <span className={styles.weekday}>{weekday}</span>
@@ -45,7 +46,7 @@ export default function ConcertCalendar({ shows }: Props) {
                             <span className={styles.city}>{show.city}</span>
                             <span className={styles.venue}>{show.venue}</span>
                         </div>
-                        </li>
+                        </Link>
                     );
                     })}
                 </ul>
