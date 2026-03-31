@@ -2,22 +2,32 @@
   "name": "utf-front",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
+    "postinstall": "prisma generate",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:pull": "prisma db pull",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "db:test": "tsx scripts/test-database.ts"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.6.0",
+    "@prisma/client": "^7.6.0",
     "@react-email/components": "^1.0.1",
     "@react-email/render": "^2.0.0",
+    "dotenv": "^17.3.1",
     "next": "16.0.1",
-    "pg": "^8.16.3",
-    "pg-hstore": "^2.3.4",
+    "pg": "^8.20.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "resend": "^6.5.2",
-    "sequelize": "^6.37.7"
+    "resend": "^6.5.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -26,7 +36,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
+    "prisma": "^7.6.0",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

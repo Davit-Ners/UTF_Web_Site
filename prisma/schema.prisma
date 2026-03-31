@@ -1,0 +1,36 @@
+generator client {
+  provider   = "prisma-client"
+  output     = "../app/generated/prisma"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ProductCategory {
+  apparel
+  music
+  accessories
+}
+
+enum ProductBadge {
+  New
+  Limited
+  PreOrder @map("Pre-order")
+}
+
+model Product {
+  id        String          @id @default(uuid())
+  name      String
+  price     Float
+  image     String?
+  category  ProductCategory
+  badge     ProductBadge?
+  shortDesc String?
+  stock     Int?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@map("product")
+}

@@ -10,29 +10,35 @@ type Member = {
 
 const members: Member[] = [
     {
-        name: "Davit",
-        role: "Guitare / Backing vocals",
+        name: "Davit Nersesyan",
+        role: "Lead Guitar",
         image: "/images/members/davit.jpg",
         blurb: "Riffs modernes, leads mélodiques et direction artistique du projet."
     },
     {
-        name: "…",
-        role: "Chant",
-        image: "/images/members/vocal.jpg",
-        blurb: "Frontman, screams & hooks taillés pour le live."
+        name: "Sabari Diakite",
+        role: "Drums",
+        image: "/images/members/sabari.jpg",
+        blurb: "Patterns modernes, double-pédale et précision live."
     },
     {
-        name: "…",
+        name: "Valentin Coutant",
         role: "Basse",
-        image: "/images/members/bass.jpg",
+        image: "/images/members/val.jpg",
         blurb: "Low-end massif et groove serré."
     },
     {
-        name: "…",
-        role: "Batterie",
-        image: "/images/members/drums.jpg",
+        name: "Kevin Etsrada",
+        role: "Rythm Guitar",
+        image: "/images/members/kev.jpg",
         blurb: "Patterns modernes, double-pédale et précision live."
     },
+    {
+        name: "Krys Bader",
+        role: "Vocals",
+        image: "/images/members/krys.jpg",
+        blurb: "Frontman, screams & hooks taillés pour le live."
+    }
 ];
 
 export default function AboutPage() {
