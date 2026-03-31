@@ -1,4 +1,4 @@
-import { CartItem } from "@/app/merch/page";
+import type { CartItem } from "@/app/lib/products";
 import styles from "./cartSidebar.module.css";
 
 type Props = {

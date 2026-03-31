@@ -8,6 +8,14 @@ type Props = {
 };
 
 export default function MerchGrid({ products, onAddToCart }: Props) {
+    if (!products.length) {
+        return (
+            <p className={styles.empty}>
+                No merch is online right now. Check back soon for the next drop.
+            </p>
+        );
+    }
+
     return (
         <div className={styles.grid}>
         {products.map((product) => (

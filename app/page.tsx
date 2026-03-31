@@ -6,9 +6,13 @@ import Hero from "./components/homePage/hero/hero";
 import ProductGrid from "./components/productGrid/productGrid";
 import SectionHeading from "./components/sectionHeading/sectionHeading";
 import { concerts, isPastConcert } from "./lib/concerts";
-import { products } from "./lib/products";
+import { getActiveMerchProducts } from "./lib/merch";
 
-export default function Home() {
+export const revalidate = 60;
+
+export default async function Home() {
+  const products = await getActiveMerchProducts(4);
+
   return (
     <>
       {/* HERO */}

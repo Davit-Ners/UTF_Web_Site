@@ -10,3 +10,8 @@
   flex: 1 1 180px;    /* largeur minimale */
   max-width: 240px;   /* largeur maximale */
 }
+
+.empty {
+  margin: 24px 0 0;
+  color: var(--subtle);
+}

@@ -14,7 +14,7 @@ export default function ProductCard({ product, onAddToCart }: Props) {
         <article className={`card ${styles.card}`}>
         <div className={styles.media}>
             <Image
-            src={product.image || '/next.svg'}
+            src={product.image || "/logo.jpg"}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, 260px"

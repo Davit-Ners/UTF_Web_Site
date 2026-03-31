@@ -15,7 +15,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <article className={`card ${styles.card}`}>
         <div className={styles.media}>
             <Image
-            src={product.image || "/placeholder-product.jpg"}
+            src={product.image || "/logo.jpg"}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
