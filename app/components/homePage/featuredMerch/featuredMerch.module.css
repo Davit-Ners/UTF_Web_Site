@@ -1,0 +1,201 @@
+.section {
+  margin: 36px auto 22px;
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.88fr) minmax(0, 1.12fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.copyCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 330px;
+  padding: 28px;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent) 18%, transparent), transparent 45%),
+    linear-gradient(145deg, var(--color-surface), color-mix(in oklab, var(--color-surface) 72%, black));
+  border: 1px solid color-mix(in oklab, var(--color-border) 76%, var(--color-accent) 24%);
+  box-shadow: var(--shadow);
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.title {
+  max-width: 10ch;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  line-height: 0.92;
+}
+
+.text {
+  max-width: 42ch;
+  color: var(--color-text-secondary);
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: color-mix(in oklab, var(--color-surface-alt) 74%, transparent);
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.actions {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.sideNote {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.productCard {
+  position: relative;
+  min-height: 330px;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--color-border) 82%, var(--color-accent) 18%);
+  box-shadow: var(--shadow);
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+
+.productCard:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in oklab, var(--color-accent) 40%, var(--color-border));
+  box-shadow: 0 16px 36px rgba(0, 0, 0, .18);
+}
+
+.productCardPrimary {
+  min-height: 360px;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+}
+
+.media :global(img) {
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.58) 100%);
+}
+
+.productBody {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px;
+}
+
+.kickerRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.category,
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.38rem 0.62rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.category {
+  color: #fff;
+  background: rgba(16, 16, 18, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+}
+
+.badge {
+  color: #fff;
+  background: color-mix(in oklab, var(--color-accent) 82%, black);
+}
+
+.productFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.productTitle {
+  color: #fff;
+  font-size: 1.08rem;
+  line-height: 1.06;
+}
+
+.productText {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.price {
+  align-self: flex-start;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+@media (max-width: 980px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .products {
+    grid-template-columns: 1fr;
+  }
+
+  .copyCard,
+  .productCard,
+  .productCardPrimary {
+    min-height: 280px;
+  }
+}
