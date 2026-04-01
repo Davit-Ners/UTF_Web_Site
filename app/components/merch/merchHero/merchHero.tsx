@@ -9,8 +9,8 @@ export default function MerchHero() {
                 <span className={styles.eyebrow}>Store</span>
                 <h1 className={styles.title}>Official Until They Fall merch</h1>
                 <p className={styles.subtitle}>
-                Support the band, look heavy. Tees, hoodies, CDs and accessories
-                directly from us — no drop-shipping, no cheap blanks.
+                Support the band, look heavy. Tees, patchs, CDs and accessories
+                directly from us.
                 </p>
             </div>
             <div className={styles.side}>

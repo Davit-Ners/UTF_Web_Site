@@ -36,6 +36,12 @@ export const concerts: Concert[] = [
     { id:"utf-namur", date:"2024-11-16", city:"Namur, BE", venue:"Belvédère", note: "Tremplin Durbuy Rock Fest" },
     
     { id:"utf-hellCafe", date:"2026-02-20", city:"Diest, BE", venue:"Hell Diest", ticketUrl:"https://tickets.example.com/utf-bxl" },
+
+    { id:"utf-poissonerie", date:"2026-02-28", city:"Brussels, BE", venue:"La Poissonerie", ticketUrl:"https://tickets.example.com/utf-bxl", title: "Survival Fest" },
+
+    { id:"utf-mjChezZelle", date:"2026-03-20", city:"Louvain-La-Neuve, BE", venue:"Mj Chez Zelle", ticketUrl:"https://tickets.example.com/utf-bxl", title: "Eristic Fest" },
+    
+    { id:"utf-mcp-2026", date:"2026-04-01", city:"Fontaine-L'Évêque, BE", venue:"MCP Apache", ticketUrl:"https://tickets.example.com/utf-bxl" },
 ];
 
 export function getConcertById(id: string): Concert | undefined {
