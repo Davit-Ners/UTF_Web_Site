@@ -1,32 +1,37 @@
-"use client";
-
-import GalleryFull from "@/app/components/gallery/galleryFull/galleryFull";
-import { GalleryPhoto } from "@/app/components/gallery/galleryStrip/galleryStrip";
 import { notFound } from "next/navigation";
-// import { getConcertBySlug, getPhotosForConcert } etc.
+import GalleryFull from "@/app/components/gallery/galleryFull/galleryFull";
+import type { GalleryPhoto } from "@/app/components/gallery/galleryStrip/galleryStrip";
+import { getConcertById } from "@/app/lib/concerts";
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
-export default function ConcertGalleryPage({ params }: Props) {
-    const slug = params.slug;
+export const revalidate = 60;
 
-    // Placeholder : à la place tu appelleras ta DB / lib
-    const concert = { slug, title: "VK — Brussels, BE", date: "2025-01-10" };
-    if (!concert) return notFound();
+export default async function ConcertGalleryPage({ params }: Props) {
+  const { slug } = await params;
+  const concert = await getConcertById(slug);
 
-    const photos: GalleryPhoto[] = [
-        // photos liées à ce concert uniquement
-    ];
+  if (!concert || concert.gallery.length === 0) {
+    notFound();
+  }
 
-    return (
-        <main>
-        <GalleryFull
-            title={`Gallery · ${concert.title}`}
-            subtitle={`Live photos from the show on ${concert.date}.`}
-            photos={photos}
-        />
-        </main>
-    );
-};
+  const title = concert.title ?? `${concert.city} - ${concert.venue}`;
+  const photos: GalleryPhoto[] = concert.gallery.map((src, index) => ({
+    id: `${concert.id}-${index}`,
+    src,
+    alt: `${title} live photo ${index + 1}`,
+    meta: concert.date,
+  }));
+
+  return (
+    <main>
+      <GalleryFull
+        title={`Gallery - ${title}`}
+        subtitle={`Live photos from the show on ${concert.date}.`}
+        photos={photos}
+      />
+    </main>
+  );
+}

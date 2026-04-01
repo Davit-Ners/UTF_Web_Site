@@ -1,60 +1,169 @@
+import prisma from "@/lib/prisma";
+
+const DEFAULT_TIMEZONE = "Europe/Brussels";
+
 export type Concert = {
-    id: string;
-    date: string;
-    city: string;
-    venue: string;
-    note?: string;
-    ticketUrl?: string;
-    title?: string;
-    posterUrl?: string;
-    lineup?: string[];
-    doorsTime?: string;
-    showTime?: string;
-    price?: string;
-    facebookEventUrl?: string;
-    gallery?: string[];
+  id: string;
+  date: string;
+  city: string;
+  venue: string;
+  note?: string;
+  ticketUrl?: string;
+  title?: string;
+  posterUrl?: string;
+  lineup?: string[];
+  doorsTime?: string;
+  showTime?: string;
+  price?: string;
+  facebookEventUrl?: string;
+  gallery: string[];
+  description?: string;
 };
-    
-export const concerts: Concert[] = [
-    { 
-        id:"utf-arlon", date:"2025-11-01", city:"Arlon, BE", venue:"L’Entrepôt", note: "Tremplin Durbuy Rock Fest",
-        doorsTime: "18:00", facebookEventUrl: "https://www.facebook.com/events/1247092823614827?locale=fr_FR",
-        lineup: ["Black Mirrors", "Kanzan", "Demassify", "Atum Nophi"], posterUrl: "/concerts/utf-arlon/poster.jpg",
-        price: "20€", showTime: "19:30", ticketUrl: "https://shop.utick.net/?module=CATALOGUE", title: "Black Mirrors + Tremplin Durbuy Rock Festival - L'Entrepôt, Arlon", gallery: ["/concerts/utf-arlon/poster.jpg", "/gallery/band1.jpg", "/gallery/band2.jpg", "/gallery/bandall.jpg"]
+
+type ConcertRow = Awaited<ReturnType<typeof fetchPublishedConcertRows>>[number];
+
+function getDateParts(date: Date, timeZone: string) {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  });
+
+  const parts = formatter.formatToParts(date);
+
+  return {
+    year: parts.find((part) => part.type === "year")?.value ?? "0000",
+    month: parts.find((part) => part.type === "month")?.value ?? "01",
+    day: parts.find((part) => part.type === "day")?.value ?? "01",
+    hour: parts.find((part) => part.type === "hour")?.value ?? "00",
+    minute: parts.find((part) => part.type === "minute")?.value ?? "00",
+  };
+}
+
+function formatDateOnly(date: Date, timeZone: string) {
+  const parts = getDateParts(date, timeZone);
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function formatTime(date: Date | null, timeZone: string) {
+  if (!date) return undefined;
+  const parts = getDateParts(date, timeZone);
+  return `${parts.hour}:${parts.minute}`;
+}
+
+function getTodayDateString(timeZone = DEFAULT_TIMEZONE) {
+  return formatDateOnly(new Date(), timeZone);
+}
+
+function compareByDateAsc(a: Concert, b: Concert) {
+  return a.date.localeCompare(b.date);
+}
+
+function compareByDateDesc(a: Concert, b: Concert) {
+  return b.date.localeCompare(a.date);
+}
+
+function mapConcert(row: ConcertRow): Concert {
+  const timeZone = row.timezone || DEFAULT_TIMEZONE;
+  const posterImage = row.posterUrl ?? row.images.find((image) => image.kind === "POSTER")?.url;
+  const galleryImages = row.images
+    .filter((image) => image.kind === "GALLERY")
+    .map((image) => image.url);
+
+  return {
+    id: row.slug,
+    date: formatDateOnly(row.startsAt, timeZone),
+    city: `${row.city}, ${row.countryCode}`,
+    venue: row.venueName,
+    note: row.note ?? undefined,
+    ticketUrl: row.ticketUrl ?? undefined,
+    title: row.title ?? undefined,
+    posterUrl: posterImage ?? undefined,
+    lineup: row.lineupEntries.map((entry) => entry.name),
+    doorsTime: formatTime(row.doorsAt, timeZone),
+    showTime: formatTime(row.showAt, timeZone),
+    price: row.priceLabel ?? undefined,
+    facebookEventUrl: row.facebookEventUrl ?? undefined,
+    gallery: galleryImages,
+    description: row.description ?? undefined,
+  };
+}
+
+async function fetchPublishedConcertRows() {
+  return prisma.concert.findMany({
+    where: {
+      status: "PUBLISHED",
     },
+    orderBy: [
+      { startsAt: "asc" },
+      { publishedAt: "desc" },
+      { createdAt: "desc" },
+    ],
+    include: {
+      lineupEntries: {
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+      },
+      images: {
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+      },
+    },
+  });
+}
 
-    { id:"utf-anvinium", date:"2025-05-03", city:"Frasnes-Lez-Avaing, BE", venue:"Anvinium Metal Fest" },
-    
-    { id:"utf-mcp", date:"2024-04-04", city:"Fontaine-L'Évêque, BE", venue:"MCP Apache" },
-    
-    { id:"utf-monkey", date:"2024-04-13", city:"Mons, BE", venue:"Monkey's Café" },
-    
-    { id:"utf-rock-2024", date:"2024-08-22", city:"Bruxelles, BE", venue:"Rock Classic" },
-    
-    { id:"utf-witte-non", date:"2024-10-05", city:"Hasselt, BE", venue:"Café Nocturna - De Witte Non" },
-    
-    { id:"utf-namur", date:"2024-11-16", city:"Namur, BE", venue:"Belvédère", note: "Tremplin Durbuy Rock Fest" },
-    
-    { id:"utf-hellCafe", date:"2026-02-20", city:"Diest, BE", venue:"Hell Diest", ticketUrl:"https://tickets.example.com/utf-bxl" },
+export async function getPublishedConcerts(): Promise<Concert[]> {
+  const rows = await fetchPublishedConcertRows();
+  return rows.map(mapConcert);
+}
 
-    { id:"utf-poissonerie", date:"2026-02-28", city:"Brussels, BE", venue:"La Poissonerie", ticketUrl:"https://tickets.example.com/utf-bxl", title: "Survival Fest" },
+export async function getConcertById(id: string): Promise<Concert | null> {
+  const row = await prisma.concert.findFirst({
+    where: {
+      slug: id,
+      status: "PUBLISHED",
+    },
+    include: {
+      lineupEntries: {
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+      },
+      images: {
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+      },
+    },
+  });
 
-    { id:"utf-mjChezZelle", date:"2026-03-20", city:"Louvain-La-Neuve, BE", venue:"Mj Chez Zelle", ticketUrl:"https://tickets.example.com/utf-bxl", title: "Eristic Fest" },
-    
-    { id:"utf-mcp-2026", date:"2026-04-01", city:"Fontaine-L'Évêque, BE", venue:"MCP Apache", ticketUrl:"https://tickets.example.com/utf-bxl" },
-];
+  return row ? mapConcert(row) : null;
+}
 
-export function getConcertById(id: string): Concert | undefined {
-    return concerts.find((c) => c.id === id);
-};
+export function isPastConcert(concert: Concert, today = getTodayDateString()) {
+  return concert.date < today;
+}
 
-export function isPastConcert(concert: Concert): boolean {
-    if (!concert?.date) return false;
-    
-    const concertDate = new Date(concert.date + "T00:00:00");
-    const today = new Date();
-    
-    today.setHours(0, 0, 0, 0);
+export function splitConcerts(all: Concert[], today = getTodayDateString()) {
+  const upcoming = all
+    .filter((concert) => concert.date >= today)
+    .sort(compareByDateAsc);
 
-    return concertDate < today;
-};
+  const past = all
+    .filter((concert) => concert.date < today)
+    .sort(compareByDateDesc);
+
+  return {
+    upcoming,
+    past,
+    nextShow: upcoming[0] ?? null,
+  };
+}
+
+export async function getConcertBuckets() {
+  const concerts = await getPublishedConcerts();
+  return splitConcerts(concerts);
+}
+
+export async function getNextConcert() {
+  const { nextShow } = await getConcertBuckets();
+  return nextShow;
+}

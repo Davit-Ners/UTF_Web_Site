@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./actionHub.module.css";
 import NewsletterForm from "../newsLetterForm/newsLetterForm";
-import { concerts } from "@/app/lib/concerts";
+import { getNextConcert } from "@/app/lib/concerts";
 
 function IconCalendar() {
   return (
@@ -56,30 +56,9 @@ function IconMail() {
   );
 }
 
-function getNextShow() {
-  const today = new Date();
-  const cutoff = new Date(today.toDateString());
-
-  const upcoming = concerts
-    .map((concert) => ({ ...concert, parsedDate: new Date(concert.date) }))
-    .filter((concert) => concert.parsedDate >= cutoff)
-    .sort((a, b) => a.parsedDate.getTime() - b.parsedDate.getTime())[0];
-
-  if (!upcoming) return null;
-
-  return {
-    day: upcoming.parsedDate.getDate().toString().padStart(2, "0"),
-    month: new Intl.DateTimeFormat("en-GB", { month: "short" })
-      .format(upcoming.parsedDate)
-      .toUpperCase(),
-    city: upcoming.city.split(",")[0],
-    venue: upcoming.venue,
-    note: upcoming.note,
-  };
-}
-
-export default function ActionHub() {
-  const nextShow = getNextShow();
+export default async function ActionHub() {
+  const nextShow = await getNextConcert();
+  const nextShowDate = nextShow ? new Date(`${nextShow.date}T12:00:00.000Z`) : null;
 
   return (
     <section className={styles.wrap}>
@@ -129,13 +108,22 @@ export default function ActionHub() {
               {nextShow ? (
                 <div className={styles.showBoard}>
                   <div className={styles.datePanel}>
-                    <span className={styles.dateDay}>{nextShow.day}</span>
-                    <span className={styles.dateMonth}>{nextShow.month}</span>
+                    <span className={styles.dateDay}>
+                      {nextShowDate?.getUTCDate().toString().padStart(2, "0")}
+                    </span>
+                    <span className={styles.dateMonth}>
+                      {nextShowDate
+                        ?.toLocaleString("en", {
+                          month: "short",
+                          timeZone: "UTC",
+                        })
+                        .toUpperCase()}
+                    </span>
                   </div>
 
                   <div className={styles.showMeta}>
                     <span className={styles.metaLabel}>Locked date</span>
-                    <p className={styles.showCity}>{nextShow.city}</p>
+                    <p className={styles.showCity}>{nextShow.city.split(",")[0]}</p>
                     <p className={styles.showVenue}>{nextShow.venue}</p>
                     {nextShow.note ? (
                       <p className={styles.showNote}>{nextShow.note}</p>

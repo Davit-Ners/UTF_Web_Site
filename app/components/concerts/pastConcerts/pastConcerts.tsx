@@ -1,6 +1,6 @@
-import styles from "./pastConcerts.module.css";
-import { Concert } from "@/app/lib/concerts";
 import Link from "next/link";
+import styles from "./pastConcerts.module.css";
+import { type Concert } from "@/app/lib/concerts";
 
 type Props = {
   shows: Concert[];
@@ -15,9 +15,10 @@ export default function PastConcerts({ shows }: Props) {
         <header className={styles.header}>
           <div>
             <span className={styles.eyebrow}>Past shows</span>
-            <h2 className={styles.title}>Where we’ve played</h2>
+            <h2 className={styles.title}>Where we&apos;ve played</h2>
             <p className={styles.subtitle}>
-              A snapshot of recent shows. Dive into the full archive to see every stage we’ve hit.
+              A snapshot of recent shows. The full archive keeps every stage
+              we&apos;ve hit.
             </p>
           </div>
           {recent.length > 0 && (
@@ -30,11 +31,11 @@ export default function PastConcerts({ shows }: Props) {
         </header>
 
         {recent.length === 0 ? (
-          <p className={styles.empty}>We’ll update this once tours begin.</p>
+          <p className={styles.empty}>We&apos;ll update this once tours begin.</p>
         ) : (
           <ul className={styles.list}>
             {recent.map((show) => (
-              <Link key={show.id} className={styles.item} href={`concerts/${show.id}`}>
+              <Link key={show.id} className={styles.item} href={`/concerts/${show.id}`}>
                 <span className={styles.date}>{formatShort(show.date)}</span>
                 <span className={styles.city}>{show.city}</span>
                 <span className={styles.venue}>{show.venue}</span>
@@ -52,5 +53,6 @@ function formatShort(raw: string) {
     day: "2-digit",
     month: "short",
     year: "2-digit",
-  }).format(new Date(raw));
+    timeZone: "UTC",
+  }).format(new Date(`${raw}T12:00:00.000Z`));
 }
