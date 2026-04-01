@@ -44,7 +44,8 @@ export default function GalleryFull({ title, subtitle, photos }: Props) {
                     src={photo.src}
                     alt={photo.alt}
                     fill
-                    sizes="(max-width: 960px) 100vw, 28vw"
+                    quality={90}
+                    sizes="(max-width: 700px) 100vw, (max-width: 960px) 50vw, 33vw"
                   />
                   <div className={styles.overlay} />
                   {(photo.caption || photo.meta) && (
