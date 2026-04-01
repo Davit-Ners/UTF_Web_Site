@@ -33,12 +33,11 @@ export default function GalleryFull({ title, subtitle, photos }: Props) {
             </header>
 
             <div className={styles.gallery}>
-              {photos.map((photo, index) => (
+              {photos.map((photo) => (
                 <button
                   key={photo.id}
                   type="button"
                   className={styles.item}
-                  data-variant={index % 5}
                   onClick={() => setActive(photo)}
                 >
                   <Image

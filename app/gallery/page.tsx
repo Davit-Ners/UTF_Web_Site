@@ -81,12 +81,11 @@ export default function GalleryPage() {
             </div>
 
             <div className={styles.photoWall}>
-              {allConcertPhotos.map((photo, index) => (
+              {allConcertPhotos.map((photo) => (
                 <button
                   key={photo.id}
                   type="button"
                   className={styles.wallItem}
-                  data-variant={index % 5}
                   onClick={() => setActive(photo)}
                 >
                   <Image
