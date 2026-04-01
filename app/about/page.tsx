@@ -73,6 +73,21 @@ const fanRefs = [
   "Festival-ready sets",
 ];
 
+const storyFacts = [
+  {
+    label: "Base",
+    value: "Brussels, Belgium",
+  },
+  {
+    label: "Format",
+    value: "5-piece line-up",
+  },
+  {
+    label: "Focus",
+    value: "Live impact first",
+  },
+];
+
 function getInitials(name: string) {
   return name
     .split(" ")
@@ -143,18 +158,21 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <aside className={styles.storyAside}>
-              <div className={`${styles.factCard} card`}>
-                <span className={styles.factLabel}>Base</span>
-                <strong className={styles.factValue}>Brussels, Belgium</strong>
-              </div>
-              <div className={`${styles.factCard} card`}>
-                <span className={styles.factLabel}>Format</span>
-                <strong className={styles.factValue}>5-piece line-up</strong>
-              </div>
-              <div className={`${styles.factCard} card`}>
-                <span className={styles.factLabel}>Focus</span>
-                <strong className={styles.factValue}>Live impact first</strong>
+            <aside className={`${styles.storyMetaCard} card`}>
+              <span className={styles.storyMetaEyebrow}>Profile</span>
+              <h3 className={styles.storyMetaTitle}>A band shaped around stage pressure.</h3>
+              <p className={styles.storyMetaText}>
+                The project is built to read clearly in a room: sharp identity,
+                direct songs and a setup that translates without extra fluff.
+              </p>
+
+              <div className={styles.storyMetaList}>
+                {storyFacts.map((item) => (
+                  <div key={item.label} className={styles.storyMetaRow}>
+                    <span className={styles.storyMetaLabel}>{item.label}</span>
+                    <strong className={styles.storyMetaValue}>{item.value}</strong>
+                  </div>
+                ))}
               </div>
             </aside>
           </div>
@@ -237,8 +255,8 @@ export default function AboutPage() {
 
       <section className={styles.highlightSection}>
         <div className="container">
-          <div className={styles.highlightShell}>
-            <article className={styles.statementCard}>
+          <div className={styles.highlightFrame}>
+            <article className={styles.highlightLead}>
               <span className={styles.sectionEyebrow}>Highlights</span>
               <h2 className={styles.statementTitle}>
                 Heavy enough for clubs, sharp enough for festival slots.
@@ -248,21 +266,6 @@ export default function AboutPage() {
                 metalcore tension and live-first writing. The goal is simple:
                 songs that connect fast and a set that lands hard.
               </p>
-
-              <div className={styles.statementStats}>
-                <div className={styles.statementStat}>
-                  <span className={styles.statLabel}>Origin</span>
-                  <strong className={styles.statValue}>Brussels, BE</strong>
-                </div>
-                <div className={styles.statementStat}>
-                  <span className={styles.statLabel}>Setup</span>
-                  <strong className={styles.statValue}>Clubs + festivals</strong>
-                </div>
-                <div className={styles.statementStat}>
-                  <span className={styles.statLabel}>Release</span>
-                  <strong className={styles.statValue}>Sent To Die</strong>
-                </div>
-              </div>
 
               <div className={styles.statementActions}>
                 <Link href="/music" className="button">
@@ -274,28 +277,52 @@ export default function AboutPage() {
               </div>
             </article>
 
-            <div className={styles.highlightGrid}>
-              {highlightCards.map((item) => (
-                <article key={item.title} className={`${styles.highlightCard} card`}>
-                  <h3 className={styles.highlightTitle}>{item.title}</h3>
-                  <p className={styles.highlightText}>{item.body}</p>
-                </article>
-              ))}
-
-              <article className={`${styles.fansCard} card`}>
-                <h3 className={styles.highlightTitle}>For fans of</h3>
-                <p className={styles.highlightText}>
-                  A balance of melody, pressure and songs that still stick after
-                  the final hit.
-                </p>
-                <div className={styles.fanChips}>
-                  {fanRefs.map((item) => (
-                    <span key={item} className={styles.fanChip}>
-                      {item}
+            <div className={styles.highlightPanel}>
+              <div className={styles.highlightRows}>
+                {highlightCards.map((item, index) => (
+                  <article key={item.title} className={styles.highlightRow}>
+                    <span className={styles.highlightIndex}>
+                      {String(index + 1).padStart(2, "0")}
                     </span>
-                  ))}
+                    <div className={styles.highlightRowBody}>
+                      <h3 className={styles.highlightTitle}>{item.title}</h3>
+                      <p className={styles.highlightText}>{item.body}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              <div className={styles.highlightFoot}>
+                <div className={styles.statementStats}>
+                  <div className={styles.statementStat}>
+                    <span className={styles.statLabel}>Origin</span>
+                    <strong className={styles.statValue}>Brussels, BE</strong>
+                  </div>
+                  <div className={styles.statementStat}>
+                    <span className={styles.statLabel}>Setup</span>
+                    <strong className={styles.statValue}>Clubs + festivals</strong>
+                  </div>
+                  <div className={styles.statementStat}>
+                    <span className={styles.statLabel}>Release</span>
+                    <strong className={styles.statValue}>Sent To Die</strong>
+                  </div>
                 </div>
-              </article>
+
+                <div className={styles.fanBlock}>
+                  <h3 className={styles.highlightTitle}>For fans of</h3>
+                  <p className={styles.highlightText}>
+                    A balance of melody, pressure and songs that still stick
+                    after the final hit.
+                  </p>
+                  <div className={styles.fanChips}>
+                    {fanRefs.map((item) => (
+                      <span key={item} className={styles.fanChip}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

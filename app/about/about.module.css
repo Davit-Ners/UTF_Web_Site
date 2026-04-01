@@ -141,35 +141,70 @@
   margin-top: 10px;
 }
 
-.storyAside {
-  display: grid;
-  gap: 12px;
-}
-
-.factCard {
+.storyMetaCard {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  padding: 18px;
-  border-radius: 22px;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 22px 20px;
+  border-radius: 28px;
   background:
-    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 92%, black), color-mix(in oklab, var(--color-surface-alt) 84%, black));
-  border: 1px solid color-mix(in oklab, var(--color-border) 82%, var(--color-accent) 18%);
+    radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent 38%),
+    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 93%, black), color-mix(in oklab, var(--color-surface-alt) 87%, black));
+  border: 1px solid color-mix(in oklab, var(--color-border) 80%, var(--color-accent) 20%);
 }
 
-.factLabel {
+.storyMetaEyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.storyMetaTitle {
+  max-width: 14ch;
+  color: var(--color-text-primary);
+  font-size: 1.35rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.storyMetaText {
+  max-width: 30ch;
+  color: var(--color-text-secondary);
+}
+
+.storyMetaList {
+  display: grid;
+  gap: 0;
+  margin-top: auto;
+  border-top: 1px solid color-mix(in oklab, var(--color-border) 86%, transparent);
+}
+
+.storyMetaRow {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 14px 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--color-border) 86%, transparent);
+}
+
+.storyMetaLabel {
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-text-muted);
 }
 
-.factValue {
+.storyMetaValue {
   color: var(--color-text-primary);
-  font-size: 1.05rem;
-  line-height: 1.2;
+  font-size: 1rem;
+  line-height: 1.25;
 }
 
 .membersIntro {
@@ -380,36 +415,26 @@
   color: var(--color-text-secondary);
 }
 
-.highlightShell {
+.highlightFrame {
   display: grid;
   grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.05fr);
   gap: 18px;
+  padding: 20px;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at top left, rgba(217, 43, 43, 0.12), transparent 34%),
+    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 95%, black), color-mix(in oklab, var(--color-surface-alt) 88%, black));
+  border: 1px solid color-mix(in oklab, var(--color-border) 80%, var(--color-accent) 20%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
 }
 
-.statementCard {
+.highlightLead {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 16px;
   min-height: 100%;
-  padding: 24px;
-  border-radius: 30px;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at top left, rgba(217, 43, 43, 0.18), transparent 34%),
-    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 94%, black), color-mix(in oklab, var(--color-surface-alt) 88%, black));
-  border: 1px solid color-mix(in oklab, var(--color-border) 78%, var(--color-accent) 22%);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
-}
-
-.statementCard::after {
-  content: "";
-  position: absolute;
-  inset: auto -30px -44px auto;
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(closest-side, rgba(217, 43, 43, 0.18), transparent 72%);
-  filter: blur(10px);
+  padding: 8px 6px 8px 4px;
 }
 
 .statementTitle,
@@ -431,6 +456,51 @@
 .statementText {
   max-width: 48ch;
   color: var(--color-text-secondary);
+}
+
+.highlightPanel {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 18px;
+  padding: 18px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 92%, black), color-mix(in oklab, var(--color-surface-alt) 86%, black));
+  border: 1px solid color-mix(in oklab, var(--color-border) 82%, var(--color-accent) 18%);
+}
+
+.highlightRows {
+  display: grid;
+  gap: 0;
+}
+
+.highlightRow {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--color-border) 84%, transparent);
+}
+
+.highlightRow:first-child {
+  padding-top: 0;
+}
+
+.highlightRow:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.highlightIndex {
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.highlightRowBody {
+  max-width: 40ch;
 }
 
 .statementStats {
@@ -486,21 +556,6 @@
   border-color: color-mix(in oklab, var(--color-accent) 44%, var(--color-border));
 }
 
-.highlightGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.highlightCard,
-.fansCard {
-  padding: 20px;
-  border-radius: 24px;
-  background:
-    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 93%, black), color-mix(in oklab, var(--color-surface-alt) 87%, black));
-  border: 1px solid color-mix(in oklab, var(--color-border) 82%, var(--color-accent) 18%);
-}
-
 .highlightTitle {
   font-size: 1rem;
   color: var(--color-text-primary);
@@ -511,8 +566,15 @@
   color: var(--color-text-secondary);
 }
 
-.fansCard {
-  grid-column: 1 / -1;
+.highlightFoot {
+  display: grid;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid color-mix(in oklab, var(--color-border) 84%, transparent);
+}
+
+.fanBlock {
+  max-width: 48ch;
 }
 
 .fanChips {
@@ -537,13 +599,8 @@
 }
 
 @media (max-width: 1100px) {
-  .membersGrid,
-  .highlightGrid {
+  .membersGrid {
     grid-template-columns: 1fr;
-  }
-
-  .fansCard {
-    grid-column: auto;
   }
 }
 
@@ -552,7 +609,7 @@
   .storyGrid,
   .membersIntro,
   .lineupShell,
-  .highlightShell {
+  .highlightFrame {
     grid-template-columns: 1fr;
   }
 
@@ -573,16 +630,17 @@
   }
 
   .storyCard,
-  .statementCard {
+  .storyMetaCard,
+  .highlightFrame,
+  .highlightPanel {
     padding: 20px;
   }
 
   .heroImageWrap,
   .lineupFeature,
   .memberCard,
-  .statementCard,
-  .highlightCard,
-  .fansCard {
+  .highlightFrame,
+  .highlightPanel {
     border-radius: 22px;
   }
 
@@ -592,5 +650,11 @@
 
   .statementStats {
     grid-template-columns: 1fr;
+  }
+
+  .storyMetaRow,
+  .highlightRow {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 }
