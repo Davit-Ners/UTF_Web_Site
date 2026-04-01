@@ -25,7 +25,7 @@ export default async function Home() {
         subtitle="Official Music Video"
       />
 
-      <section className="concertsSection">
+      {/* <section className="concertsSection">
         <SectionHeading
           eyebrow="Live"
           title="Upcoming Shows"
@@ -43,7 +43,7 @@ export default async function Home() {
               <ConcertCard key={concert.id} concert={concert} />
             ))}
         </div>
-      </section>
+      </section> */}
 
       <FeaturedRelease
         title="Sent To Die"
