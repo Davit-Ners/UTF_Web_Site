@@ -41,9 +41,9 @@ export default function BookingHero() {
             </div>
 
             <div className={styles.actions}>
-                <ActionLink href="/docs/UTF_technical_rider_2025.pdf" label="Download Tech Rider" />
-                <ActionLink href="/docs/UTF_Stage_Plot.png" label="Stage Plot" />
-                <ActionLink href="/docs/UTF_PressKit.zip" label="Press Kit (EPK)" />
+                <ActionLink href="/docs/UTF_technical_rider_2026.pdf" label="Download Tech Rider" />
+                {/* <ActionLink href="/docs/UTF_Stage_Plot.png" label="Stage Plot" /> */}
+                {/* <ActionLink href="/docs/UTF_PressKit.zip" label="Press Kit (EPK)" /> */}
             </div>
             </div>
         </section>
