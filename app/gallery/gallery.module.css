@@ -1,7 +1,311 @@
 .page {
-  padding-bottom: 40px;
+  padding-bottom: 52px;
 }
 
-.section {
-  margin: 22px 0 32px;
+.hero,
+.canvasSection {
+  margin-top: 28px;
+}
+
+.heroShell {
+  display: grid;
+  grid-template-columns: minmax(0, 0.94fr) minmax(320px, 1.06fr);
+  gap: 20px;
+  align-items: center;
+  padding: 22px;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at top left, rgba(217, 43, 43, 0.16), transparent 32%),
+    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 95%, black), color-mix(in oklab, var(--color-surface-alt) 88%, black));
+  border: 1px solid color-mix(in oklab, var(--color-border) 78%, var(--color-accent) 22%);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.2);
+}
+
+.heroCopy {
+  max-width: 52ch;
+}
+
+.eyebrow,
+.sectionEyebrow {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  color: var(--color-accent);
+}
+
+.sectionEyebrow {
+  color: var(--color-accent);
+}
+
+.heroTitle {
+  max-width: 10ch;
+  margin-top: 8px;
+  font-size: clamp(2rem, 5vw, 4.1rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-primary);
+}
+
+.heroText {
+  max-width: 44ch;
+  margin-top: 12px;
+  color: var(--color-text-secondary);
+}
+
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.metaPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.44rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--color-border) 80%, var(--color-accent) 20%);
+  background: color-mix(in oklab, var(--color-surface-alt) 74%, black);
+  color: var(--color-text-secondary);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.secondaryLink,
+.inlineLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.74rem 1rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--color-border) 78%, var(--color-accent) 22%);
+  background: color-mix(in oklab, var(--color-surface-alt) 72%, transparent);
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.secondaryLink:hover,
+.inlineLink:hover {
+  color: var(--color-accent-hover);
+  border-color: color-mix(in oklab, var(--color-accent) 42%, var(--color-border));
+}
+
+.heroVisual {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 14px;
+  min-height: 500px;
+}
+
+.heroShot {
+  position: relative;
+  overflow: hidden;
+  min-height: 240px;
+  border: 0;
+  border-radius: 26px;
+  background: color-mix(in oklab, var(--color-surface-alt) 82%, black);
+  cursor: pointer;
+  text-align: left;
+}
+
+.heroShot :global(img) {
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 0.28s ease;
+}
+
+.heroShot:hover :global(img) {
+  transform: scale(1.06);
+}
+
+.heroShotLead {
+  grid-row: span 2;
+  min-height: 100%;
+}
+
+.heroShotOverlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.64)),
+    radial-gradient(circle at 20% 18%, rgba(217, 43, 43, 0.18), transparent 28%);
+}
+
+.heroShotMeta,
+.wallMeta {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.heroShotMeta strong,
+.wallMeta strong {
+  color: #fff;
+  font-size: 0.98rem;
+  letter-spacing: 0.03em;
+}
+
+.heroShotMeta span,
+.wallMeta span {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+}
+
+.canvasShell {
+  padding: 20px;
+  border-radius: 32px;
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 95%, black), color-mix(in oklab, var(--color-surface-alt) 88%, black));
+  border: 1px solid color-mix(in oklab, var(--color-border) 80%, var(--color-accent) 20%);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.16);
+}
+
+.canvasHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
+  gap: 16px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.canvasTitle {
+  margin-top: 8px;
+  font-size: clamp(1.6rem, 3.5vw, 2.9rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.canvasText,
+.canvasNote {
+  max-width: 44ch;
+  color: var(--color-text-secondary);
+}
+
+.photoWall {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.wallItem {
+  position: relative;
+  overflow: hidden;
+  grid-column: span 4;
+  min-height: 280px;
+  border: 0;
+  border-radius: 24px;
+  background: color-mix(in oklab, var(--color-surface-alt) 82%, black);
+  cursor: pointer;
+  text-align: left;
+}
+
+.wallItem :global(img) {
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 0.28s ease;
+}
+
+.wallItem:hover :global(img) {
+  transform: scale(1.06);
+}
+
+.wallItem[data-variant="0"] {
+  grid-column: span 6;
+  min-height: 340px;
+}
+
+.wallItem[data-variant="2"] {
+  grid-column: span 3;
+  min-height: 340px;
+}
+
+.wallItem[data-variant="4"] {
+  grid-column: span 5;
+  min-height: 300px;
+}
+
+.wallOverlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.72)),
+    radial-gradient(circle at 18% 18%, rgba(217, 43, 43, 0.18), transparent 28%);
+}
+
+.canvasFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+@media (max-width: 1100px) {
+  .heroShell,
+  .canvasHead {
+    grid-template-columns: 1fr;
+  }
+
+  .heroVisual {
+    min-height: 420px;
+  }
+}
+
+@media (max-width: 960px) {
+  .heroVisual,
+  .photoWall {
+    grid-template-columns: 1fr;
+  }
+
+  .heroShotLead,
+  .wallItem,
+  .wallItem[data-variant="0"],
+  .wallItem[data-variant="2"],
+  .wallItem[data-variant="4"] {
+    grid-column: auto;
+    min-height: 260px;
+  }
+}
+
+@media (max-width: 700px) {
+  .page {
+    padding-bottom: 40px;
+  }
+
+  .heroShell,
+  .canvasShell {
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .heroShot,
+  .wallItem {
+    border-radius: 20px;
+  }
+
+  .heroVisual {
+    min-height: auto;
+  }
 }

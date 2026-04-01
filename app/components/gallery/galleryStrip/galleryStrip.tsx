@@ -1,14 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./galleryStrip.module.css";
-
-export type GalleryPhoto = {
-    id: string;
-    src: string;
-    alt: string;
-    caption?: string;
-    meta?: string;
-};
+import type { GalleryPhoto } from "@/app/lib/gallery";
 
 type Props = {
     title: string;

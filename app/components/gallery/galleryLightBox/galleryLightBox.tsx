@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import styles from "./galleryLightbox.module.css";
-import { GalleryPhoto } from "../galleryStrip/galleryStrip";
+import type { GalleryPhoto } from "@/app/lib/gallery";
 
 type Props = {
   photo: GalleryPhoto;
@@ -11,51 +11,42 @@ type Props = {
 };
 
 export default function GalleryLightbox({ photo, onClose }: Props) {
-    // Close on ESC
-    useEffect(() => {
-        function onKey(e: KeyboardEvent) {
-        if (e.key === "Escape") onClose();
-        }
-        window.addEventListener("keydown", onKey);
-        return () => window.removeEventListener("keydown", onKey);
-    }, [onClose]);
-
-    function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
-        if (e.target === e.currentTarget) {
-        onClose();
-        }
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") onClose();
     }
 
-    return (
-        <div className={styles.backdrop} onClick={handleBackdropClick}>
-        <div className={styles.dialog}>
-            <button
-            type="button"
-            className={styles.close}
-            aria-label="Close"
-            onClick={onClose}
-            >
-            ✕
-            </button>
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
-            <div className={styles.imageWrap}>
-            <Image
-                src={photo.src}
-                alt={photo.alt}
-                fill
-                sizes="100vw"
-            />
-            </div>
+  function handleBackdropClick(event: React.MouseEvent<HTMLDivElement>) {
+    if (event.target === event.currentTarget) onClose();
+  }
 
-            {(photo.caption || photo.meta) && (
-            <div className={styles.footer}>
-                {photo.caption && (
-                <p className={styles.caption}>{photo.caption}</p>
-                )}
-                {photo.meta && <p className={styles.meta}>{photo.meta}</p>}
-            </div>
-            )}
+  return (
+    <div className={styles.backdrop} onClick={handleBackdropClick}>
+      <div className={styles.dialog}>
+        <button
+          type="button"
+          className={styles.close}
+          aria-label="Close"
+          onClick={onClose}
+        >
+          x
+        </button>
+
+        <div className={styles.imageWrap}>
+          <Image src={photo.src} alt={photo.alt} fill sizes="100vw" />
         </div>
-        </div>
-    );
-};
+
+        {(photo.caption || photo.meta) && (
+          <div className={styles.footer}>
+            {photo.caption && <p className={styles.caption}>{photo.caption}</p>}
+            {photo.meta && <p className={styles.meta}>{photo.meta}</p>}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

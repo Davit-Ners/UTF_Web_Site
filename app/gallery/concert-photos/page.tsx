@@ -1,21 +1,14 @@
-"use client";
-
 import GalleryFull from "@/app/components/gallery/galleryFull/galleryFull";
-import { GalleryPhoto } from "@/app/components/gallery/galleryStrip/galleryStrip";
-
-const allConcertPhotos: GalleryPhoto[] = [
-  // reprends toutes les photos live que tu utilises déjà
-  // + les autres
-];
+import { allConcertPhotos } from "@/app/lib/gallery";
 
 export default function ConcertPhotosGalleryPage() {
   return (
     <main>
       <GalleryFull
         title="Concert photos"
-        subtitle="All live shots from Until They Fall shows — festivals, clubs and release parties."
+        subtitle="Live shots from Until They Fall shows, clubs, festivals and release nights."
         photos={allConcertPhotos}
       />
     </main>
   );
-};
+}

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import GalleryFull from "@/app/components/gallery/galleryFull/galleryFull";
-import type { GalleryPhoto } from "@/app/components/gallery/galleryStrip/galleryStrip";
 import { getConcertById } from "@/app/lib/concerts";
+import type { GalleryPhoto } from "@/app/lib/gallery";
 
 type Props = {
   params: Promise<{ slug: string }>;
