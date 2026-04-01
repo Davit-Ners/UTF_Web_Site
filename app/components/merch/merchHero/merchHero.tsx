@@ -15,8 +15,8 @@ export default function MerchHero() {
             </div>
             <div className={styles.side}>
                 <p className={styles.highlight}>
-                Worldwide shipping coming soon. For now, shipping from Brussels
-                for EU orders.
+                Shipping currently runs from Brussels, with EU orders handled
+                directly by the band.
                 </p>
                 <p className={styles.note}>
                 Questions about sizes or shipping?{" "}

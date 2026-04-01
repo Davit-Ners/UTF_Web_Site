@@ -13,12 +13,12 @@ type Props = {
 };
 
 export default async function ReleasePage({ params }: Props) {
-    const slug = (await params).slug;
-    const release = getReleaseBySlug(await slug);
+    const { slug } = await params;
+    const release = getReleaseBySlug(slug);
 
     if (!release) return notFound();
 
-    const others = getOtherReleases(await slug);
+    const others = getOtherReleases(slug);
 
     return (
         <main className={styles.page}>
@@ -53,7 +53,7 @@ export default async function ReleasePage({ params }: Props) {
                     <p className={styles.storyText}>{release.story}</p>
                 ) : (
                     <p className={styles.storyText}>
-                    More info coming soon. This record is still fresh out of the oven.
+                    A focused release built for loud rooms, streaming services and the live set.
                     </p>
                 )}
 

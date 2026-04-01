@@ -67,6 +67,29 @@ function compareByDateDesc(a: Concert, b: Concert) {
   return b.date.localeCompare(a.date);
 }
 
+function sanitizeLink(value: string | null | undefined) {
+  const trimmed = value?.trim();
+
+  if (!trimmed) return undefined;
+  if (trimmed.startsWith("/")) return trimmed;
+
+  try {
+    const parsed = new URL(trimmed);
+
+    if (!["http:", "https:"].includes(parsed.protocol)) {
+      return undefined;
+    }
+
+    if (parsed.hostname.toLowerCase().endsWith("example.com")) {
+      return undefined;
+    }
+
+    return parsed.toString();
+  } catch {
+    return undefined;
+  }
+}
+
 function mapConcert(row: ConcertRow): Concert {
   const timeZone = row.timezone || DEFAULT_TIMEZONE;
   const posterImage = row.posterUrl ?? row.images.find((image) => image.kind === "POSTER")?.url;
@@ -80,14 +103,14 @@ function mapConcert(row: ConcertRow): Concert {
     city: `${row.city}, ${row.countryCode}`,
     venue: row.venueName,
     note: row.note ?? undefined,
-    ticketUrl: row.ticketUrl ?? undefined,
+    ticketUrl: sanitizeLink(row.ticketUrl),
     title: row.title ?? undefined,
     posterUrl: posterImage ?? undefined,
     lineup: row.lineupEntries.map((entry) => entry.name),
     doorsTime: formatTime(row.doorsAt, timeZone),
     showTime: formatTime(row.showAt, timeZone),
     price: row.priceLabel ?? undefined,
-    facebookEventUrl: row.facebookEventUrl ?? undefined,
+    facebookEventUrl: sanitizeLink(row.facebookEventUrl),
     gallery: galleryImages,
     description: row.description ?? undefined,
   };

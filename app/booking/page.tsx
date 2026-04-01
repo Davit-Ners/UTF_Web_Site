@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { buildBookingPayload, validateBookingPayload } from "@/lib/booking";
 import styles from "./booking.module.css";
 import BookingForm from "../components/bookingPage/bookingForm";
 import BookingFAQ from "../components/bookingPage/bookingFAQ";
@@ -20,37 +21,33 @@ export default function BookingPage() {
 
         const form = e.currentTarget;
         const data = new FormData(form);
+        const payload = buildBookingPayload(data);
+        const validation = validateBookingPayload(payload);
 
-        // Honeypot
-        if ((data.get("website") as string)?.length) {
+        if (!validation.ok) {
             setLoading(false);
-            setOk(true);
-            form.reset();
-            return;
-        }
 
-        // Basic required validation
-        const required = ["name", "email", "message", "date"] as const;
-        for (const key of required) {
-            const v = String(data.get(key) || "").trim();
-            if (!v) {
-                setError("Please fill all required fields.");
-                setLoading(false);
+            if (validation.spam) {
+                setOk(true);
+                form.reset();
                 return;
             }
+
+            setError(validation.error ?? "Please check the form and try again.");
+            return;
         }
 
         try {
             const res = await fetch("/api/send", {
                 method: "POST",
-                body: JSON.stringify(Object.fromEntries(data as any)),
+                body: JSON.stringify(validation.data),
                 headers: { "Content-Type": "application/json" },
             });
 
             if (!res.ok) throw new Error("Request failed");
             setOk(true);
             (e.target as HTMLFormElement).reset();
-        } catch (err: any) {
+        } catch {
             setOk(false);
             setError("Something went wrong. Please try again or email us directly.");
         } finally {

@@ -76,14 +76,12 @@ export const concertSeedData: ConcertSeedRecord[] = [
     date: "2026-02-20",
     city: "Diest",
     venueName: "Hell Diest",
-    ticketUrl: "https://tickets.example.com/utf-bxl",
   },
   {
     slug: "utf-poissonerie",
     date: "2026-02-28",
     city: "Brussels",
     venueName: "La Poissonerie",
-    ticketUrl: "https://tickets.example.com/utf-bxl",
     title: "Survival Fest",
   },
   {
@@ -91,7 +89,6 @@ export const concertSeedData: ConcertSeedRecord[] = [
     date: "2026-03-20",
     city: "Louvain-la-Neuve",
     venueName: "Mj Chez Zelle",
-    ticketUrl: "https://tickets.example.com/utf-bxl",
     title: "Eristic Fest",
   },
   {
@@ -99,6 +96,5 @@ export const concertSeedData: ConcertSeedRecord[] = [
     date: "2026-04-01",
     city: "Fontaine-l'Eveque",
     venueName: "MCP Apache",
-    ticketUrl: "https://tickets.example.com/utf-bxl",
   },
 ];
