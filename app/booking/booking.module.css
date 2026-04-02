@@ -57,6 +57,11 @@
 .group select:focus,
 .group textarea:focus{ border-color: var(--color-accent) }
 
+.turnstileBlock{ margin-top: 14px; display:flex; flex-direction:column; gap:8px }
+.turnstileLabel{ color: var(--color-text-primary); font-weight:600; margin:0 }
+.turnstileWidget{ width:100%; min-height:65px }
+.turnstileHint{ margin:0; font-size:.92rem }
+
 .error{ color: var(--color-accent); font-weight:600; margin-top:6px }
 .success{ color: #16a34a; font-weight:700; margin-top:6px }
 

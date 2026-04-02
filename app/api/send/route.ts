@@ -1,12 +1,14 @@
-import { EmailTemplate } from "@/app/components/emailTemplate/emailTemplate";
 import { BookingConfirmationTemplate } from "@/app/components/emailTemplate/bookingConfirmationTemplate";
-import prisma from "@/lib/prisma";
+import { EmailTemplate } from "@/app/components/emailTemplate/emailTemplate";
 import {
   bookingDateToDateTime,
   parseBookingPayload,
   type ValidBookingRequestPayload,
   validateBookingPayload,
 } from "@/lib/booking";
+import prisma from "@/lib/prisma";
+import { validateTurnstileToken } from "@/lib/turnstile";
+import { BOOKING_TURNSTILE_ACTION } from "@/lib/turnstile.shared";
 import { Resend } from "resend";
 
 export type EmailContent = ValidBookingRequestPayload;
@@ -16,9 +18,20 @@ const resend = process.env.RESEND_API_KEY
   : null;
 
 const bookingFromEmail =
-  process.env.RESEND_FROM_EMAIL ?? "Until They Fall Booking <contact@untiltheyfall.com>";
+  process.env.RESEND_FROM_EMAIL ??
+  "Until They Fall Booking <contact@untiltheyfall.com>";
 const bookingToEmail =
   process.env.BOOKING_TO_EMAIL ?? "contact@untiltheyfall.com";
+
+function readTurnstileToken(input: unknown) {
+  if (typeof input !== "object" || input === null) {
+    return "";
+  }
+
+  const token = (input as Record<string, unknown>).turnstileToken;
+
+  return typeof token === "string" ? token.trim() : "";
+}
 
 function logEmailError(label: string, error: unknown) {
   console.error(`${label} EMAIL ERROR:`, error);
@@ -30,25 +43,26 @@ async function sendBookingEmails(payload: ValidBookingRequestPayload) {
     return { emailed: false, confirmationEmailed: false };
   }
 
-  const [bookingEmailResult, confirmationEmailResult] = await Promise.allSettled([
-    resend.emails.send({
-      from: bookingFromEmail,
-      to: [bookingToEmail],
-      replyTo: payload.email,
-      subject: `New booking request from ${payload.name}`,
-      react: EmailTemplate(payload),
-    }),
-    resend.emails.send({
-      from: bookingFromEmail,
-      to: [payload.email],
-      replyTo: bookingToEmail,
-      subject: "We received your booking request - Until They Fall",
-      react: BookingConfirmationTemplate({
-        bookingEmail: bookingToEmail,
-        request: payload,
+  const [bookingEmailResult, confirmationEmailResult] =
+    await Promise.allSettled([
+      resend.emails.send({
+        from: bookingFromEmail,
+        to: [bookingToEmail],
+        replyTo: payload.email,
+        subject: `New booking request from ${payload.name}`,
+        react: EmailTemplate(payload),
       }),
-    }),
-  ]);
+      resend.emails.send({
+        from: bookingFromEmail,
+        to: [payload.email],
+        replyTo: bookingToEmail,
+        subject: "We received your booking request - Until They Fall",
+        react: BookingConfirmationTemplate({
+          bookingEmail: bookingToEmail,
+          request: payload,
+        }),
+      }),
+    ]);
 
   let emailed = false;
   let confirmationEmailed = false;
@@ -93,7 +107,9 @@ function buildBookingRecord(payload: ValidBookingRequestPayload) {
 
 export async function POST(req: Request) {
   try {
-    const payload = parseBookingPayload(await req.json());
+    const body = await req.json();
+    const payload = parseBookingPayload(body);
+    const turnstileToken = readTurnstileToken(body);
     const validation = validateBookingPayload(payload);
 
     if (!validation.ok) {
@@ -103,6 +119,19 @@ export async function POST(req: Request) {
 
       return Response.json(
         { error: validation.error ?? "Invalid request" },
+        { status: 400 }
+      );
+    }
+
+    const turnstileValidation = await validateTurnstileToken({
+      token: turnstileToken,
+      request: req,
+      expectedAction: BOOKING_TURNSTILE_ACTION,
+    });
+
+    if (!turnstileValidation.ok) {
+      return Response.json(
+        { error: turnstileValidation.error },
         { status: 400 }
       );
     }

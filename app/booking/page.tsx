@@ -8,63 +8,109 @@ import BookingFAQ from "../components/bookingPage/bookingFAQ";
 import BookingHero from "../components/bookingPage/bookingHero";
 import WhyBookUs from "../components/bookingPage/whyBookUs";
 
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+
 export default function BookingPage() {
-    const [loading, setLoading] = useState(false);
-    const [ok, setOk] = useState<null | boolean>(null);
-    const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [ok, setOk] = useState<null | boolean>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileResetCounter, setTurnstileResetCounter] = useState(0);
 
-    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        setLoading(true);
-        setOk(null);
-        setError(null);
+  const turnstileEnabled = Boolean(turnstileSiteKey);
 
-        const form = e.currentTarget;
-        const data = new FormData(form);
-        const payload = buildBookingPayload(data);
-        const validation = validateBookingPayload(payload);
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setOk(null);
+    setError(null);
 
-        if (!validation.ok) {
-            setLoading(false);
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const payload = buildBookingPayload(data);
+    const validation = validateBookingPayload(payload);
 
-            if (validation.spam) {
-                setOk(true);
-                form.reset();
-                return;
-            }
+    if (!validation.ok) {
+      setLoading(false);
 
-            setError(validation.error ?? "Please check the form and try again.");
-            return;
-        }
+      if (validation.spam) {
+        setOk(true);
+        setTurnstileToken("");
+        setTurnstileResetCounter((current) => current + 1);
+        form.reset();
+        return;
+      }
 
-        try {
-            const res = await fetch("/api/send", {
-                method: "POST",
-                body: JSON.stringify(validation.data),
-                headers: { "Content-Type": "application/json" },
-            });
+      setError(validation.error ?? "Please check the form and try again.");
+      return;
+    }
 
-            if (!res.ok) throw new Error("Request failed");
-            setOk(true);
-            (e.target as HTMLFormElement).reset();
-        } catch {
-            setOk(false);
-            setError("Something went wrong. Please try again or email us directly.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    if (turnstileEnabled && !turnstileToken) {
+      setLoading(false);
+      setError("Please complete the verification challenge.");
+      return;
+    }
 
-    return (
-        <main className={styles.page}>
-            <BookingHero />
+    try {
+      const res = await fetch("/api/send", {
+        method: "POST",
+        body: JSON.stringify({
+          ...payload,
+          turnstileToken,
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
 
-            <WhyBookUs />
+      const result = await res.json().catch(() => null);
 
-            <BookingForm handleSubmit={handleSubmit} error={error} loading={loading} ok={ok}/>
-            
-            <BookingFAQ />
+      if (!res.ok) {
+        throw new Error(
+          typeof result?.error === "string"
+            ? result.error
+            : "Something went wrong. Please try again or email us directly."
+        );
+      }
 
-        </main>
-    );
-};
+      setOk(true);
+      setTurnstileToken("");
+      setTurnstileResetCounter((current) => current + 1);
+      form.reset();
+    } catch (error) {
+      setOk(false);
+      setTurnstileToken("");
+
+      if (turnstileEnabled) {
+        setTurnstileResetCounter((current) => current + 1);
+      }
+
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again or email us directly."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <main className={styles.page}>
+      <BookingHero />
+
+      <WhyBookUs />
+
+      <BookingForm
+        handleSubmit={handleSubmit}
+        error={error}
+        loading={loading}
+        ok={ok}
+        onTurnstileTokenChange={setTurnstileToken}
+        submitDisabled={loading || (turnstileEnabled && !turnstileToken)}
+        turnstileResetCounter={turnstileResetCounter}
+        turnstileSiteKey={turnstileSiteKey}
+      />
+
+      <BookingFAQ />
+    </main>
+  );
+}
