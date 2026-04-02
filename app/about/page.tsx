@@ -16,7 +16,7 @@ const members: Member[] = [
     role: "Lead Guitar",
     image: "/gallery/dav1.jpg",
     blurb:
-      "Modern riffs, melodic lead work and part of the visual direction behind the project.",
+      "Modern riffs, melodic and technical lead work and crazy guitar solos.",
     signature: "Leads, hooks and atmosphere",
   },
   {
@@ -25,6 +25,7 @@ const members: Member[] = [
     blurb:
       "Precision, double-kick control and the kind of drumming that keeps the whole set sharp live.",
     signature: "Power and control",
+    image: "/band/sabari-about.jpg"
   },
   {
     name: "Valentin Coutant",
@@ -47,6 +48,7 @@ const members: Member[] = [
     blurb:
       "Front-facing energy, screams, hooks and the voice that gives the songs their edge on stage.",
     signature: "Frontline intensity",
+    image: "/band/krys-about.jpg"
   },
 ];
 
@@ -106,10 +108,10 @@ export default function AboutPage() {
             <div className={styles.heroText}>
               <span className={styles.eyebrow}>About</span>
               <h1 className={styles.title}>
-                Modern metal from <span>Brussels</span>
+                Melodic death metal from <span>Brussels</span>
               </h1>
               <p className={styles.subtitle}>
-                Until They Fall is a modern metal band blending heavy riffs,
+                Until They Fall is a melodic death metal band blending heavy riffs,
                 melodic leads and catchy hooks. Built for the stage, the project
                 delivers high-energy shows with a tight, cinematic sound.
               </p>
@@ -118,8 +120,8 @@ export default function AboutPage() {
             <div className={styles.heroMedia}>
               <div className={styles.heroImageWrap}>
                 <Image
-                  src="/utfnez.png"
-                  alt="Until They Fall on stage"
+                  src="/gallery/band-test.jpg"
+                  alt="Until They Fall"
                   fill
                   sizes="(max-width: 768px) 100vw, 45vw"
                 />
@@ -186,17 +188,17 @@ export default function AboutPage() {
               <span className={styles.sectionEyebrow}>Line-up</span>
               <h2 className={styles.sectionTitle}>The current formation</h2>
             </div>
-            <p className={styles.sectionText}>
+            {/* <p className={styles.sectionText}>
               Five players, one direction: modern heaviness, melodic lift and a
               live set designed to feel tight, direct and memorable.
-            </p>
+            </p> */}
           </div>
 
           <div className={styles.lineupShell}>
             <article className={styles.lineupFeature}>
               <div className={styles.lineupFeatureMedia}>
                 <Image
-                  src="/bandphoto.jpg"
+                  src="/gallery/utf-band-good.jpg"
                   alt="Until They Fall band photo"
                   fill
                   sizes="(max-width: 960px) 100vw, 36vw"
@@ -235,9 +237,9 @@ export default function AboutPage() {
                         <span>{getInitials(member.name)}</span>
                       </div>
                     )}
-                    <span className={styles.memberIndex}>
+                    {/* <span className={styles.memberIndex}>
                       {String(index + 1).padStart(2, "0")}
-                    </span>
+                    </span> */}
                   </div>
 
                   <div className={styles.memberBody}>

@@ -6,7 +6,7 @@ export default function ConcertPhotosGalleryPage() {
     <main>
       <GalleryFull
         title="Concert photos"
-        subtitle="Live shots from Until They Fall shows, clubs, festivals and release nights."
+        subtitle=""
         photos={allConcertPhotos}
       />
     </main>

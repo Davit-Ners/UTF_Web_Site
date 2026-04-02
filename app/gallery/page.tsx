@@ -75,10 +75,10 @@ export default function GalleryPage() {
                 <span className={styles.sectionEyebrow}>Selection</span>
                 <h2 className={styles.canvasTitle}>A simple wall of real moments.</h2>
               </div>
-              <p className={styles.canvasText}>
+              {/* <p className={styles.canvasText}>
                 No fake categories, no filler. Just the shots that already carry the
                 right atmosphere.
-              </p>
+              </p> */}
             </div>
 
             <div className={styles.photoWall}>
