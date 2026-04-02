@@ -9,7 +9,7 @@ export default function WhyBookUs() {
             <h2 className={styles.title}>A tight, explosive live show</h2>
             <p className={styles.subtitle}>
                 Until They Fall delivers a modern metal experience built for festivals,
-                clubs and showcases — fast setup, pro attitude and maximum energy.
+                clubs and showcases. Fast setup, pro attitude and maximum energy.
             </p>
             </header>
 
@@ -18,7 +18,7 @@ export default function WhyBookUs() {
                 <h3>⚡ Fast & clean setup</h3>
                 <p>
                 Full in-ear / tracks rig, wireless guitars, minimal stage footprint.
-                Changeover under 5 minutes.
+                Changeover under 15 minutes.
                 </p>
             </div>
 
@@ -33,7 +33,7 @@ export default function WhyBookUs() {
             <div className={`${styles.feature} card`}>
                 <h3>🤝 Professional & reliable</h3>
                 <p>
-                Brussels-based, available EU/UK. Quick communication {"(< 24h)"}.
+                Brussels-based, available EU. Quick communication {"(< 24h)"}.
                 Flexible and easy to work with.
                 </p>
             </div>

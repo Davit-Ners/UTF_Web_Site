@@ -63,6 +63,7 @@ export async function POST(req: Request) {
       const { error } = await resend.emails.send({
         from: bookingFromEmail,
         to: [bookingToEmail],
+        replyTo: validation.data.email,
         subject: `New booking request from ${validation.data.name}`,
         react: EmailTemplate(validation.data),
       });

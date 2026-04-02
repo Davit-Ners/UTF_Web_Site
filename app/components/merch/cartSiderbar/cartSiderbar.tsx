@@ -17,7 +17,7 @@ export default function CartSidebar({
     const hasItems = items.length > 0;
 
     const shippingEstimate =
-        subtotal === 0 ? 0 : subtotal >= 80 ? 0 : 7; // exemple
+        subtotal === 0 ? 0 : subtotal >= 80 ? 0 : 7;
 
     const total = subtotal + shippingEstimate;
 
@@ -31,7 +31,7 @@ export default function CartSidebar({
         <div className={styles.body}>
             {!hasItems && (
             <p className={styles.empty}>
-                Your cart is empty. Add a tee, hoodie or CD to support the band.
+                Your cart is empty. Add a tee, patch or CD to support the band.
             </p>
             )}
 
@@ -93,12 +93,11 @@ export default function CartSidebar({
             </div>
 
             <button type="button" className="button" disabled={!hasItems}>
-            Checkout (soon)
+            Checkout
             </button>
 
             <p className={styles.notice}>
-            Secure checkout & worldwide shipping will be added once the store
-            goes live. For now this is a preview of how the merch page works.
+            Secure checkout & worldwide shipping
             </p>
         </footer>
         </div>

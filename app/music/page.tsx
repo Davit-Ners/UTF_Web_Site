@@ -3,7 +3,7 @@ import Link from "next/link";
 import styles from "./music.module.css";
 import { discography, latestRelease } from "@/app/lib/music";
 
-const fanRefs = ["Trivium", "As I Lay Dying", "Architects", "Parkway Drive"];
+const fanRefs = ["Trivium", "As I Lay Dying", "Arch Enemy"];
 
 const bandCredits = [
   { label: "Vocals", value: "Krys Bader" },
@@ -131,7 +131,7 @@ export default function MusicPage() {
                   )}
                   <div className={styles.visualNoteRow}>
                     <span>Streaming</span>
-                    <strong>{streamLinks.length} platforms</strong>
+                    <strong>All platforms</strong>
                   </div>
                   <div className={styles.visualNoteRow}>
                     <span>Release year</span>

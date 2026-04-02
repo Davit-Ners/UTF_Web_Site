@@ -28,15 +28,14 @@ export default function BookingHero() {
                 <span className={styles.eyebrow}>Booking</span>
                 <h1 className={styles.title}>Bring <span>Until They Fall</span> to your stage</h1>
                 <p className={styles.subtitle}>
-                Modern metal // Brussels. High‑energy live set with tight production.
-                For festivals, clubs and showcases.
+                Melodic death metal // Brussels. High‑energy live set with tight production.
                 </p>
             </header>
 
             <div className={styles.infoGrid}>
                 <Stat label="Base" value="Brussels, BE" />
                 <Stat label="Set length" value="30–60 min (headline/guest)" />
-                <Stat label="Availability" value="EU/UK – all year" />
+                <Stat label="Availability" value="EU - All year" />
                 <Stat label="Response time" value="< 24h (weekdays)" />
             </div>
 
