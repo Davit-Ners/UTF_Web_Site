@@ -45,7 +45,7 @@ export default function Header() {
             onClick={closeMenu}
           >
             <Image
-              src="/logo.jpg"
+              src="/gerard-logo.png"
               alt="Until They Fall"
               width={60}
               height={60}
