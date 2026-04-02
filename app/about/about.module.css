@@ -251,7 +251,7 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 18% 18%, rgba(217, 43, 43, 0.26), transparent 34%),
+    radial-gradient(circle at 18% 18%, color-mix(in oklab, var(--color-accent) 26%, transparent), transparent 34%),
     linear-gradient(180deg, rgba(5, 5, 8, 0.06), rgba(5, 5, 8, 0.8) 62%, rgba(5, 5, 8, 0.95));
 }
 
@@ -354,7 +354,7 @@
   display: grid;
   place-items: center;
   background:
-    radial-gradient(circle at 25% 25%, rgba(217, 43, 43, 0.26), transparent 28%),
+    radial-gradient(circle at 25% 25%, color-mix(in oklab, var(--color-accent) 26%, transparent), transparent 28%),
     linear-gradient(135deg, color-mix(in oklab, var(--color-surface-alt) 86%, black), color-mix(in oklab, var(--color-surface) 84%, black));
 }
 
@@ -422,7 +422,7 @@
   padding: 20px;
   border-radius: 30px;
   background:
-    radial-gradient(circle at top left, rgba(217, 43, 43, 0.12), transparent 34%),
+    radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent 34%),
     linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 95%, black), color-mix(in oklab, var(--color-surface-alt) 88%, black));
   border: 1px solid color-mix(in oklab, var(--color-border) 80%, var(--color-accent) 20%);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);

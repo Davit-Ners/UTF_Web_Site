@@ -15,7 +15,7 @@
   padding: 22px;
   border-radius: 34px;
   background:
-    radial-gradient(circle at top left, rgba(217, 43, 43, 0.16), transparent 32%),
+    radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent) 16%, transparent), transparent 32%),
     linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 95%, black), color-mix(in oklab, var(--color-surface-alt) 88%, black));
   border: 1px solid color-mix(in oklab, var(--color-border) 78%, var(--color-accent) 22%);
   box-shadow: 0 28px 70px rgba(0, 0, 0, 0.2);
@@ -143,7 +143,7 @@
   inset: 0;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.64)),
-    radial-gradient(circle at 20% 18%, rgba(217, 43, 43, 0.18), transparent 28%);
+    radial-gradient(circle at 20% 18%, color-mix(in oklab, var(--color-accent) 18%, transparent), transparent 28%);
 }
 
 .heroShotMeta,
@@ -235,7 +235,7 @@
   inset: 0;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.72)),
-    radial-gradient(circle at 18% 18%, rgba(217, 43, 43, 0.18), transparent 28%);
+    radial-gradient(circle at 18% 18%, color-mix(in oklab, var(--color-accent) 18%, transparent), transparent 28%);
 }
 
 .canvasFoot {

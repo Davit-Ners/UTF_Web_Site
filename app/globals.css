@@ -9,11 +9,17 @@
   --color-text-secondary: #3c3d44;
   --color-text-muted: #6b6b75;
 
-  --color-accent: #c51f1f;
-  --color-accent-hover: #a31818;
-  --color-accent-soft: #ffe2e2;
+  --color-accent: #8f30ff;
+  --color-accent-hover: #7220df;
+  --color-accent-soft: #f1e6ff;
+  --color-accent-soft-strong: #e1cbff;
+  --color-accent-deep: #d6beff;
 
   --color-border: #d6d6db;
+  --color-glow: rgba(143, 48, 255, 0.18);
+  --color-glow-strong: rgba(143, 48, 255, 0.36);
+  --color-accent-gradient-start: color-mix(in oklab, var(--color-accent) 82%, white);
+  --color-accent-gradient-end: color-mix(in oklab, var(--color-accent) 78%, black);
 
   --radius: 12px;
   --shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
@@ -29,14 +35,17 @@
   --color-text-secondary: #b3b3be;
   --color-text-muted: #757580;
 
-  --color-accent: #d92b2b;
-  --color-accent-hover: #ff4545;
-  --color-accent-soft: #341111;
+  --color-accent: #8f30ff;
+  --color-accent-hover: #bf98ff;
+  --color-accent-soft: #221036;
+  --color-accent-soft-strong: #31194d;
+  --color-accent-deep: #171126;
 
   --color-border: #2b2b33;
-
-  --color-accent-alt: #7b2cff;
-  --color-glow: rgba(217, 43, 43, 0.4);
+  --color-glow: rgba(143, 48, 255, 0.42);
+  --color-glow-strong: rgba(143, 48, 255, 0.68);
+  --color-accent-gradient-start: color-mix(in oklab, var(--color-accent) 82%, white);
+  --color-accent-gradient-end: color-mix(in oklab, var(--color-accent) 72%, black);
 
   --radius: 12px;
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);

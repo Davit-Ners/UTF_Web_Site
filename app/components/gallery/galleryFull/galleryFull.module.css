@@ -6,7 +6,7 @@
   padding: 20px;
   border-radius: 32px;
   background:
-    radial-gradient(circle at top left, rgba(217, 43, 43, 0.12), transparent 28%),
+    radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent 28%),
     linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 95%, black), color-mix(in oklab, var(--color-surface-alt) 88%, black));
   border: 1px solid color-mix(in oklab, var(--color-border) 80%, var(--color-accent) 20%);
   box-shadow: 0 22px 60px rgba(0, 0, 0, 0.16);
@@ -97,7 +97,7 @@
   inset: 0;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.72)),
-    radial-gradient(circle at 18% 18%, rgba(217, 43, 43, 0.18), transparent 28%);
+    radial-gradient(circle at 18% 18%, color-mix(in oklab, var(--color-accent) 18%, transparent), transparent 28%);
 }
 
 .captionBlock {

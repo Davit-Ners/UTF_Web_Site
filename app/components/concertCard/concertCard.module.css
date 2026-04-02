@@ -3,7 +3,7 @@
   padding: 14px; border-radius: calc(var(--radius) + 2px);
   /* cadre gradient + panel */
   background:
-    linear-gradient(120deg, rgba(217,43,43,.9), rgba(123,44,255,.6));
+    linear-gradient(120deg, var(--color-accent-gradient-start), var(--color-accent-gradient-end));
   padding: 2px;
   box-shadow: 0 14px 40px rgba(0,0,0,.35), 0 0 14px var(--color-glow);
 }
@@ -16,7 +16,7 @@
 .card{
   /* panel */
   --_panel: linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-alt) 100%);
-  background-image: var(--_panel), linear-gradient(120deg, rgba(217,43,43,.9), rgba(123,44,255,.6));
+  background-image: var(--_panel), linear-gradient(120deg, var(--color-accent-gradient-start), var(--color-accent-gradient-end));
   background-origin: padding-box, border-box;
   background-clip: padding-box, border-box;
 }

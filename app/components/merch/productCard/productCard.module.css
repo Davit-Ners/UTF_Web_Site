@@ -43,12 +43,12 @@
 }
 
 .badge_Limited {
-  background: #2b1a1a;
+  background: var(--color-accent-soft-strong);
   color: var(--color-accent-hover);
 }
 
 .badge_Pre-order {
-  background: #151528;
+  background: var(--color-accent-deep);
 }
 
 .badgeOut {

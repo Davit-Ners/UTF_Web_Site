@@ -1,5 +1,7 @@
 import { type ValidBookingRequestPayload } from "@/lib/booking";
 
+const EMAIL_ACCENT = "#8F30FF";
+
 type BookingConfirmationTemplateProps = {
   bookingEmail: string;
   request: ValidBookingRequestPayload;
@@ -35,7 +37,7 @@ export function BookingConfirmationTemplate({
             fontSize: "20px",
             fontWeight: "700",
             marginBottom: "12px",
-            color: "#c51f1f",
+            color: EMAIL_ACCENT,
             textTransform: "uppercase",
             letterSpacing: "1px",
           }}
@@ -107,7 +109,7 @@ export function BookingConfirmationTemplate({
           }}
         >
           If you need to add details, just reply to this email or contact us at{" "}
-          <a href={`mailto:${bookingEmail}`} style={{ color: "#c51f1f" }}>
+          <a href={`mailto:${bookingEmail}`} style={{ color: EMAIL_ACCENT }}>
             {bookingEmail}
           </a>
           .

@@ -1,5 +1,7 @@
 import { type ValidBookingRequestPayload } from "@/lib/booking";
 
+const EMAIL_ACCENT = "#8F30FF";
+
 export function EmailTemplate(props: ValidBookingRequestPayload) {
   const { name, email, message, date, type, budget, capacity, city, org } = props;
 
@@ -27,7 +29,7 @@ export function EmailTemplate(props: ValidBookingRequestPayload) {
             fontSize: "20px",
             fontWeight: "700",
             marginBottom: "12px",
-            color: "#c51f1f",
+            color: EMAIL_ACCENT,
             textTransform: "uppercase",
             letterSpacing: "1px",
           }}
@@ -96,7 +98,7 @@ export function EmailTemplate(props: ValidBookingRequestPayload) {
           style={{
             display: "inline-block",
             padding: "12px 20px",
-            backgroundColor: "#c51f1f",
+            backgroundColor: EMAIL_ACCENT,
             color: "#ffffff",
             textDecoration: "none",
             borderRadius: "8px",
