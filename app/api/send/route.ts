@@ -1,4 +1,5 @@
 import { EmailTemplate } from "@/app/components/emailTemplate/emailTemplate";
+import { BookingConfirmationTemplate } from "@/app/components/emailTemplate/bookingConfirmationTemplate";
 import prisma from "@/lib/prisma";
 import {
   bookingDateToDateTime,
@@ -15,9 +16,65 @@ const resend = process.env.RESEND_API_KEY
   : null;
 
 const bookingFromEmail =
-  process.env.RESEND_FROM_EMAIL ?? "Until They Fall Booking <onboarding@resend.dev>";
+  process.env.RESEND_FROM_EMAIL ?? "Until They Fall Booking <contact@untiltheyfall.com>";
 const bookingToEmail =
-  process.env.BOOKING_TO_EMAIL ?? "untiltheyfallband@gmail.com";
+  process.env.BOOKING_TO_EMAIL ?? "contact@untiltheyfall.com";
+
+function logEmailError(label: string, error: unknown) {
+  console.error(`${label} EMAIL ERROR:`, error);
+}
+
+async function sendBookingEmails(payload: ValidBookingRequestPayload) {
+  if (!resend) {
+    console.warn("RESEND_API_KEY is missing. Booking request stored without email.");
+    return { emailed: false, confirmationEmailed: false };
+  }
+
+  const [bookingEmailResult, confirmationEmailResult] = await Promise.allSettled([
+    resend.emails.send({
+      from: bookingFromEmail,
+      to: [bookingToEmail],
+      replyTo: payload.email,
+      subject: `New booking request from ${payload.name}`,
+      react: EmailTemplate(payload),
+    }),
+    resend.emails.send({
+      from: bookingFromEmail,
+      to: [payload.email],
+      replyTo: bookingToEmail,
+      subject: "We received your booking request - Until They Fall",
+      react: BookingConfirmationTemplate({
+        bookingEmail: bookingToEmail,
+        request: payload,
+      }),
+    }),
+  ]);
+
+  let emailed = false;
+  let confirmationEmailed = false;
+
+  if (bookingEmailResult.status === "fulfilled") {
+    if (bookingEmailResult.value.error) {
+      logEmailError("BOOKING", bookingEmailResult.value.error);
+    } else {
+      emailed = true;
+    }
+  } else {
+    logEmailError("BOOKING", bookingEmailResult.reason);
+  }
+
+  if (confirmationEmailResult.status === "fulfilled") {
+    if (confirmationEmailResult.value.error) {
+      logEmailError("CONFIRMATION", confirmationEmailResult.value.error);
+    } else {
+      confirmationEmailed = true;
+    }
+  } else {
+    logEmailError("CONFIRMATION", confirmationEmailResult.reason);
+  }
+
+  return { emailed, confirmationEmailed };
+}
 
 function buildBookingRecord(payload: ValidBookingRequestPayload) {
   return {
@@ -57,30 +114,15 @@ export async function POST(req: Request) {
       },
     });
 
-    let emailed = false;
-
-    if (resend) {
-      const { error } = await resend.emails.send({
-        from: bookingFromEmail,
-        to: [bookingToEmail],
-        replyTo: validation.data.email,
-        subject: `New booking request from ${validation.data.name}`,
-        react: EmailTemplate(validation.data),
-      });
-
-      if (error) {
-        console.error("EMAIL ERROR:", error);
-      } else {
-        emailed = true;
-      }
-    } else {
-      console.warn("RESEND_API_KEY is missing. Booking request stored without email.");
-    }
+    const { emailed, confirmationEmailed } = await sendBookingEmails(
+      validation.data
+    );
 
     return Response.json({
       success: true,
       stored: true,
       emailed,
+      confirmationEmailed,
       bookingRequestId: savedRequest.id,
     });
   } catch (error) {

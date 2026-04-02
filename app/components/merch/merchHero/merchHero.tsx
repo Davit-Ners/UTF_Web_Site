@@ -19,7 +19,7 @@ export default function MerchHero() {
                 </p>
                 <p className={styles.note}>
                 Questions about sizes or shipping?{" "}
-                <span>untiltheyfallband@gmail.com</span>
+                <span>contact@untiltheyfall.com</span>
                 </p>
             </div>
             </div>

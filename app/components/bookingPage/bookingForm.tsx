@@ -80,7 +80,7 @@ export default function BookingForm({ handleSubmit, error, ok, loading }:
                     {loading ? "Sending…" : "Send request"}
                     </button>
                     <p className={`${styles.altContact} text-muted`}>
-                    Or email us: <a href="mailto:untiltheyfallband@gmail.com">untiltheyfallband@gmail.com</a>
+                    Or email us: <a href="mailto:contact@untiltheyfall.com">contact@untiltheyfall.com</a>
                     </p>
                 </div>
                 </form>
