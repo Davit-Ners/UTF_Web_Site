@@ -142,6 +142,7 @@ export default function AboutPage() {
             <div className={`${styles.storyCard} card`}>
               <span className={styles.sectionEyebrow}>Story</span>
               <h2 className={styles.sectionTitle}>The story</h2>
+              <br />
               <p>
                 Formed in Brussels, Until They Fall grew out of a shared obsession
                 with modern metal: massive guitars, big choruses and dark
