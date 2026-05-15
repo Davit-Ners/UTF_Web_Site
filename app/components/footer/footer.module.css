@@ -1,20 +1,17 @@
 .footer {
-  margin-top: 40px;
-  padding: 0 0 28px;
+  margin-top: 56px;
+  background: color-mix(in oklab, var(--color-bg) 78%, transparent);
+  border-top: 1px solid var(--color-border);
+  backdrop-filter: blur(8px);
 }
 
 .shell {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
-  gap: 18px;
+  gap: 22px;
   align-items: center;
-  padding: 18px 20px;
-  border-top: 1px solid color-mix(in oklab, var(--color-border) 72%, var(--color-accent) 28%);
-  border-radius: 24px 24px 18px 18px;
-  background:
-    radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent) 10%, transparent), transparent 32%),
-    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 94%, black), color-mix(in oklab, var(--color-surface-alt) 88%, black));
-  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.12);
+  min-height: 76px;
+  padding: 16px 0;
 }
 
 .brandBlock {
@@ -24,9 +21,9 @@
 .brand {
   display: inline-block;
   font-family: var(--font-title, inherit);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--color-text-primary);
 }
@@ -34,20 +31,26 @@
 .tagline {
   margin-top: 4px;
   color: var(--color-text-muted);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
 }
 
 .nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px 14px;
+  gap: 8px 16px;
 }
 
 .link {
+  position: relative;
   color: var(--color-text-secondary);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 600;
+  transition: color 0.18s ease;
+}
+
+.link:hover {
+  color: var(--color-text-primary);
 }
 
 .meta {
@@ -59,20 +62,29 @@
 
 .contact {
   color: var(--color-text-primary);
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   font-weight: 600;
+}
+
+.contact:hover {
+  color: var(--color-accent-hover);
 }
 
 .copy {
   color: var(--color-text-muted);
-  font-size: 0.8rem;
+  font-size: 0.76rem;
 }
 
 @media (max-width: 920px) {
+  .footer {
+    margin-top: 42px;
+  }
+
   .shell {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 12px;
     text-align: center;
+    padding: 22px 0;
   }
 
   .nav {

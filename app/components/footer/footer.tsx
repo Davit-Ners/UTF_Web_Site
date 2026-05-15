@@ -5,7 +5,9 @@ import styles from "./footer.module.css";
 const FOOTER_NAV = [
   { href: "/music", label: "Music" },
   { href: "/concerts", label: "Concerts" },
+  { href: "/merch", label: "Merch" },
   { href: "/gallery", label: "Gallery" },
+  { href: "/about", label: "About" },
   { href: "/booking", label: "Booking" },
 ];
 
@@ -29,7 +31,7 @@ export default function Footer() {
             <Link href="/" className={styles.brand}>
               Until They Fall
             </Link>
-            <p className={styles.tagline}>Modern metal from Brussels.</p>
+            <p className={styles.tagline}>Melodic death metal from Brussels.</p>
           </div>
 
           <nav className={styles.nav} aria-label="Footer">
@@ -55,7 +57,7 @@ export default function Footer() {
             <a href="mailto:contact@untiltheyfall.com" className={styles.contact}>
               contact@untiltheyfall.com
             </a>
-            <p className={styles.copy}>Copyright {year} Until They Fall</p>
+            <p className={styles.copy}>Copyright {year} Until They Fall. All rights reserved.</p>
           </div>
         </div>
       </div>
