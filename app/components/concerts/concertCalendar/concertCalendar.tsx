@@ -12,7 +12,7 @@ export default function ConcertCalendar({ shows }: Props) {
       <aside className={styles.wrap}>
         <div className={`${styles.card} card`}>
           <h3 className={styles.title}>Calendar</h3>
-          <p className={styles.empty}>No upcoming shows yet. New dates soon.</p>
+          <p className={styles.empty}>No upcoming shows announced. New dates soon.</p>
         </div>
       </aside>
     );
@@ -24,7 +24,7 @@ export default function ConcertCalendar({ shows }: Props) {
     <aside className={styles.wrap} id="upcoming">
       <div className={`${styles.card} card`}>
         <h3 className={styles.title}>Calendar</h3>
-        <p className={styles.subtitle}>All confirmed dates, grouped by month.</p>
+        <p className={styles.subtitle}>Confirmed dates, grouped by month.</p>
 
         <div className={styles.months}>
           {grouped.map((month) => (

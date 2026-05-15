@@ -11,9 +11,9 @@ export default function ConcertList({ shows }: Props) {
     return (
       <section className={styles.wrap}>
         <div className={`${styles.emptyCard} card`}>
-          <p className={styles.emptyTitle}>No upcoming shows yet.</p>
+          <p className={styles.emptyTitle}>No upcoming shows announced.</p>
           <p className={styles.emptyText}>
-            Follow us on socials and join the mailing list to hear it first.
+            Join the list or check back for the next date.
           </p>
         </div>
       </section>
@@ -41,7 +41,7 @@ export default function ConcertList({ shows }: Props) {
             <div className={styles.meta}>
               {show.ticketUrl ? (
                 <Link href={show.ticketUrl} className="button">
-                  Tickets
+                  Get Tickets
                 </Link>
               ) : (
                 <span className={styles.status}>Info soon</span>

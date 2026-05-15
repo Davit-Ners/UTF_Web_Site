@@ -52,7 +52,7 @@ export default function YearBlock({ year, shows }: YearBlockProps) {
                   rel="noreferrer"
                   className={styles.linkMuted}
                 >
-                  Original tickets page
+                  Original Event Page
                 </a>
               )}
               <Link href={`/concerts/${show.id}`} className={styles.detailsBtn}>

@@ -13,15 +13,15 @@ export default function ConcertsHero({ nextShow }: Props) {
         <div className={`${styles.card} card`}>
           <div className={styles.left}>
             <span className={styles.eyebrow}>Concerts</span>
-            <h1 className={styles.title}>Catch Until They Fall live</h1>
+            <h1 className={styles.title}>Live dates</h1>
             <p className={styles.subtitle}>
-              Modern metal from Brussels. Heavy riffs, big hooks and a show built
-              for festivals and clubs.
+              Melodic death metal from Brussels, built for clubs, support slots
+              and independent festivals.
             </p>
 
             <div className={styles.actions}>
               <Link href="/booking" className="button">
-                Book the band
+                Book The Band
               </Link>
             </div>
           </div>
@@ -29,23 +29,23 @@ export default function ConcertsHero({ nextShow }: Props) {
           <div className={styles.right}>
             {nextShow ? (
               <div className={styles.nextShow}>
-                <span className={styles.nextLabel}>Next show</span>
+                <span className={styles.nextLabel}>Next on stage</span>
                 <p className={styles.nextMain}>
                   {formatDate(nextShow.date)} - {nextShow.city}
                 </p>
                 <p className={styles.nextVenue}>{nextShow.venue}</p>
                 {nextShow.ticketUrl && (
                   <Link href={nextShow.ticketUrl} className={`${styles.ticketLink} button`}>
-                    Tickets
+                    Get Tickets
                   </Link>
                 )}
               </div>
             ) : (
               <div className={styles.nextShow}>
-                <span className={styles.nextLabel}>Next show</span>
+                <span className={styles.nextLabel}>Next on stage</span>
                 <p className={styles.nextMain}>New dates coming soon</p>
                 <p className={styles.nextVenue}>
-                  Follow us on socials to stay updated.
+                  Join the list or check back for the next announcement.
                 </p>
               </div>
             )}

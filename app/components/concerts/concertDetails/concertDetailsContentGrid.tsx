@@ -24,7 +24,7 @@ export default function ConcertDetailsContentGrid({
               <h2 className={styles.blockTitle}>About this show</h2>
               <p className={styles.blockText}>
                 {concert.description ??
-                  `Until They Fall live in ${concert.city} at ${concert.venue}. Expect a full set of modern metal, big riffs and heavy energy.`}
+                  `Until They Fall live in ${concert.city} at ${concert.venue}. Melodic death metal weight, aggressive riffs and songs built for the room.`}
               </p>
             </section>
 
@@ -38,7 +38,7 @@ export default function ConcertDetailsContentGrid({
                     rel="noreferrer"
                     className="button small"
                   >
-                    View event page
+                    View Event Page
                   </a>
                 )}
               </div>
@@ -53,7 +53,7 @@ export default function ConcertDetailsContentGrid({
                   ))}
                 </ul>
               ) : (
-                <p className={styles.blockText}>Full line-up details will be added soon.</p>
+                <p className={styles.blockText}>Line-up details will be added soon.</p>
               )}
             </section>
 
@@ -124,7 +124,7 @@ export default function ConcertDetailsContentGrid({
               </ul>
 
               <Link href="/concerts" className={`button ${styles.backButton}`}>
-                Back to all shows
+                Back To All Shows
               </Link>
             </section>
           </aside>

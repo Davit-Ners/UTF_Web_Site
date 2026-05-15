@@ -15,23 +15,22 @@ export default function PastConcerts({ shows }: Props) {
         <header className={styles.header}>
           <div>
             <span className={styles.eyebrow}>Past shows</span>
-            <h2 className={styles.title}>Where we&apos;ve played</h2>
+            <h2 className={styles.title}>Previous stages</h2>
             <p className={styles.subtitle}>
-              A snapshot of recent shows. The full archive keeps every stage
-              we&apos;ve hit.
+              A snapshot of past shows from the Belgian metal scene and beyond.
             </p>
           </div>
           {recent.length > 0 && (
             <div className={styles.ctaWrap}>
               <Link href="/concerts/past" className="button">
-                View all shows
+                View All Shows
               </Link>
             </div>
           )}
         </header>
 
         {recent.length === 0 ? (
-          <p className={styles.empty}>We&apos;ll update this once tours begin.</p>
+          <p className={styles.empty}>Past shows will be added here.</p>
         ) : (
           <ul className={styles.list}>
             {recent.map((show) => (

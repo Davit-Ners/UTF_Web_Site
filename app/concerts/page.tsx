@@ -21,8 +21,8 @@ export default async function ConcertsPage() {
             <span className={styles.eyebrow}>Live</span>
             <h2 className={styles.sectionTitle}>Upcoming shows</h2>
             <p className={styles.sectionSubtitle}>
-              All confirmed dates. More shows get announced regularly, so check
-              back before the next pit opens.
+              Confirmed shows and festival dates. More announcements drop as
+              they lock in.
             </p>
           </header>
 

@@ -12,18 +12,38 @@ type Props = {
 };
 
 type CategoryFilter = "all" | ProductCategory;
+const DEFAULT_MAX_QTY = 20;
+
+function getMaxQty(product: Product) {
+    if (typeof product.stock === "number") {
+        return Math.max(0, Math.min(product.stock, DEFAULT_MAX_QTY));
+    }
+
+    return DEFAULT_MAX_QTY;
+}
+
+function clampQty(product: Product, quantity: number) {
+    const maxQty = getMaxQty(product);
+    const safeQty = Number.isFinite(quantity) ? Math.floor(quantity) : 1;
+
+    return Math.min(Math.max(safeQty, 1), maxQty);
+}
 
 export default function MerchStoreClient({ products }: Props) {
     const [category, setCategory] = useState<CategoryFilter>("all");
     const [cart, setCart] = useState<CartItem[]>([]);
 
     function handleAddToCart(product: Product) {
+        const maxQty = getMaxQty(product);
+
+        if (maxQty <= 0) return;
+
         setCart((prev) => {
             const existing = prev.find((item) => item.product.id === product.id);
             if (existing) {
                 return prev.map((item) =>
                     item.product.id === product.id
-                        ? { ...item, quantity: item.quantity + 1 }
+                        ? { ...item, quantity: clampQty(product, item.quantity + 1) }
                         : item
                 );
             }
@@ -35,7 +55,9 @@ export default function MerchStoreClient({ products }: Props) {
         setCart((prev) =>
             prev
                 .map((item) =>
-                    item.product.id === productId ? { ...item, quantity } : item
+                    item.product.id === productId
+                        ? { ...item, quantity: clampQty(item.product, quantity) }
+                        : item
                 )
                 .filter((item) => item.quantity > 0)
         );

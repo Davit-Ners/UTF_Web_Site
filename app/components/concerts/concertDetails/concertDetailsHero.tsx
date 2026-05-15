@@ -44,7 +44,7 @@ export default function ConcertDetailsHero({ heading, concert, dateLong, d }: Pr
                 </a>
               )}
               <Link href="/booking" className={styles.secondaryBtn}>
-                Book us for your event
+                Book The Band
               </Link>
             </div>
           </div>

@@ -33,10 +33,10 @@ export default async function PastShowsPage() {
       <section className={styles.hero}>
         <div className="container">
           <p className={styles.eyebrow}>Archive</p>
-          <h1 className={styles.title}>Past shows</h1>
+          <h1 className={styles.title}>Live archive</h1>
           <p className={styles.subtitle}>
-            Every stage we&apos;ve hit so far, from clubs to festivals and the
-            rest in between.
+            Previous stages, club shows and festival slots from the Belgian
+            metal scene.
           </p>
         </div>
       </section>
@@ -44,7 +44,7 @@ export default async function PastShowsPage() {
       <section className={styles.section}>
         <div className="container">
           {groups.length === 0 ? (
-            <p className={styles.empty}>No past shows yet. First tour loading.</p>
+            <p className={styles.empty}>Past shows will be added here.</p>
           ) : (
             groups.map((group) => (
               <YearBlock key={group.year} year={group.year} shows={group.shows} />

@@ -46,8 +46,9 @@ export default function ConcertGallery({ images }: Props) {
                 type="button"
                 className={styles.close}
                 onClick={() => setActive(null)}
+                aria-label="Close"
                 >
-                ✕
+                x
                 </button>
                 <div className={styles.fullImgWrap}>
                 <Image
@@ -62,4 +63,4 @@ export default function ConcertGallery({ images }: Props) {
         )}
         </>
     );
-};
+}

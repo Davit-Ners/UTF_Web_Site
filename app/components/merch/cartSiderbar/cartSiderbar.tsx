@@ -8,6 +8,24 @@ type Props = {
     onRemove: (productId: string) => void;
 };
 
+const DEFAULT_MAX_QTY = 20;
+
+function getMaxQty(item: CartItem) {
+    if (typeof item.product.stock === "number") {
+        return Math.max(1, Math.min(item.product.stock, DEFAULT_MAX_QTY));
+    }
+
+    return DEFAULT_MAX_QTY;
+}
+
+function formatPrice(price: number) {
+    return new Intl.NumberFormat("fr-BE", {
+        style: "currency",
+        currency: "EUR",
+        minimumFractionDigits: 2,
+    }).format(price);
+}
+
 export default function CartSidebar({
     items,
     subtotal,
@@ -25,7 +43,9 @@ export default function CartSidebar({
         <div className={`card ${styles.card}`}>
         <header className={styles.header}>
             <h2 className={styles.title}>Cart</h2>
-            <span className={styles.count}>{items.length} items</span>
+            <span className={styles.count}>
+                {items.length} item{items.length === 1 ? "" : "s"}
+            </span>
         </header>
 
         <div className={styles.body}>
@@ -42,7 +62,7 @@ export default function CartSidebar({
                     <div className={styles.rowInfo}>
                     <span className={styles.rowName}>{item.product.name}</span>
                     <span className={styles.rowPrice}>
-                        €{item.product.price} · Qty
+                        {formatPrice(item.product.price)} - Qty
                     </span>
                     </div>
 
@@ -50,12 +70,13 @@ export default function CartSidebar({
                     <input
                         type="number"
                         min={1}
-                        max={99}
+                        max={getMaxQty(item)}
+                        inputMode="numeric"
                         value={item.quantity}
                         onChange={(e) =>
                         onUpdateQty(
                             item.product.id,
-                            Math.max(1, Number(e.target.value) || 1)
+                            Number(e.target.value)
                         )
                         }
                         className={styles.qtyInput}
@@ -77,19 +98,19 @@ export default function CartSidebar({
         <footer className={styles.footer}>
             <div className={styles.line}>
             <span>Subtotal</span>
-            <span>€{subtotal.toFixed(2)}</span>
+            <span>{formatPrice(subtotal)}</span>
             </div>
 
             <div className={styles.lineSub}>
-            <span>Shipping (estimate)</span>
+            <span>Shipping estimate</span>
             <span>
-                {shippingEstimate === 0 ? "Free" : `€${shippingEstimate.toFixed(2)}`}
+                {shippingEstimate === 0 ? "Free" : formatPrice(shippingEstimate)}
             </span>
             </div>
 
             <div className={styles.lineTotal}>
             <span>Total</span>
-            <span>€{total.toFixed(2)}</span>
+            <span>{formatPrice(total)}</span>
             </div>
 
             <button type="button" className="button" disabled={!hasItems}>
@@ -97,9 +118,9 @@ export default function CartSidebar({
             </button>
 
             <p className={styles.notice}>
-            Secure checkout & worldwide shipping
+            Orders are handled directly by the band.
             </p>
         </footer>
         </div>
     );
-};
+}

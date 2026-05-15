@@ -46,8 +46,7 @@ export default async function ConcertDetailPage({ params }: Props) {
             <header className={styles.galleryHeader}>
               <h2 className={styles.blockTitle}>Live photos</h2>
               <p className={styles.gallerySubtitle}>
-                A few moments from this show. Click any photo to open it full
-                screen.
+                Stage shots and live moments from this show.
               </p>
             </header>
             <ConcertGallery images={concert.gallery} />

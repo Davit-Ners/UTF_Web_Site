@@ -9,7 +9,7 @@ type Props = {
 const OPTIONS: { value: Props["active"]; label: string }[] = [
     { value: "all", label: "All" },
     { value: "apparel", label: "Apparel" },
-    { value: "music", label: "Music & CDs" },
+    { value: "music", label: "Music" },
     { value: "accessories", label: "Accessories" },
 ];
 
@@ -32,7 +32,9 @@ export default function MerchFilters({ active, onChange, count }: Props) {
             </button>
             ))}
         </div>
-        <span className={styles.count}>{count} items</span>
+        <span className={styles.count}>
+            {count} item{count === 1 ? "" : "s"} available
+        </span>
         </div>
     );
 };

@@ -7,6 +7,14 @@ type Props = {
     onAddToCart: (product: Product) => void;
 };
 
+function formatPrice(price: number) {
+    return new Intl.NumberFormat("fr-BE", {
+        style: "currency",
+        currency: "EUR",
+        maximumFractionDigits: 0,
+    }).format(price);
+}
+
 export default function ProductCard({ product, onAddToCart }: Props) {
     const isOut = product.stock !== undefined && product.stock <= 0;
 
@@ -35,7 +43,7 @@ export default function ProductCard({ product, onAddToCart }: Props) {
 
             <div className={styles.footer}>
                 <div className={styles.priceBlock}>
-                    <span className={styles.price}>€{product.price}</span>
+                    <span className={styles.price}>{formatPrice(product.price)}</span>
                     {product.stock !== undefined && product.stock > 0 && (
                     <span className={styles.stock}>
                         {product.stock <= 5 ? "Low stock" : "In stock"}
@@ -49,10 +57,10 @@ export default function ProductCard({ product, onAddToCart }: Props) {
                     onClick={() => onAddToCart(product)}
                     disabled={isOut}
                 >
-                    {isOut ? "Sold out" : "Add to cart"}
+                    {isOut ? "Sold out" : "Add To Cart"}
                 </button>
             </div>
         </div>
         </article>
     );
-};
+}
