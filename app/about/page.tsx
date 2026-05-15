@@ -1,7 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./about.module.css";
-import { fanRefs, getInitials, highlightCards, members, storyFacts } from "../lib/about";
+import {
+  fanRefs,
+  getInitials,
+  highlightCards,
+  members,
+  storyFacts,
+} from "../lib/about";
 
 export default function AboutPage() {
   return (
@@ -15,9 +21,9 @@ export default function AboutPage() {
                 Melodic death metal from <span>Brussels</span>
               </h1>
               <p className={styles.subtitle}>
-                Until They Fall is a melodic death metal band blending heavy riffs,
-                melodic leads and catchy hooks. Built for the stage, the project
-                delivers high-energy shows with a tight, cinematic sound.
+                Formed in 2018, Until They Fall blends aggressive riffs,
+                atmospheric melodies and modern metal tension into a sound built
+                for both impact and emotion.
               </p>
             </div>
 
@@ -31,9 +37,9 @@ export default function AboutPage() {
                 />
               </div>
               <div className={`${styles.heroBadge} card`}>
-                <p className={styles.heroBadgeLabel}>Latest release</p>
+                <p className={styles.heroBadgeLabel}>Debut album</p>
                 <p className={styles.heroBadgeTitle}>Sent To Die</p>
-                <p className={styles.heroBadgeMeta}>Debut album · 10 tracks</p>
+                <p className={styles.heroBadgeMeta}>Released December 1, 2023</p>
               </div>
             </div>
           </div>
@@ -45,32 +51,35 @@ export default function AboutPage() {
           <div className={styles.storyGrid}>
             <div className={`${styles.storyCard} card`}>
               <span className={styles.sectionEyebrow}>Story</span>
-              <h2 className={styles.sectionTitle}>The story</h2>
+              <h2 className={styles.sectionTitle}>Brutality, melody, release.</h2>
               <br />
               <p>
-                Formed in Brussels, Until They Fall grew out of a shared obsession
-                with modern metal: massive guitars, big choruses and dark
-                atmospheres. The band mixes sharp riffs, melodic solos and a
-                cinematic sense of dynamics, from tense clean moments to full chaos.
+                Since 2018, Until They Fall has been fighting for its place in
+                the Belgian metal scene. The band&apos;s sound stands between
+                melodic death metal, metalcore and technical death, driven by
+                aggressive guitars, melodic leads and a powerful rhythm section.
               </p>
               <p>
-                On stage, the focus is impact. Tight arrangements, strong
-                transitions and a set built to keep the room locked in from the
-                first note to the last breakdown.
+                The debut album <strong>Sent To Die</strong>, recorded at
+                Project Zero Studio, opens a post-apocalyptic world where every
+                trial shapes the individual, every fall becomes a chance to rise
+                and every fight leaves something stronger behind.
               </p>
               <p>
-                The debut album <strong>Sent To Die</strong> sets the tone:
-                melodic death and metalcore influences, modern production, and
-                songs written to hit just as hard live as they do on record.
+                Live, the band turns that tension into a shared release:
+                intense performances, crowd communion and the feeling of unity
+                inside the chaos.
               </p>
             </div>
 
             <aside className={`${styles.storyMetaCard} card`}>
               <span className={styles.storyMetaEyebrow}>Profile</span>
-              <h3 className={styles.storyMetaTitle}>A band shaped around stage pressure.</h3>
+              <h3 className={styles.storyMetaTitle}>
+                A Brussels metal band built for the room.
+              </h3>
               <p className={styles.storyMetaText}>
-                The project is built to read clearly in a room: sharp identity,
-                direct songs and a setup that translates without extra fluff.
+                Heavy riffs, atmospheric melodies and a live set shaped for
+                clubs, support slots and independent festivals.
               </p>
 
               <div className={styles.storyMetaList}>
@@ -91,12 +100,8 @@ export default function AboutPage() {
           <div className={styles.membersIntro}>
             <div>
               <span className={styles.sectionEyebrow}>Line-up</span>
-              <h2 className={styles.sectionTitle}>The current formation</h2>
+              <h2 className={styles.sectionTitle}>The current line-up</h2>
             </div>
-            {/* <p className={styles.sectionText}>
-              Five players, one direction: modern heaviness, melodic lift and a
-              live set designed to feel tight, direct and memorable.
-            </p> */}
           </div>
 
           <div className={styles.lineupShell}>
@@ -112,22 +117,24 @@ export default function AboutPage() {
               <div className={styles.lineupFeatureOverlay} />
               <div className={styles.lineupFeatureBody}>
                 <span className={styles.featureTag}>Current line-up</span>
-                <h3 className={styles.featureTitle}>Built like a live unit, not a loose collection.</h3>
+                <h3 className={styles.featureTitle}>
+                  Five players, one direction.
+                </h3>
                 <p className={styles.featureText}>
-                  The line-up is set around precision, energy and contrast:
-                  weight from the rhythm section, melodic lift from the guitars
-                  and a vocal front that keeps the songs moving forward.
+                  The band is built around contrast: lead guitars carrying the
+                  melody, a tight rhythm section pushing the weight forward and
+                  vocals made for the front of the stage.
                 </p>
                 <div className={styles.featurePills}>
                   <span className={styles.featurePill}>Brussels based</span>
-                  <span className={styles.featurePill}>Stage-ready setup</span>
+                  <span className={styles.featurePill}>Formed in 2018</span>
                   <span className={styles.featurePill}>Sent To Die era</span>
                 </div>
               </div>
             </article>
 
             <div className={styles.membersGrid}>
-              {members.map((member, index) => (
+              {members.map((member) => (
                 <article key={member.name} className={`${styles.memberCard} card`}>
                   <div className={styles.memberMedia}>
                     {member.image ? (
@@ -142,9 +149,6 @@ export default function AboutPage() {
                         <span>{getInitials(member.name)}</span>
                       </div>
                     )}
-                    {/* <span className={styles.memberIndex}>
-                      {String(index + 1).padStart(2, "0")}
-                    </span> */}
                   </div>
 
                   <div className={styles.memberBody}>
@@ -164,22 +168,22 @@ export default function AboutPage() {
         <div className="container">
           <div className={styles.highlightFrame}>
             <article className={styles.highlightLead}>
-              <span className={styles.sectionEyebrow}>Highlights</span>
+              <span className={styles.sectionEyebrow}>Identity</span>
               <h2 className={styles.statementTitle}>
-                Heavy enough for clubs, sharp enough for festival slots.
+                Unity in the chaos.
               </h2>
               <p className={styles.statementText}>
-                Until They Fall sits in the lane between modern melodic death,
-                metalcore tension and live-first writing. The goal is simple:
-                songs that connect fast and a set that lands hard.
+                Until They Fall turns brutality and melody into a live force:
+                extreme energy, emotional weight and songs made to bring a room
+                together.
               </p>
 
               <div className={styles.statementActions}>
                 <Link href="/music" className="button">
-                  Listen to the music
+                  Listen Now
                 </Link>
                 <Link href="/booking" className={styles.secondaryLink}>
-                  Booking info
+                  Book The Band
                 </Link>
               </div>
             </article>
@@ -206,8 +210,8 @@ export default function AboutPage() {
                     <strong className={styles.statValue}>Brussels, BE</strong>
                   </div>
                   <div className={styles.statementStat}>
-                    <span className={styles.statLabel}>Setup</span>
-                    <strong className={styles.statValue}>Clubs + festivals</strong>
+                    <span className={styles.statLabel}>Airplay</span>
+                    <strong className={styles.statValue}>Classic 21 / Radio Panik</strong>
                   </div>
                   <div className={styles.statementStat}>
                     <span className={styles.statLabel}>Release</span>
@@ -218,8 +222,7 @@ export default function AboutPage() {
                 <div className={styles.fanBlock}>
                   <h3 className={styles.highlightTitle}>For fans of</h3>
                   <p className={styles.highlightText}>
-                    A balance of melody, pressure and songs that still stick
-                    after the final hit.
+                    Brutal enough to hit, melodic enough to stay.
                   </p>
                   <div className={styles.fanChips}>
                     {fanRefs.map((item) => (
@@ -236,4 +239,4 @@ export default function AboutPage() {
       </section>
     </main>
   );
-};
+}

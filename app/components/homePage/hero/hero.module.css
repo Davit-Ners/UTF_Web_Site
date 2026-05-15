@@ -19,7 +19,7 @@
   z-index: 0;
   opacity: 0.65;
   transform: scale(1.05);
-  filter: brightness(0.5) contrast(1.1) saturate(1.1);
+  filter: brightness(1) contrast(1.1) saturate(1.1);
 }
 
 /* === COLOR OVERLAY / FX === */

@@ -12,77 +12,78 @@ export const members: Member[] = [
     role: "Lead Guitar",
     image: "/gallery/dav1.jpg",
     blurb:
-      "Modern riffs, melodic and technical lead work and crazy guitar solos.",
-    signature: "Leads, hooks and atmosphere",
+      "Melodic lead work, aggressive riffing and the guitar voice at the center of the band's sound.",
+    signature: "Lead guitars and melody",
   },
   {
     name: "Sabari Diakite",
-    role: "Drums",
+    role: "Drums / Backing Vocals",
     blurb:
-      "Precision, double-kick control and the kind of drumming that keeps the whole set sharp live.",
-    signature: "Power and control",
-    image: "/band/sabari-about.jpg"
+      "Power, precision and the rhythmic engine behind the band's live impact.",
+    signature: "Power and precision",
+    image: "/band/sabari-about.jpg",
   },
   {
     name: "Valentin Coutant",
-    role: "Bass",
+    role: "Bass / Backing Vocals",
     image: "/gallery/val1.jpg",
-    blurb: "Massive low-end, locked groove and the weight that keeps the songs grounded.",
+    blurb:
+      "Low-end pressure and stage presence in the current line-up.",
     signature: "Low-end pressure",
   },
   {
-    name: "Kevin Etsrada",
-    role: "Rhythm Guitar",
+    name: "Kevin Estrada",
+    role: "Rhythm Guitar / Backing Vocals",
     image: "/gallery/kev1.jpg",
     blurb:
-      "Tight rhythm foundations, dense guitar layers and the drive that keeps the set heavy.",
-    signature: "Rhythm backbone",
+      "Tight rhythm foundations and the weight that keeps the songs moving forward.",
+    signature: "Rhythm foundation",
   },
   {
     name: "Krys Bader",
-    role: "Vocals",
+    role: "Lead Vocals",
     blurb:
-      "Front-facing energy, screams, hooks and the voice that gives the songs their edge on stage.",
+      "Frontline vocals and live intensity for the current era of the band.",
     signature: "Frontline intensity",
-    image: "/band/krys-about.jpg"
+    image: "/band/krys-about.jpg",
   },
 ];
 
 export const highlightCards = [
   {
     title: "Sound",
-    body: "Modern melodic death and metalcore tension, built on sharp guitars, hooks and atmosphere.",
+    body: "Melodic death metal, metalcore tension and technical edge, built around aggressive riffs and atmospheric melody.",
   },
   {
-    title: "Base",
-    body: "Rooted in Brussels and active on the Belgian scene, with a live set ready to travel.",
+    title: "Record",
+    body: "Sent To Die was released on December 1, 2023 and recorded at Project Zero Studio.",
   },
   {
-    title: "Live rig",
-    body: "Fast changeover, in-ears and tracks ready for clubs, support slots and festival stages.",
+    title: "Live",
+    body: "Belgian stage experience, independent festivals and a set shaped around pressure, movement and release.",
   },
 ];
 
 export const fanRefs = [
-  "Melodic death",
-  "Metalcore edge",
-  "Big choruses",
-  "Dark atmosphere",
-  "Festival-ready sets",
+  "Melodic death metal",
+  "Metalcore tension",
+  "Technical edge",
+  "Atmospheric melodies",
+  "Live catharsis",
 ];
 
 export const storyFacts = [
+  {
+    label: "Formed",
+    value: "2018",
+  },
   {
     label: "Base",
     value: "Brussels, Belgium",
   },
   {
-    label: "Format",
-    value: "5-piece line-up",
-  },
-  {
-    label: "Focus",
-    value: "Live impact first",
+    label: "Release",
+    value: "Sent To Die",
   },
 ];
 
@@ -93,4 +94,4 @@ export function getInitials(name: string) {
     .join("")
     .slice(0, 2)
     .toUpperCase();
-};
+}
