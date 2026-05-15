@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import type { CartItem } from "@/app/lib/products";
 import styles from "./cartSidebar.module.css";
 
@@ -6,6 +9,18 @@ type Props = {
     subtotal: number;
     onUpdateQty: (productId: string, qty: number) => void;
     onRemove: (productId: string) => void;
+    onRequestOrder: (input: {
+        name: string;
+        email: string;
+        country: string;
+        notes: string;
+        website: string;
+    }) => Promise<boolean>;
+    orderStatus:
+        | { type: "idle" }
+        | { type: "loading" }
+        | { type: "success"; message: string }
+        | { type: "error"; message: string };
 };
 
 const DEFAULT_MAX_QTY = 20;
@@ -31,13 +46,41 @@ export default function CartSidebar({
     subtotal,
     onUpdateQty,
     onRemove,
+    onRequestOrder,
+    orderStatus,
 }: Props) {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [country, setCountry] = useState("");
+    const [notes, setNotes] = useState("");
+    const [website, setWebsite] = useState("");
     const hasItems = items.length > 0;
 
     const shippingEstimate =
         subtotal === 0 ? 0 : subtotal >= 80 ? 0 : 7;
 
     const total = subtotal + shippingEstimate;
+    const isLoading = orderStatus.type === "loading";
+
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        const ok = await onRequestOrder({
+            name,
+            email,
+            country,
+            notes,
+            website,
+        });
+
+        if (ok) {
+            setName("");
+            setEmail("");
+            setCountry("");
+            setNotes("");
+            setWebsite("");
+        }
+    }
 
     return (
         <div className={`card ${styles.card}`}>
@@ -95,6 +138,75 @@ export default function CartSidebar({
             )}
         </div>
 
+        <form className={styles.orderForm} onSubmit={handleSubmit}>
+            <input
+                type="text"
+                name="website"
+                value={website}
+                onChange={(event) => setWebsite(event.target.value)}
+                className={styles.honey}
+                tabIndex={-1}
+                autoComplete="off"
+            />
+
+            <div className={styles.formGrid}>
+                <label className={styles.field}>
+                    <span>Name *</span>
+                    <input
+                        value={name}
+                        onChange={(event) => setName(event.target.value)}
+                        required
+                        maxLength={120}
+                        placeholder="Your name"
+                        disabled={!hasItems || isLoading}
+                    />
+                </label>
+
+                <label className={styles.field}>
+                    <span>Email *</span>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        required
+                        maxLength={320}
+                        placeholder="you@email.com"
+                        disabled={!hasItems || isLoading}
+                    />
+                </label>
+
+                <label className={styles.field}>
+                    <span>Country *</span>
+                    <input
+                        value={country}
+                        onChange={(event) => setCountry(event.target.value)}
+                        required
+                        maxLength={120}
+                        placeholder="Belgium"
+                        disabled={!hasItems || isLoading}
+                    />
+                </label>
+
+                <label className={styles.field}>
+                    <span>Notes</span>
+                    <textarea
+                        value={notes}
+                        onChange={(event) => setNotes(event.target.value)}
+                        maxLength={2000}
+                        placeholder="Sizes, delivery details, questions..."
+                        rows={3}
+                        disabled={!hasItems || isLoading}
+                    />
+                </label>
+            </div>
+
+            {orderStatus.type === "success" && (
+                <p className={styles.success}>{orderStatus.message}</p>
+            )}
+            {orderStatus.type === "error" && (
+                <p className={styles.error}>{orderStatus.message}</p>
+            )}
+
         <footer className={styles.footer}>
             <div className={styles.line}>
             <span>Subtotal</span>
@@ -113,14 +225,16 @@ export default function CartSidebar({
             <span>{formatPrice(total)}</span>
             </div>
 
-            <button type="button" className="button" disabled={!hasItems}>
-            Checkout
+            <button type="submit" className="button" disabled={!hasItems || isLoading}>
+            {isLoading ? "Sending..." : "Request Order"}
             </button>
 
             <p className={styles.notice}>
-            Orders are handled directly by the band.
+            No payment is taken on the site. We confirm stock, shipping and
+            payment details by email.
             </p>
         </footer>
+        </form>
         </div>
     );
 }

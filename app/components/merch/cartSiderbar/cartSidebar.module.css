@@ -120,3 +120,85 @@
   color: var(--color-text-muted);
   margin-top: 4px;
 }
+
+.orderForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formGrid {
+  display: grid;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field span {
+  color: var(--color-text-primary);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface-alt);
+  color: var(--color-text-primary);
+  padding: .62rem .72rem;
+  font: inherit;
+  font-size: .86rem;
+  outline: none;
+  transition: border-color .18s ease, background .18s ease;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 82px;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--color-accent);
+  background: var(--color-surface);
+}
+
+.field input:disabled,
+.field textarea:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.success,
+.error {
+  font-size: .84rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.success {
+  color: #16a34a;
+}
+
+.error {
+  color: var(--color-accent);
+}
+
+.honey {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
