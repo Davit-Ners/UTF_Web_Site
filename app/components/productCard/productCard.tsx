@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "./productCard.module.css";
 import { Product } from "@/app/lib/products";
+import { getOptimizedImagePath } from "@/app/lib/imageOptimization";
 
 export default function ProductCard({ product }: { product: Product }) {
     const price = new Intl.NumberFormat("fr-BE", {
@@ -15,7 +16,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <article className={`card ${styles.card}`}>
         <div className={styles.media}>
             <Image
-            src={product.image || "/logo.jpg"}
+            src={getOptimizedImagePath(product.image) || "/logo.jpg"}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, 33vw"

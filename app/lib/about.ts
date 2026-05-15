@@ -10,7 +10,7 @@ export const members: Member[] = [
   {
     name: "Davit Nersesyan",
     role: "Lead Guitar",
-    image: "/gallery/dav1.jpg",
+    image: "/optimized/gallery/dav1.webp",
     blurb:
       "Melodic lead work, aggressive riffing and the guitar voice at the center of the band's sound.",
     signature: "Lead guitars and melody",
@@ -21,12 +21,12 @@ export const members: Member[] = [
     blurb:
       "Power, precision and the rhythmic engine behind the band's live impact.",
     signature: "Power and precision",
-    image: "/band/sabari-about.jpg",
+    image: "/optimized/band/sabari-about.webp",
   },
   {
     name: "Valentin Coutant",
     role: "Bass / Backing Vocals",
-    image: "/gallery/val1.jpg",
+    image: "/optimized/gallery/val1.webp",
     blurb:
       "Low-end pressure and stage presence in the current line-up.",
     signature: "Low-end pressure",
@@ -34,7 +34,7 @@ export const members: Member[] = [
   {
     name: "Kevin Estrada",
     role: "Rhythm Guitar / Backing Vocals",
-    image: "/gallery/kev1.jpg",
+    image: "/optimized/gallery/kev1.webp",
     blurb:
       "Tight rhythm foundations and the weight that keeps the songs moving forward.",
     signature: "Rhythm foundation",
@@ -45,7 +45,7 @@ export const members: Member[] = [
     blurb:
       "Frontline vocals and live intensity for the current era of the band.",
     signature: "Frontline intensity",
-    image: "/band/krys-about.jpg",
+    image: "/optimized/band/krys-about.webp",
   },
 ];
 

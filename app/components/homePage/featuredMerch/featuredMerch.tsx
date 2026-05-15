@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/app/lib/products";
+import { getOptimizedImagePath } from "@/app/lib/imageOptimization";
 import styles from "./featuredMerch.module.css";
 
 type Props = {
@@ -57,7 +58,7 @@ export default function FeaturedMerch({ items }: Props) {
               >
                 <div className={styles.media}>
                   <Image
-                    src={product.image || "/logo.jpg"}
+                    src={getOptimizedImagePath(product.image) || "/logo.jpg"}
                     alt={product.name}
                     fill
                     sizes="(max-width: 980px) 100vw, 34vw"

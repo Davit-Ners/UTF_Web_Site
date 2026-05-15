@@ -37,7 +37,7 @@ export default function GalleryLightbox({ photo, onClose }: Props) {
         </button>
 
         <div className={styles.imageWrap}>
-          <Image src={photo.src} alt={photo.alt} fill quality={95} sizes="100vw" />
+          <Image src={photo.src} alt={photo.alt} fill quality={90} sizes="100vw" />
         </div>
 
         {(photo.caption || photo.meta) && (

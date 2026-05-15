@@ -30,7 +30,7 @@ export default function Hero(){
             <h1 className={styles.srOnly}>Until They Fall</h1>
             <div className={styles.logoMark} aria-hidden="true">
                 <Image
-                    src="/logo-typo.png"
+                    src="/optimized/logo-typo.webp"
                     alt=""
                     width={2048}
                     height={1318}

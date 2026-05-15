@@ -27,7 +27,7 @@ export default async function Home() {
         title="Sent To Die"
         artist="Until They Fall"
         year="2023"
-        coverSrc="/album-cover.jpg"
+        coverSrc="/optimized/album-cover.webp"
         spotifyId="6HfDbfx8LZCaJzs7gWW8yG"
         spotifyType="album"
         blurb="Debut album released in 2023. Brutal riffs, atmospheric melodies and songs written for the stage."

@@ -61,7 +61,7 @@ export default function AboutPage() {
             <div className={styles.heroMedia}>
               <div className={styles.heroImageWrap}>
                 <Image
-                  src="/gallery/band-test.jpg"
+                  src="/optimized/gallery/band-test.webp"
                   alt="Until They Fall"
                   fill
                   sizes="(max-width: 768px) 100vw, 45vw"
@@ -139,7 +139,7 @@ export default function AboutPage() {
             <article className={styles.lineupFeature}>
               <div className={styles.lineupFeatureMedia}>
                 <Image
-                  src="/gallery/utf-band-good.jpg"
+                  src="/optimized/gallery/utf-band-good.webp"
                   alt="Until They Fall band photo"
                   fill
                   sizes="(max-width: 960px) 100vw, 36vw"

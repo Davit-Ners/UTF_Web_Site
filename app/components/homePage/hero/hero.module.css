@@ -14,7 +14,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: url("/bandphoto.jpg") center center / cover no-repeat;
+  background: url("/optimized/bandphoto-hero.webp") center center / cover no-repeat;
   background-attachment: fixed;
   z-index: 0;
   opacity: 0.65;

@@ -26,12 +26,16 @@ export const concertSeedData: ConcertSeedRecord[] = [
     doorsTime: "18:00",
     facebookEventUrl: "https://www.facebook.com/events/1247092823614827?locale=fr_FR",
     lineup: ["Black Mirrors", "Kanzan", "Demassify", "Atum Nophi"],
-    posterUrl: "/concerts/utf-arlon/poster.jpg",
+    posterUrl: "/optimized/concerts/utf-arlon/poster.webp",
     priceLabel: "20 EUR",
     showTime: "19:30",
     ticketUrl: "https://shop.utick.net/?module=CATALOGUE",
     title: "Black Mirrors + Tremplin Durbuy Rock Festival - L'Entrepot, Arlon",
-    gallery: ["/gallery/band1.jpg", "/gallery/band2.jpg", "/gallery/bandall.jpg"],
+    gallery: [
+      "/optimized/gallery/band1.webp",
+      "/optimized/gallery/band2.webp",
+      "/optimized/gallery/bandall.webp",
+    ],
     featured: true,
   },
   {

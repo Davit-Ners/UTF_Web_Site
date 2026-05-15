@@ -31,7 +31,7 @@ export const latestRelease: Release = {
   subtitle: "Debut album",
   year: 2023,
   type: "Album",
-  cover: "/album-cover.jpg",
+  cover: "/optimized/album-cover.webp",
   highlightTrack: "Sent To Die",
   blurb:
     "Aggressive riffs, atmospheric melodies and modern metal tension from Brussels.",
