@@ -84,9 +84,39 @@
 }
 
 .tag {
-  margin-top: clamp(-2.4rem, -3vw, -0.7rem);
-  color: var(--color-text-secondary);
-  opacity: 0.95;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: clamp(-1.55rem, -2.1vw, -0.55rem);
+  padding: 0.62rem 1rem;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(5, 5, 7, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  box-shadow:
+    0 0 22px rgba(255, 255, 255, 0.08),
+    0 14px 34px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(10px);
+  font-size: clamp(0.82rem, 1.2vw, 1rem);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.2);
+}
+
+.tag::before,
+.tag::after {
+  content: "";
+  display: block;
+  width: clamp(22px, 4vw, 54px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.64));
+}
+
+.tag::after {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.64), transparent);
 }
 
 .actions {
@@ -118,7 +148,7 @@
   }
 
   .tag {
-    margin-top: clamp(-1.4rem, -2.8vw, -0.35rem);
+    margin-top: clamp(-0.9rem, -1.8vw, -0.3rem);
   }
 }
 
@@ -130,7 +160,18 @@
   }
 
   .tag {
-    margin-top: -0.45rem;
+    max-width: min(92vw, 360px);
+    margin-top: -0.1rem;
+    padding: 0.58rem 0.8rem;
+    white-space: normal;
+    line-height: 1.25;
+    letter-spacing: 0.11em;
+  }
+
+  .tag::before,
+  .tag::after {
+    width: 18px;
+    flex: 0 0 auto;
   }
 
   .actions {
