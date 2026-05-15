@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import styles from "./featuredVideo.module.css";
 
 type Props = {
@@ -46,6 +47,8 @@ export default function FeaturedVideo({
                   fill
                   className={styles.posterImage}
                   sizes="(max-width: 780px) 100vw, 1100px"
+                  placeholder="blur"
+                  blurDataURL={IMAGE_BLUR_DATA_URL}
                 />
                 <span className={styles.fx} />
                 <span className={styles.play}>

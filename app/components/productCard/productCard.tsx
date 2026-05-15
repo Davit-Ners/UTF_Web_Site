@@ -1,7 +1,10 @@
 import Image from "next/image";
 import styles from "./productCard.module.css";
 import { Product } from "@/app/lib/products";
-import { getOptimizedImagePath } from "@/app/lib/imageOptimization";
+import {
+    IMAGE_BLUR_DATA_URL,
+    getOptimizedImagePath,
+} from "@/app/lib/imageOptimization";
 
 export default function ProductCard({ product }: { product: Product }) {
     const price = new Intl.NumberFormat("fr-BE", {
@@ -21,6 +24,8 @@ export default function ProductCard({ product }: { product: Product }) {
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
             priority={false}
+            placeholder="blur"
+            blurDataURL={IMAGE_BLUR_DATA_URL}
             />
             {product.badge && <span className={styles.badge}>{product.badge}</span>}
             {soldOut && <span className={`${styles.badge} ${styles.badgeMuted}`}>Sold out</span>}

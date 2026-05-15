@@ -5,6 +5,7 @@ import Image from "next/image";
 import styles from "./galleryFull.module.css";
 import type { GalleryPhoto } from "@/app/lib/gallery";
 import GalleryLightbox from "../galleryLightBox/galleryLightBox";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 
 type Props = {
   title: string;
@@ -46,6 +47,8 @@ export default function GalleryFull({ title, subtitle, photos }: Props) {
                     fill
                     quality={90}
                     sizes="(max-width: 700px) 100vw, (max-width: 960px) 50vw, 33vw"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                   />
                   <div className={styles.overlay} />
                   {(photo.caption || photo.meta) && (

@@ -25,6 +25,9 @@ const OPTIMIZED_IMAGE_PATHS: Record<string, string> = {
   "/merch/patch-1.jpg": "/optimized/merch/patch-1.webp",
 };
 
+export const IMAGE_BLUR_DATA_URL =
+  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTYnIGhlaWdodD0nMTAnIHZpZXdCb3g9JzAgMCAxNiAxMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48ZGVmcz48cmFkaWFsR3JhZGllbnQgaWQ9J2EnIGN4PSc1MCUnIGN5PSc0MCUnIHI9JzcwJSc+PHN0b3Agc3RvcC1jb2xvcj0nIzJkMTU0NScvPjxzdG9wIG9mZnNldD0nNTUlIHN0b3AtY29sb3I9JyMxNTE1MTgnLz48c3RvcCBvZmZzZXQ9JzEwMCUnIHN0b3AtY29sb3I9JyMwYTBhMGQnLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0nMTYnIGhlaWdodD0nMTAnIGZpbGw9J3VybCgjYSknLz48L3N2Zz4=";
+
 export function getOptimizedImagePath(src?: string | null) {
   if (!src) return src;
 

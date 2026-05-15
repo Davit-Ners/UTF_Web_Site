@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import styles from "./about.module.css";
+import { IMAGE_BLUR_DATA_URL } from "../lib/imageOptimization";
 import {
   fanRefs,
   getInitials,
@@ -65,6 +66,8 @@ export default function AboutPage() {
                   alt="Until They Fall"
                   fill
                   sizes="(max-width: 768px) 100vw, 45vw"
+                  placeholder="blur"
+                  blurDataURL={IMAGE_BLUR_DATA_URL}
                 />
               </div>
               <div className={`${styles.heroBadge} card`}>
@@ -143,6 +146,8 @@ export default function AboutPage() {
                   alt="Until They Fall band photo"
                   fill
                   sizes="(max-width: 960px) 100vw, 36vw"
+                  placeholder="blur"
+                  blurDataURL={IMAGE_BLUR_DATA_URL}
                 />
               </div>
               <div className={styles.lineupFeatureOverlay} />
@@ -174,6 +179,8 @@ export default function AboutPage() {
                         alt={member.name}
                         fill
                         sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 25vw"
+                        placeholder="blur"
+                        blurDataURL={IMAGE_BLUR_DATA_URL}
                       />
                     ) : (
                       <div className={styles.memberFallback}>

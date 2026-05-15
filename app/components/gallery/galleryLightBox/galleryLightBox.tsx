@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import styles from "./galleryLightbox.module.css";
 import type { GalleryPhoto } from "@/app/lib/gallery";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 
 type Props = {
   photo: GalleryPhoto;
@@ -37,7 +38,15 @@ export default function GalleryLightbox({ photo, onClose }: Props) {
         </button>
 
         <div className={styles.imageWrap}>
-          <Image src={photo.src} alt={photo.alt} fill quality={90} sizes="100vw" />
+          <Image
+            src={photo.src}
+            alt={photo.alt}
+            fill
+            quality={90}
+            sizes="100vw"
+            placeholder="blur"
+            blurDataURL={IMAGE_BLUR_DATA_URL}
+          />
         </div>
 
         {(photo.caption || photo.meta) && (

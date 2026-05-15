@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "./musicFeaturedRelease.module.css";
 import type { Release } from "@/app/lib/music";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 
 type Props = { release: Release };
 
@@ -15,6 +16,8 @@ export default function FeaturedRelease({ release }: Props) {
                 alt={release.title}
                 fill
                 sizes="(max-width: 768px) 45vw, 280px"
+                placeholder="blur"
+                blurDataURL={IMAGE_BLUR_DATA_URL}
                 />
             </div>
             </div>

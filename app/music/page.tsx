@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import styles from "./music.module.css";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import { discography, latestRelease } from "@/app/lib/music";
 
 export const metadata: Metadata = {
@@ -131,6 +132,8 @@ export default function MusicPage() {
                     alt={`${latestRelease.title} artwork backdrop`}
                     fill
                     sizes="(max-width: 960px) 100vw, 38vw"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                   />
                 </div>
                 <Image
@@ -139,6 +142,8 @@ export default function MusicPage() {
                   fill
                   sizes="(max-width: 960px) 100vw, 38vw"
                   className={styles.visualBlur}
+                  placeholder="blur"
+                  blurDataURL={IMAGE_BLUR_DATA_URL}
                 />
                 <div className={styles.visualGrid} />
               </div>
@@ -150,6 +155,8 @@ export default function MusicPage() {
                     alt={latestRelease.title}
                     fill
                     sizes="(max-width: 960px) 52vw, 22vw"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                   />
                 </div>
                 <div className={styles.coverMeta}>
@@ -304,6 +311,8 @@ export default function MusicPage() {
                         alt={release.title}
                         fill
                         sizes="(max-width: 960px) 100vw, 18vw"
+                        placeholder="blur"
+                        blurDataURL={IMAGE_BLUR_DATA_URL}
                       />
                     </div>
                     <div className={styles.releaseCardBody}>

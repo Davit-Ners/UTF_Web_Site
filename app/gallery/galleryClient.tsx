@@ -6,6 +6,7 @@ import Link from "next/link";
 import styles from "./gallery.module.css";
 import GalleryLightbox from "../components/gallery/galleryLightBox/galleryLightBox";
 import { allConcertPhotos, galleryHeroPhotos, type GalleryPhoto } from "../lib/gallery";
+import { IMAGE_BLUR_DATA_URL } from "../lib/imageOptimization";
 
 export default function GalleryClient() {
   const [active, setActive] = useState<GalleryPhoto | null>(null);
@@ -54,6 +55,8 @@ export default function GalleryClient() {
                     fill
                     quality={90}
                     sizes="(max-width: 700px) 100vw, (max-width: 960px) 100vw, 42vw"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                   />
                   <div className={styles.heroShotOverlay} />
                   <div className={styles.heroShotMeta}>
@@ -91,6 +94,8 @@ export default function GalleryClient() {
                     fill
                     quality={90}
                     sizes="(max-width: 700px) 100vw, (max-width: 960px) 50vw, 33vw"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                   />
                   <div className={styles.wallOverlay} />
                   <div className={styles.wallMeta}>

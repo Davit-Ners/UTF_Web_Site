@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./galleryStrip.module.css";
 import type { GalleryPhoto } from "@/app/lib/gallery";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 
 type Props = {
     title: string;
@@ -51,6 +52,8 @@ export default function GalleryStrip({
                     alt={photo.alt}
                     fill
                     sizes="(max-width: 768px) 50vw, 260px"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                 />
                 </div>
                 {(photo.caption || photo.meta) && (

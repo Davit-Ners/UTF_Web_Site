@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import styles from "./hero.module.css";
 import Link from "next/link";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 
 export default function Hero(){
     const [offset, setOffset] = useState(0);
@@ -37,6 +38,8 @@ export default function Hero(){
                     priority
                     className={styles.logoImage}
                     sizes="(max-width: 700px) 92vw, (max-width: 1200px) 82vw, 980px"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                 />
             </div>
             <p className={styles.tag}>Melodic death metal from Brussels</p>

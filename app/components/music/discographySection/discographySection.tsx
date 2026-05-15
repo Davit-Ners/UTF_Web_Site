@@ -2,6 +2,7 @@ import styles from "./discographySection.module.css";
 import type { Release } from "@/app/lib/music";
 import Image from "next/image";
 import Link from "next/link";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 
 type Props = { releases: Release[] };
 
@@ -16,6 +17,8 @@ export default function DiscographySection({ releases }: Props) {
                 alt={release.title}
                 fill
                 sizes="(max-width: 768px) 40vw, 200px"
+                placeholder="blur"
+                blurDataURL={IMAGE_BLUR_DATA_URL}
                 />
             </div>
             <div className={styles.body}>

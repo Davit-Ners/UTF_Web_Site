@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { type Concert } from "@/app/lib/concerts";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import styles from "../../../concerts/[slug]/concertDetail.module.css";
 
 type Props = {
@@ -59,6 +60,8 @@ export default function ConcertDetailsHero({ heading, concert, dateLong, d }: Pr
                     width={600}
                     height={800}
                     className={styles.posterImg}
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                   />
                 </div>
                 <span className={styles.posterLabel}>Official poster</span>

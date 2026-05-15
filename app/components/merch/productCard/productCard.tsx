@@ -1,7 +1,10 @@
 import Image from "next/image";
 import styles from "./productCard.module.css";
 import { Product } from "@/app/lib/products";
-import { getOptimizedImagePath } from "@/app/lib/imageOptimization";
+import {
+    IMAGE_BLUR_DATA_URL,
+    getOptimizedImagePath,
+} from "@/app/lib/imageOptimization";
 
 type Props = {
     product: Product;
@@ -27,6 +30,8 @@ export default function ProductCard({ product, onAddToCart }: Props) {
             alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, 260px"
+            placeholder="blur"
+            blurDataURL={IMAGE_BLUR_DATA_URL}
             />
             {product.badge && (
             <span className={`${styles.badge} ${styles[`badge_${product.badge}`]}`}>

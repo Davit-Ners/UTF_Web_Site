@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import styles from "./featuredRelease.module.css";
 
 type Props = {
@@ -43,6 +44,8 @@ export default function FeaturedRelease({
               height={480}
               className={styles.coverImage}
               sizes="(max-width: 600px) 100vw, 120px"
+              placeholder="blur"
+              blurDataURL={IMAGE_BLUR_DATA_URL}
             />
           </div>
 

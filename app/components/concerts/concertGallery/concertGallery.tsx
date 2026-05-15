@@ -3,6 +3,7 @@
 import { useState } from "react";
 import styles from "./concertGallery.module.css";
 import Image from "next/image";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 
 type Props = {
     images: string[];
@@ -28,6 +29,8 @@ export default function ConcertGallery({ images }: Props) {
                 alt={`Live photo ${idx + 1}`}
                 fill
                 sizes="(max-width: 768px) 50vw, 220px"
+                placeholder="blur"
+                blurDataURL={IMAGE_BLUR_DATA_URL}
                 />
             </button>
             ))}
@@ -56,6 +59,8 @@ export default function ConcertGallery({ images }: Props) {
                     alt="Live photo"
                     fill
                     sizes="100vw"
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
                 />
                 </div>
             </div>
