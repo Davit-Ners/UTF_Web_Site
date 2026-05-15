@@ -5,6 +5,8 @@ import Footer from "./components/footer/footer";
 import Header from "./components/header/header";
 import { getSiteUrl } from "@/lib/site";
 
+<meta name="apple-mobile-web-app-title" content="Until They Fall" />
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
