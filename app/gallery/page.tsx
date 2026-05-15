@@ -18,24 +18,24 @@ export default function GalleryPage() {
           <div className={styles.heroShell}>
             <div className={styles.heroCopy}>
               <span className={styles.eyebrow}>Gallery</span>
-              <h1 className={styles.heroTitle}>Live frames without the fake magazine layout.</h1>
+              <h1 className={styles.heroTitle}>Live shots from the floor.</h1>
               <p className={styles.heroText}>
-                A tight selection of stage light, sweat, crowd pressure and the
-                kind of moments that actually describe the band better than long copy.
+                Stage shots, crowd pressure and live moments from Until They Fall
+                shows.
               </p>
 
               <div className={styles.heroMeta}>
                 <span className={styles.metaPill}>{allConcertPhotos.length} live shots</span>
                 <span className={styles.metaPill}>Clubs + festivals</span>
-                <span className={styles.metaPill}>Open full screen</span>
+                <span className={styles.metaPill}>Full screen</span>
               </div>
 
               <div className={styles.heroActions}>
                 <Link href="/gallery/concert-photos" className="button">
-                  Open full archive
+                  View Full Archive
                 </Link>
                 <Link href="/concerts" className={styles.secondaryLink}>
-                  See the live dates
+                  See Live Dates
                 </Link>
               </div>
             </div>
@@ -73,7 +73,7 @@ export default function GalleryPage() {
             <div className={styles.canvasHead}>
               <div>
                 <span className={styles.sectionEyebrow}>Selection</span>
-                <h2 className={styles.canvasTitle}>A simple wall of real moments.</h2>
+                <h2 className={styles.canvasTitle}>Stage, sweat, release.</h2>
               </div>
               {/* <p className={styles.canvasText}>
                 No fake categories, no filler. Just the shots that already carry the
@@ -107,10 +107,10 @@ export default function GalleryPage() {
 
             <div className={styles.canvasFoot}>
               <p className={styles.canvasNote}>
-                Need the full live archive or a cleaner overview of concert shots?
+                More live photos from clubs, festivals and release shows.
               </p>
               <Link href="/gallery/concert-photos" className={styles.inlineLink}>
-                View all concert photos
+                View All Concert Photos
               </Link>
             </div>
           </div>

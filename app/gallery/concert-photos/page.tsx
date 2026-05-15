@@ -5,8 +5,8 @@ export default function ConcertPhotosGalleryPage() {
   return (
     <main>
       <GalleryFull
-        title="Concert photos"
-        subtitle=""
+        title="Live archive"
+        subtitle="Stage shots and live moments from Until They Fall shows."
         photos={allConcertPhotos}
       />
     </main>

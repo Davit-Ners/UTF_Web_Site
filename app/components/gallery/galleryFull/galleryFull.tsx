@@ -28,7 +28,7 @@ export default function GalleryFull({ title, subtitle, photos }: Props) {
 
               <div className={styles.headerMeta}>
                 {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
-                <span className={styles.count}>{photos.length} frames</span>
+                <span className={styles.count}>{photos.length} photos</span>
               </div>
             </header>
 

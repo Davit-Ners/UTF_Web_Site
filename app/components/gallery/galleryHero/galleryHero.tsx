@@ -7,11 +7,10 @@ export default function GalleryHero() {
             <div className={`${styles.card} card`}>
             <div className={styles.text}>
                 <span className={styles.eyebrow}>Gallery</span>
-                <h1 className={styles.title}>Scenes from the pit</h1>
+                <h1 className={styles.title}>Live shots from the floor</h1>
                 <p className={styles.subtitle}>
-                Live photos, lights and moments from Until They Fall shows. Use
-                the gallery to get a feel for the energy on stage before you book
-                us for your next festival or club night.
+                Stage shots, crowd pressure and live moments from Until They
+                Fall shows.
                 </p>
             </div>
             </div>
