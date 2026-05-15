@@ -114,7 +114,8 @@ export async function POST(req: Request) {
 
     if (!validation.ok) {
       if (validation.spam) {
-        return Response.json({ success: true });
+        console.warn("BOOKING REQUEST REJECTED: honeypot field was filled.");
+        return Response.json({ error: "Invalid request." }, { status: 400 });
       }
 
       return Response.json(

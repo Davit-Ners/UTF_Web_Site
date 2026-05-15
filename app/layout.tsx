@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import Footer from "./components/footer/footer";
 import Header from "./components/header/header";
 import { getSiteUrl } from "@/lib/site";
-
-<meta name="apple-mobile-web-app-title" content="Until They Fall" />
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -72,18 +69,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="dark" style={{ backgroundColor: "#0a0a0d" }}>
-      <head>
-        <Script id="theme-init" strategy="beforeInteractive">
-          {`
-            try {
-              var theme = localStorage.getItem("utf-theme");
-              document.documentElement.dataset.theme = theme === "light" ? "light" : "dark";
-            } catch (_) {
-              document.documentElement.dataset.theme = "dark";
-            }
-          `}
-        </Script>
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         style={{ backgroundColor: "var(--color-bg)" }}

@@ -18,11 +18,6 @@ const NAV = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [atTop, setAtTop] = useState(true);
-  const [theme, setTheme] = useState<"dark" | "light">(() => {
-    if (typeof document === "undefined") return "dark";
-
-    return document.documentElement.dataset.theme === "light" ? "light" : "dark";
-  });
   const pathname = usePathname();
 
   const closeMenu = () => setOpen(false);
@@ -33,13 +28,6 @@ export default function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  function toggleTheme() {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-    document.documentElement.setAttribute("data-theme", nextTheme);
-    localStorage.setItem("utf-theme", nextTheme);
-  }
 
   return (
     <header className={`${styles.header} ${atTop ? "" : styles.headerScrolled}`}>
@@ -80,14 +68,6 @@ export default function Header() {
             <Link href="/concerts" className={`button ${styles.tickets}`}>
               Tickets
             </Link>
-            <button
-              className={styles.theme}
-              aria-label="Toggle theme"
-              onClick={toggleTheme}
-              suppressHydrationWarning
-            >
-              {theme === "dark" ? "Sun" : "Moon"}
-            </button>
             <button
               className={styles.burger}
               aria-label="Open menu"

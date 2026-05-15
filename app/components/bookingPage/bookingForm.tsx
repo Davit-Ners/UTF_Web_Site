@@ -39,7 +39,7 @@ export default function BookingForm({
             {/* Honeypot */}
             <input
               type="text"
-              name="website"
+              name="faxNumber"
               className={styles.honey}
               tabIndex={-1}
               autoComplete="off"

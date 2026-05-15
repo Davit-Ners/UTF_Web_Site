@@ -34,10 +34,9 @@ export default function BookingClient() {
       setLoading(false);
 
       if (validation.spam) {
-        setOk(true);
+        setError("Invalid request. Please try again.");
         setTurnstileToken("");
         setTurnstileResetCounter((current) => current + 1);
-        form.reset();
         return;
       }
 
@@ -52,7 +51,7 @@ export default function BookingClient() {
     }
 
     try {
-      const res = await fetch("/api/send", {
+      const res = await fetch("/api/booking", {
         method: "POST",
         body: JSON.stringify({
           ...payload,

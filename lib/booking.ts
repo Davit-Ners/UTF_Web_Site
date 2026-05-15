@@ -8,10 +8,10 @@ export type BookingRequestPayload = {
   date: string;
   budget: string;
   message: string;
-  website: string;
+  faxNumber: string;
 };
 
-export type ValidBookingRequestPayload = Omit<BookingRequestPayload, "website">;
+export type ValidBookingRequestPayload = Omit<BookingRequestPayload, "faxNumber">;
 
 type BookingValidationResult =
   | { ok: true; data: ValidBookingRequestPayload }
@@ -40,7 +40,7 @@ export function parseBookingPayload(input: unknown): BookingRequestPayload {
     date: readString(record.date),
     budget: readString(record.budget),
     message: readString(record.message),
-    website: readString(record.website),
+    faxNumber: readString(record.faxNumber),
   };
 }
 
@@ -51,7 +51,7 @@ export function buildBookingPayload(formData: FormData): BookingRequestPayload {
 export function validateBookingPayload(
   payload: BookingRequestPayload
 ): BookingValidationResult {
-  if (payload.website) {
+  if (payload.faxNumber) {
     return { ok: false, spam: true };
   }
 

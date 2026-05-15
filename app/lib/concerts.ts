@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { getOptimizedImagePath } from "@/app/lib/imageOptimization";
 
 const DEFAULT_TIMEZONE = "Europe/Brussels";
 
@@ -92,10 +93,11 @@ function sanitizeLink(value: string | null | undefined) {
 
 function mapConcert(row: ConcertRow): Concert {
   const timeZone = row.timezone || DEFAULT_TIMEZONE;
-  const posterImage = row.posterUrl ?? row.images.find((image) => image.kind === "POSTER")?.url;
+  const posterImage =
+    row.posterUrl ?? row.images.find((image) => image.kind === "POSTER")?.url;
   const galleryImages = row.images
     .filter((image) => image.kind === "GALLERY")
-    .map((image) => image.url);
+    .map((image) => getOptimizedImagePath(image.url) ?? image.url);
 
   return {
     id: row.slug,
@@ -105,7 +107,7 @@ function mapConcert(row: ConcertRow): Concert {
     note: row.note ?? undefined,
     ticketUrl: sanitizeLink(row.ticketUrl),
     title: row.title ?? undefined,
-    posterUrl: posterImage ?? undefined,
+    posterUrl: getOptimizedImagePath(posterImage) ?? undefined,
     lineup: row.lineupEntries.map((entry) => entry.name),
     doorsTime: formatTime(row.doorsAt, timeZone),
     showTime: formatTime(row.showAt, timeZone),
