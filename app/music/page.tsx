@@ -1,7 +1,38 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import styles from "./music.module.css";
 import { discography, latestRelease } from "@/app/lib/music";
+
+export const metadata: Metadata = {
+  title: "Music",
+  description:
+    "Listen to Sent To Die by Until They Fall, a Brussels melodic death metal band blending aggressive riffs, atmospheric melodies and modern metal tension.",
+  alternates: {
+    canonical: "/music",
+  },
+  openGraph: {
+    title: "Music | Until They Fall",
+    description:
+      "Sent To Die is the debut album from Brussels melodic death metal band Until They Fall.",
+    url: "/music",
+    images: [
+      {
+        url: "/album-cover.jpg",
+        width: 1200,
+        height: 1200,
+        alt: "Sent To Die album cover",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Music | Until They Fall",
+    description:
+      "Listen to Sent To Die, the debut album from Brussels melodic death metal band Until They Fall.",
+    images: ["/album-cover.jpg"],
+  },
+};
 
 const fanRefs = ["melodic death metal", "metalcore tension", "technical edge"];
 

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import styles from "./about.module.css";
 import {
   fanRefs,
@@ -8,6 +9,36 @@ import {
   members,
   storyFacts,
 } from "../lib/about";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Until They Fall is a melodic death metal band from Brussels, formed in 2018 and built around aggressive riffs, atmospheric melodies and live catharsis.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About Until They Fall",
+    description:
+      "Melodic death metal from Brussels. Brutal, melodic and built for the stage.",
+    url: "/about",
+    images: [
+      {
+        url: "/gallery/utf-band-good.jpg",
+        width: 2048,
+        height: 1365,
+        alt: "Until They Fall band photo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Until They Fall",
+    description:
+      "Melodic death metal from Brussels. Brutal, melodic and built for the stage.",
+    images: ["/gallery/utf-band-good.jpg"],
+  },
+};
 
 export default function AboutPage() {
   return (
