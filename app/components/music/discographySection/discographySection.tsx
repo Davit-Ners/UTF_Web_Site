@@ -20,7 +20,7 @@ export default function DiscographySection({ releases }: Props) {
             </div>
             <div className={styles.body}>
                 <span className={styles.type}>
-                {release.type} · {release.year}
+                {release.type} - {release.year}
                 </span>
                 <h3 className={styles.title}>{release.title}</h3>
                 {release.subtitle && (
@@ -36,14 +36,14 @@ export default function DiscographySection({ releases }: Props) {
                     rel="noreferrer"
                     className={styles.linkPrimary}
                     >
-                    Open on Spotify
+                    Listen Now
                     </a>
                 )}
                 <Link
                     href={`/music/${release.id}`}
                     className={styles.linkSecondary}
                 >
-                    Details
+                    View Release
                 </Link>
                 </div>
             </div>

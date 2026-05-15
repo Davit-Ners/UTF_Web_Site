@@ -34,7 +34,6 @@ export default async function ReleasePage({ params }: Props) {
 
         <section className={styles.heroSection}>
             <div className="container">
-            {/* On réutilise FeaturedRelease pour la partie haut */}
             <FeaturedRelease release={release} />
             </div>
         </section>
@@ -53,7 +52,8 @@ export default async function ReleasePage({ params }: Props) {
                     <p className={styles.storyText}>{release.story}</p>
                 ) : (
                     <p className={styles.storyText}>
-                    A focused release built for loud rooms, streaming services and the live set.
+                    A focused release built around pressure, melody and the will
+                    to rise again.
                     </p>
                 )}
 
@@ -67,7 +67,7 @@ export default async function ReleasePage({ params }: Props) {
 
                 <div className={styles.storyCta}>
                     <Link href="/booking" className="button">
-                    Book a show with this set
+                    Book The Band
                     </Link>
                 </div>
                 </div>
@@ -75,7 +75,6 @@ export default async function ReleasePage({ params }: Props) {
             </div>
         </section>
 
-        {/* CTA vers le merch */}
         <section className={styles.section}>
             <div className="container">
             <div className={`card ${styles.merchCta}`}>
@@ -83,20 +82,19 @@ export default async function ReleasePage({ params }: Props) {
                 <span className={styles.merchEyebrow}>Merch</span>
                 <h2 className={styles.merchTitle}>Support the record</h2>
                 <p className={styles.merchText}>
-                    Grab the CD, hoodie or stickers from the “Sent To Die” era and
-                    help us keep releasing new music.
+                    Grab the CD, hoodie or stickers from the Sent To Die era and
+                    support the band directly.
                 </p>
                 </div>
                 <div className={styles.merchActions}>
                 <Link href="/merch" className="button">
-                    Go to merch
+                    Enter The Store
                 </Link>
                 </div>
             </div>
             </div>
         </section>
 
-        {/* Autres releases en bas */}
         {others.length > 0 && (
             <section className={styles.section}>
             <div className="container">

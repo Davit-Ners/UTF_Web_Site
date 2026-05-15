@@ -23,14 +23,14 @@ export default function FeaturedRelease({ release }: Props) {
             <span className={styles.eyebrow}>{release.type}</span>
             <h2 className={styles.title}>{release.title}</h2>
             <p className={styles.meta}>
-                {release.subtitle && <span>{release.subtitle} · </span>}
+                {release.subtitle && <span>{release.subtitle} - </span>}
                 <span>{release.year}</span>
             </p>
             <p className={styles.blurb}>{release.blurb}</p>
 
             {release.highlightTrack && (
                 <p className={styles.highlight}>
-                Highlight track: <strong>{release.highlightTrack}</strong>
+                Lead track: <strong>{release.highlightTrack}</strong>
                 </p>
             )}
 
@@ -42,7 +42,7 @@ export default function FeaturedRelease({ release }: Props) {
                     rel="noreferrer"
                     className="button"
                 >
-                    Listen on Spotify
+                    Listen Now
                 </a>
                 )}
                 {release.appleMusicUrl && (

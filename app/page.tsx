@@ -20,7 +20,7 @@ export default async function Home() {
         videoId="9Wvpovk_Tg4"
         title="Until They Fall - Sent To Die"
         eyebrow="Official Video"
-        subtitle="Brutality, melody and resistance in the first visual from Sent To Die."
+        subtitle="The official video from Sent To Die. Heavy, melodic and built around the album’s darker edge."
       />
 
       <FeaturedRelease

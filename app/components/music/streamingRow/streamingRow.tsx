@@ -6,9 +6,9 @@ type Props = { release: Release };
 export default function StreamingRow({ release }: Props) {
     return (
         <div className={`card ${styles.card}`}>
-        <h3 className={styles.title}>Listen everywhere</h3>
+        <h3 className={styles.title}>Listen now</h3>
         <p className={styles.text}>
-            Pick your favourite platform and add the album to your playlist.
+            Play it loud, then come hear the songs in the room.
         </p>
 
         <div className={styles.links}>
@@ -20,7 +20,7 @@ export default function StreamingRow({ release }: Props) {
                 className={styles.linkRow}
             >
                 <span>Spotify</span>
-                <span className={styles.chevron}>↗</span>
+                <span className={styles.chevron}>-&gt;</span>
             </a>
             )}
             {release.appleMusicUrl && (
@@ -31,7 +31,7 @@ export default function StreamingRow({ release }: Props) {
                 className={styles.linkRow}
             >
                 <span>Apple Music</span>
-                <span className={styles.chevron}>↗</span>
+                <span className={styles.chevron}>-&gt;</span>
             </a>
             )}
             {release.youtubeMusicUrl && (
@@ -42,7 +42,7 @@ export default function StreamingRow({ release }: Props) {
                 className={styles.linkRow}
             >
                 <span>YouTube Music</span>
-                <span className={styles.chevron}>↗</span>
+                <span className={styles.chevron}>-&gt;</span>
             </a>
             )}
             {release.bandcampUrl && (
@@ -53,7 +53,7 @@ export default function StreamingRow({ release }: Props) {
                 className={styles.linkRow}
             >
                 <span>Bandcamp</span>
-                <span className={styles.chevron}>↗</span>
+                <span className={styles.chevron}>-&gt;</span>
             </a>
             )}
         </div>

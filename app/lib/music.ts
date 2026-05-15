@@ -34,18 +34,18 @@ export const latestRelease: Release = {
   cover: "/album-cover.jpg",
   highlightTrack: "Sent To Die",
   blurb:
-    "Our debut album - modern melodic death metal with big hooks, cinematic atmosphere and relentless riffs.",
+    "Aggressive riffs, atmospheric melodies and modern metal tension from Brussels.",
   spotifyUrl: "https://open.spotify.com/album/2xtq2hwcacYHSi5MHAm40s",
   appleMusicUrl: "https://music.apple.com/album/1718447538",
   youtubeMusicUrl:
     "https://www.youtube.com/watch?v=rtEFcJMtlJE&list=OLAK5uy_lWQtwuyyilIDmtt9zLDjKAJ-Rj-VP75T4",
   bandcampUrl: "",
   story:
-    "Sent To Die was written as a first full statement: sharp guitars, hard drops, melodic lift and songs made to survive both headphones and a loud room.",
+    "Released on December 1, 2023, Sent To Die is the band’s first full-length record. Aggressive riffs, melodic leads and atmospheric weight run through songs shaped by pressure, collapse and release.",
   recordingNotes: [
+    "Recorded at Project Zero Studio.",
     "Produced, mixed and mastered by Yarne Heylen.",
-    "Built around modern metal weight, melodic death tension and live-first songwriting.",
-    "The title track started years before the final album sessions and stayed central to the record.",
+    "Uprising aired several times on Classic 21; Wrath Of Gaia aired on Radio Panik.",
   ],
   tracks: [
     { id: "t1", title: "Sent To Die", length: "4:32", isSingle: true },

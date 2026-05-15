@@ -11,7 +11,7 @@ export default function TracklistCard({ release }: Props) {
         <header className={styles.header}>
             <h3 className={styles.title}>Tracklist</h3>
             <span className={styles.count}>
-            {release.tracks.length} tracks · {release.type}
+            {release.tracks.length} tracks - {release.type}
             </span>
         </header>
 
