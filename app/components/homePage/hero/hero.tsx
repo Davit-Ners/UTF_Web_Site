@@ -1,4 +1,5 @@
 'use client';
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import styles from "./hero.module.css";
 import Link from "next/link";
@@ -26,7 +27,18 @@ export default function Hero(){
 
         <div className="container">
             <div className={styles.inner}>
-            <h1 className={styles.title}>UNTIL THEY FALL</h1>
+            <h1 className={styles.srOnly}>Until They Fall</h1>
+            <div className={styles.logoMark} aria-hidden="true">
+                <Image
+                    src="/logo-typo.png"
+                    alt=""
+                    width={2048}
+                    height={1318}
+                    priority
+                    className={styles.logoImage}
+                    sizes="(max-width: 700px) 92vw, (max-width: 1200px) 82vw, 980px"
+                />
+            </div>
             <p className={styles.tag}>Melodic death metal from Brussels</p>
             <div className={styles.actions}>
                 <Link href="/concerts" className={`button ${styles.btn}`}>See Live Dates</Link>
