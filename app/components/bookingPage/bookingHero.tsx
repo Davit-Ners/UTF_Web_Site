@@ -10,7 +10,7 @@ function Stat({ label, value }: { label: string; value: string }) {
         </dl>
         </div>
     );
-};
+}
 
 function ActionLink({ href, label }: { href: string; label: string }) {
     return (
@@ -18,7 +18,7 @@ function ActionLink({ href, label }: { href: string; label: string }) {
         {label}
         </a>
     );
-};
+}
 
 export default function BookingHero() {
     return (
@@ -26,25 +26,24 @@ export default function BookingHero() {
             <div className="container">
             <header className={styles.header}>
                 <span className={styles.eyebrow}>Booking</span>
-                <h1 className={styles.title}>Bring <span>Until They Fall</span> to your stage</h1>
+                <h1 className={styles.title}>Book <span>Until They Fall</span></h1>
                 <p className={styles.subtitle}>
-                Melodic death metal // Brussels. High‑energy live set with tight production.
+                Brussels melodic death metal with a tight live set, Belgian
+                stage experience and tech rider ready.
                 </p>
             </header>
 
             <div className={styles.infoGrid}>
                 <Stat label="Base" value="Brussels, BE" />
-                <Stat label="Set length" value="30–60 min (headline/guest)" />
-                <Stat label="Availability" value="EU - All year" />
-                <Stat label="Response time" value="< 24h (weekdays)" />
+                <Stat label="Set length" value="30-60 min" />
+                <Stat label="Shows" value="Clubs, support slots, festivals" />
+                <Stat label="Airplay" value="Classic 21 / Radio Panik" />
             </div>
 
             <div className={styles.actions}>
                 <ActionLink href="/docs/UTF_technical_rider_2026.pdf" label="Download Tech Rider" />
-                {/* <ActionLink href="/docs/UTF_Stage_Plot.png" label="Stage Plot" /> */}
-                {/* <ActionLink href="/docs/UTF_PressKit.zip" label="Press Kit (EPK)" /> */}
             </div>
             </div>
         </section>
     );
-};
+}

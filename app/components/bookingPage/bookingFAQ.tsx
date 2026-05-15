@@ -1,5 +1,5 @@
 "use client";
-import styles from '../../booking/booking.module.css';
+import styles from "../../booking/booking.module.css";
 
 export default function BookingFAQ() {
     return (
@@ -7,23 +7,23 @@ export default function BookingFAQ() {
             <div className="container">
             <div className={styles.faqGrid}>
                 <details className={`${styles.faq} card`}>
+                <summary>What kind of shows do you book?</summary>
+                <p>Club shows, support slots, independent festivals and metal events. We can adapt the set to the slot.</p>
+                </details>
+                <details className={`${styles.faq} card`}>
                 <summary>What do you need on stage?</summary>
-                <p>See the Tech Rider above. We run in‑ears and bring our own wireless + tracks rig. Minimal changeover.</p>
+                <p>Download the tech rider above for the full details. We keep the setup clear and changeovers tight.</p>
                 </details>
                 <details className={`${styles.faq} card`}>
-                <summary>Travel & hospitality</summary>
-                <p>Based in Brussels. For out‑of‑town shows: transport + simple accommodation if needed. Flexible.</p>
+                <summary>Can you adapt the set length?</summary>
+                <p>Yes. Standard sets run from 30 to 60 minutes depending on the slot, schedule and event format.</p>
                 </details>
                 <details className={`${styles.faq} card`}>
-                <summary>Can we get a custom set length?</summary>
-                <p>Yes — from 25 to 60 minutes depending on slot. We adapt to your schedule.</p>
-                </details>
-                <details className={`${styles.faq} card`}>
-                <summary>Do you provide invoice?</summary>
-                <p>Yes. We can invoice via our company with VAT if required.</p>
+                <summary>Where are you based?</summary>
+                <p>The band is based in Brussels, Belgium, and is available for shows across Belgium and Europe.</p>
                 </details>
             </div>
             </div>
         </section>
     );
-};
+}

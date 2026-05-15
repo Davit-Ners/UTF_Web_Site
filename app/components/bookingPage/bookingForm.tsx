@@ -29,9 +29,9 @@ export default function BookingForm({
       <div className="container">
         <div className={`${styles.formCard} card`}>
           <div className={styles.formIntro}>
-            <h2 className={styles.formTitle}>Request a booking</h2>
+            <h2 className={styles.formTitle}>Send a booking request</h2>
             <p className="text-muted">
-              Give us a few details and we&apos;ll get back to you fast.
+              Send the date, city, event type and any useful production details.
             </p>
           </div>
 
@@ -50,7 +50,7 @@ export default function BookingForm({
                 <label htmlFor="name">
                   Your name <span className={styles.req}>*</span>
                 </label>
-                <input id="name" name="name" placeholder="Jane Doe" />
+                <input id="name" name="name" placeholder="Your name" />
               </div>
               <div className={styles.group}>
                 <label htmlFor="email">
@@ -60,11 +60,11 @@ export default function BookingForm({
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="you@company.com"
+                  placeholder="you@venue.com"
                 />
               </div>
               <div className={styles.group}>
-                <label htmlFor="org">Company / Organizer</label>
+                <label htmlFor="org">Venue / Festival / Organizer</label>
                 <input
                   id="org"
                   name="org"
@@ -87,7 +87,7 @@ export default function BookingForm({
               </div>
               <div className={styles.group}>
                 <label htmlFor="capacity">Venue capacity</label>
-                <input id="capacity" name="capacity" placeholder="500" />
+                <input id="capacity" name="capacity" placeholder="250, 500, 1000..." />
               </div>
               <div className={styles.group}>
                 <label htmlFor="date">
@@ -114,7 +114,7 @@ export default function BookingForm({
                 id="message"
                 name="message"
                 rows={6}
-                placeholder="Tell us about the gig (set length, backline, schedule, etc.)"
+                placeholder="Tell us about the show: lineup, set length, backline, schedule, fee range, hospitality..."
               />
             </div>
 
@@ -127,11 +127,11 @@ export default function BookingForm({
             ) : null}
 
             {error && <p className={styles.error}>{error}</p>}
-            {ok && <p className={styles.success}>Thanks! We&apos;ll reply shortly.</p>}
+            {ok && <p className={styles.success}>Thanks. We&apos;ll get back to you shortly.</p>}
 
             <div className={styles.actionsRow}>
               <button className="button" disabled={submitDisabled}>
-                {loading ? "Sending..." : "Send request"}
+                {loading ? "Sending..." : "Send Booking Request"}
               </button>
               <p className={`${styles.altContact} text-muted`}>
                 Or email us:{" "}

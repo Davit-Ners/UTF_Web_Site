@@ -5,48 +5,48 @@ export default function WhyBookUs() {
         <section className={styles.wrap}>
         <div className="container">
             <header className={styles.header}>
-            <span className={styles.eyebrow}>Why book us</span>
-            <h2 className={styles.title}>A tight, explosive live show</h2>
+            <span className={styles.eyebrow}>Live</span>
+            <h2 className={styles.title}>A heavy set built for the room.</h2>
             <p className={styles.subtitle}>
-                Until They Fall delivers a modern metal experience built for festivals,
-                clubs and showcases. Fast setup, pro attitude and maximum energy.
+                Until They Fall is available for club shows, support slots,
+                independent festivals and metal events across Belgium and Europe.
             </p>
             </header>
 
             <div className={styles.grid}>
             <div className={`${styles.feature} card`}>
-                <h3>Fast & clean setup</h3>
+                <h3>Stage-ready setup</h3>
                 <p>
-                Full in-ear / tracks rig, wireless guitars, minimal stage footprint.
-                Changeover under 15 minutes.
+                Tech rider ready, fast changeovers and a setup built to keep the
+                show moving.
                 </p>
             </div>
 
             <div className={`${styles.feature} card`}>
                 <h3>Modern metal sound</h3>
                 <p>
-                Huge live mix, tight drums, melodic leads, heavy rhythm section.
-                Adaptable set from 25 to 60 minutes.
+                Melodic death metal weight, metalcore tension, aggressive riffs
+                and atmospheric leads.
                 </p>
             </div>
 
             <div className={`${styles.feature} card`}>
-                <h3>Professional & reliable</h3>
+                <h3>Belgian stage experience</h3>
                 <p>
-                Brussels-based, available EU. Quick communication {"(< 24h)"}.
-                Flexible and easy to work with.
+                Active on the Belgian metal scene with club shows, independent
+                festivals and support slots.
                 </p>
             </div>
 
             <div className={`${styles.feature} card`}>
-                <h3>Crowd engagement</h3>
+                <h3>Radio airplay</h3>
                 <p>
-                High-energy performance with crowd interaction.
-                Designed to make festivals and club shows unforgettable.
+                Uprising aired several times on Classic 21; Wrath Of Gaia aired
+                on Radio Panik.
                 </p>
             </div>
             </div>
         </div>
         </section>
     );
-};
+}
