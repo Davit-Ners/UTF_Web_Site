@@ -66,11 +66,11 @@ export default async function ActionHub() {
         <div className={styles.frame}>
           <div className={styles.header}>
             <div className={styles.copy}>
-              <span className={styles.eyebrow}>Routes</span>
-              <h2 className={styles.title}>Pick the lane that matters now.</h2>
+              <span className={styles.eyebrow}>Start here</span>
+              <h2 className={styles.title}>Music, shows and booking.</h2>
               <p className={styles.text}>
-                Dates, booking and direct updates. The fast-entry part of the site
-                when you want the next move without digging around.
+                Listen to Sent To Die, check upcoming shows or bring Until They
+                Fall to your stage.
               </p>
             </div>
 
@@ -94,15 +94,15 @@ export default async function ActionHub() {
                   </span>
                   <div>
                     <span className={styles.kicker}>Live</span>
-                    <h3 className={styles.cardTitle}>Next move</h3>
+                    <h3 className={styles.cardTitle}>Next show</h3>
                   </div>
                 </div>
                 <span className={styles.linkLabel}>Concerts</span>
               </div>
 
               <p className={styles.desc}>
-                The quickest way to the next date, venue details and the full live
-                archive.
+                Upcoming dates, venue details and past shows from the Belgian
+                metal scene.
               </p>
 
               {nextShow ? (
@@ -122,7 +122,7 @@ export default async function ActionHub() {
                   </div>
 
                   <div className={styles.showMeta}>
-                    <span className={styles.metaLabel}>Locked date</span>
+                    <span className={styles.metaLabel}>Next on stage</span>
                     <p className={styles.showCity}>{nextShow.city.split(",")[0]}</p>
                     <p className={styles.showVenue}>{nextShow.venue}</p>
                     {nextShow.note ? (
@@ -135,9 +135,9 @@ export default async function ActionHub() {
               ) : (
                 <div className={styles.emptyState}>
                   <span className={styles.emptyEyebrow}>No date public yet</span>
-                  <p className={styles.emptyTitle}>The next run is still taking shape.</p>
+                  <p className={styles.emptyTitle}>The next room is still taking shape.</p>
                   <p className={styles.emptyText}>
-                    Keep an eye on the concert page and the list below for the next
+                    Join the list or check the concert page for the next
                     announcement.
                   </p>
                 </div>
@@ -157,19 +157,19 @@ export default async function ActionHub() {
                     </span>
                     <div>
                       <span className={styles.kicker}>Booking</span>
-                      <h3 className={styles.cardTitle}>Bring the band in</h3>
+                      <h3 className={styles.cardTitle}>Book the band</h3>
                     </div>
                   </div>
                   <span className={styles.linkLabel}>Booking</span>
                 </div>
 
                 <p className={styles.desc}>
-                  Club shows, festival slots, support bills and the direct contact
-                  route for promoters.
+                  Brussels melodic death metal with a tight live set and tech
+                  rider ready.
                 </p>
 
                 <div className={styles.tagRow}>
-                  <span className={styles.tag}>Club dates</span>
+                  <span className={styles.tag}>Club shows</span>
                   <span className={styles.tag}>Festivals</span>
                   <span className={styles.tag}>Support slots</span>
                 </div>
@@ -187,15 +187,14 @@ export default async function ActionHub() {
                     <div>
                       <span className={styles.kicker}>Mailing list</span>
                       <h3 id="hub-newsletter-title" className={styles.cardTitle}>
-                        Stay on the first signal
+                        Join the list
                       </h3>
                     </div>
                   </div>
                 </div>
 
                 <p className={styles.desc}>
-                  For new dates, drops and the occasional inside line before it hits
-                  the feed.
+                  New dates, videos and merch drops straight from the band.
                 </p>
 
                 <div className={styles.formWrap}>

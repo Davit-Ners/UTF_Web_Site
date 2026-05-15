@@ -24,10 +24,10 @@ export default function FeaturedMerch({ items }: Props) {
         <div className={styles.shell}>
           <div className={styles.copyCard}>
             <span className={styles.eyebrow}>Store</span>
-            <h2 className={styles.title}>A tighter merch preview.</h2>
+            <h2 className={styles.title}>Official merch from the band.</h2>
             <p className={styles.text}>
-              Just the current essentials on the front rack. Tees, music and a
-              few pieces worth grabbing before the next drop lands.
+              Support the band directly. Grab the current merch, CDs and patches
+              before the next show.
             </p>
 
             <div className={styles.metaRow}>
@@ -37,10 +37,10 @@ export default function FeaturedMerch({ items }: Props) {
 
             <div className={styles.actions}>
               <Link href="/merch" className="button">
-                Enter the store
+                Enter The Store
               </Link>
               <span className={styles.sideNote}>
-                {items.length} featured pieces
+                {items.length} pieces featured
               </span>
             </div>
           </div>

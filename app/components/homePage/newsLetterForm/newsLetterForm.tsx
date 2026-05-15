@@ -52,7 +52,7 @@ export default function NewsletterForm() {
             </div>
 
             {state === "ok" && (
-                <span className={styles.msgOk}>Subscribed. See you in the inbox.</span>
+                <span className={styles.msgOk}>Subscribed. See you before the next show.</span>
             )}
             {state === "err" && (
                 <span className={styles.msgErr}>Subscription failed. Try again.</span>

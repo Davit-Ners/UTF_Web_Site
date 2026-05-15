@@ -47,7 +47,7 @@ export default function FeaturedRelease({
           </div>
 
           <div className={styles.meta}>
-            <span className={styles.eyebrow}>Featured Release</span>
+            <span className={styles.eyebrow}>Sent To Die is out now</span>
             <h3 id="featured-release-title" className={styles.title}>
               {title} {year ? <span className={styles.year}>- {year}</span> : null}
             </h3>
@@ -62,7 +62,7 @@ export default function FeaturedRelease({
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Listen on Spotify
+                  Listen Now
                 </a>
               )}
               {appleUrl && (

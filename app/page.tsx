@@ -19,7 +19,8 @@ export default async function Home() {
       <FeaturedVideo
         videoId="9Wvpovk_Tg4"
         title="Until They Fall - Sent To Die"
-        subtitle="Official Music Video"
+        eyebrow="Official Video"
+        subtitle="Brutality, melody and resistance in the first visual from Sent To Die."
       />
 
       <FeaturedRelease
@@ -29,7 +30,7 @@ export default async function Home() {
         coverSrc="/album-cover.jpg"
         spotifyId="6HfDbfx8LZCaJzs7gWW8yG"
         spotifyType="album"
-        blurb="Melodic Death Metal with catchy hooks and heavy riffs."
+        blurb="Debut album released in 2023. Brutal riffs, atmospheric melodies and songs written for the stage."
         appleUrl="https://music.apple.com/us/album/sent-to-die/1718447538"
         youtubeMusicUrl="https://www.youtube.com/channel/UCIXxu9KHo8HvETKE3oZ0UNA"
       />

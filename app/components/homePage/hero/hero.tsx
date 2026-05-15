@@ -27,10 +27,10 @@ export default function Hero(){
         <div className="container">
             <div className={styles.inner}>
             <h1 className={styles.title}>UNTIL THEY FALL</h1>
-            <p className={styles.tag}>Modern Metal // Brussels</p>
+            <p className={styles.tag}>Melodic death metal from Brussels</p>
             <div className={styles.actions}>
-                <Link href="/concerts" className={`button ${styles.btn}`}>Tickets</Link>
-                <Link href="/music" className={`button ${styles.btnAlt}`}>Listen</Link>
+                <Link href="/concerts" className={`button ${styles.btn}`}>See Live Dates</Link>
+                <Link href="/music" className={`button ${styles.btnAlt}`}>Listen Now</Link>
             </div>
             </div>
         </div>
