@@ -119,7 +119,11 @@ async function buildOrderSummary(
 async function sendMerchEmails(order: MerchOrderSummary) {
   if (!resend) {
     console.warn("RESEND_API_KEY is missing. Merch order stored without email.");
-    return { emailed: false, confirmationEmailed: false };
+    return {
+      emailed: false,
+      confirmationEmailed: false,
+      errors: ["RESEND_API_KEY is missing."],
+    };
   }
 
   const [orderEmailResult, confirmationEmailResult] =
@@ -145,15 +149,18 @@ async function sendMerchEmails(order: MerchOrderSummary) {
 
   let emailed = false;
   let confirmationEmailed = false;
+  const errors: string[] = [];
 
   if (orderEmailResult.status === "fulfilled") {
     if (orderEmailResult.value.error) {
       console.error("MERCH EMAIL ERROR:", orderEmailResult.value.error);
+      errors.push("Internal merch email failed.");
     } else {
       emailed = true;
     }
   } else {
     console.error("MERCH EMAIL ERROR:", orderEmailResult.reason);
+    errors.push("Internal merch email failed.");
   }
 
   if (confirmationEmailResult.status === "fulfilled") {
@@ -162,6 +169,7 @@ async function sendMerchEmails(order: MerchOrderSummary) {
         "MERCH CONFIRMATION EMAIL ERROR:",
         confirmationEmailResult.value.error
       );
+      errors.push("Customer confirmation email failed.");
     } else {
       confirmationEmailed = true;
     }
@@ -170,9 +178,10 @@ async function sendMerchEmails(order: MerchOrderSummary) {
       "MERCH CONFIRMATION EMAIL ERROR:",
       confirmationEmailResult.reason
     );
+    errors.push("Customer confirmation email failed.");
   }
 
-  return { emailed, confirmationEmailed };
+  return { emailed, confirmationEmailed, errors };
 }
 
 export async function POST(req: Request) {
@@ -183,7 +192,8 @@ export async function POST(req: Request) {
 
     if (!validation.ok) {
       if (validation.spam) {
-        return Response.json({ success: true });
+        console.warn("MERCH ORDER REJECTED: honeypot field was filled.");
+        return Response.json({ error: "Invalid request." }, { status: 400 });
       }
 
       return Response.json(
@@ -230,6 +240,22 @@ export async function POST(req: Request) {
     };
 
     const { emailed, confirmationEmailed } = await sendMerchEmails(order);
+
+    if (!emailed || !confirmationEmailed) {
+      return Response.json(
+        {
+          success: false,
+          stored: true,
+          emailed,
+          confirmationEmailed,
+          orderId: order.orderId,
+          orderNumber: order.orderNumber,
+          error:
+            "Order request was saved, but email delivery failed. Please contact the band directly with this order number.",
+        },
+        { status: 502 }
+      );
+    }
 
     return Response.json({
       success: true,

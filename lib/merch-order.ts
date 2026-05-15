@@ -8,11 +8,11 @@ export type MerchOrderPayload = {
   email: string;
   country: string;
   notes: string;
-  website: string;
+  faxNumber: string;
   items: MerchOrderItemInput[];
 };
 
-export type ValidMerchOrderPayload = Omit<MerchOrderPayload, "website">;
+export type ValidMerchOrderPayload = Omit<MerchOrderPayload, "faxNumber">;
 
 type MerchOrderValidationResult =
   | { ok: true; data: ValidMerchOrderPayload }
@@ -60,7 +60,7 @@ export function parseMerchOrderPayload(input: unknown): MerchOrderPayload {
     email: readString(record.email).toLowerCase(),
     country: readString(record.country),
     notes: readString(record.notes),
-    website: readString(record.website),
+    faxNumber: readString(record.faxNumber),
     items: parseItems(record.items),
   };
 }
@@ -68,7 +68,7 @@ export function parseMerchOrderPayload(input: unknown): MerchOrderPayload {
 export function validateMerchOrderPayload(
   payload: MerchOrderPayload
 ): MerchOrderValidationResult {
-  if (payload.website) {
+  if (payload.faxNumber) {
     return { ok: false, spam: true };
   }
 

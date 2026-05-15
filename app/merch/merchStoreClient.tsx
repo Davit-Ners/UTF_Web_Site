@@ -75,7 +75,7 @@ export default function MerchStoreClient({ products }: Props) {
         email: string;
         country: string;
         notes: string;
-        website: string;
+        faxNumber: string;
     }): Promise<boolean> {
         if (!cart.length) return false;
 

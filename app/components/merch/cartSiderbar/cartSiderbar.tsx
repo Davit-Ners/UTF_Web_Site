@@ -14,7 +14,7 @@ type Props = {
         email: string;
         country: string;
         notes: string;
-        website: string;
+        faxNumber: string;
     }) => Promise<boolean>;
     orderStatus:
         | { type: "idle" }
@@ -53,7 +53,7 @@ export default function CartSidebar({
     const [email, setEmail] = useState("");
     const [country, setCountry] = useState("");
     const [notes, setNotes] = useState("");
-    const [website, setWebsite] = useState("");
+    const [faxNumber, setFaxNumber] = useState("");
     const hasItems = items.length > 0;
 
     const shippingEstimate =
@@ -70,7 +70,7 @@ export default function CartSidebar({
             email,
             country,
             notes,
-            website,
+            faxNumber,
         });
 
         if (ok) {
@@ -78,7 +78,7 @@ export default function CartSidebar({
             setEmail("");
             setCountry("");
             setNotes("");
-            setWebsite("");
+            setFaxNumber("");
         }
     }
 
@@ -141,9 +141,9 @@ export default function CartSidebar({
         <form className={styles.orderForm} onSubmit={handleSubmit}>
             <input
                 type="text"
-                name="website"
-                value={website}
-                onChange={(event) => setWebsite(event.target.value)}
+                name="faxNumber"
+                value={faxNumber}
+                onChange={(event) => setFaxNumber(event.target.value)}
                 className={styles.honey}
                 tabIndex={-1}
                 autoComplete="off"
