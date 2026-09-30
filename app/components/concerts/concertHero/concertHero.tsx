@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./concertHero.module.css";
 import { type Concert } from "@/app/lib/concerts";
 
@@ -30,6 +31,20 @@ export default function ConcertsHero({ nextShow }: Props) {
             {nextShow ? (
               <div className={styles.nextShow}>
                 <span className={styles.nextLabel}>Next on stage</span>
+                {nextShow.posterUrl ? (
+                  <Link
+                    href={`/concerts/${nextShow.id}`}
+                    className={styles.posterWrap}
+                  >
+                    <Image
+                      src={nextShow.posterUrl}
+                      alt={`${nextShow.title ?? nextShow.venue} — concert poster`}
+                      fill
+                      sizes="(max-width: 400px) 80vw, 290px"
+                      className={styles.posterImage}
+                    />
+                  </Link>
+                ) : null}
                 <p className={styles.nextMain}>
                   {formatDate(nextShow.date)} - {nextShow.city}
                 </p>

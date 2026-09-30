@@ -73,6 +73,21 @@
   width: 100%;
 }
 
+.posterWrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  margin: 12px 0;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.posterImage {
+  object-fit: contain;
+}
+
 .nextLabel {
   font-size: .75rem;
   text-transform: uppercase;

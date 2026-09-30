@@ -108,7 +108,8 @@
 
 .sideColumn {
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: auto auto;
+  align-content: start;
   gap: 16px;
 }
 
@@ -150,7 +151,7 @@
 
 .liveCard {
   min-height: 344px;
-  justify-content: space-between;
+  justify-content: flex-start;
   background:
     radial-gradient(circle at top right, color-mix(in oklab, var(--color-accent) 15%, transparent), transparent 34%),
     linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 94%, black), color-mix(in oklab, var(--color-surface-alt) 86%, black));
@@ -225,6 +226,65 @@
 .desc {
   max-width: 42ch;
   color: var(--color-text-secondary);
+}
+
+.showContent {
+  margin-top: auto;
+}
+
+.showWithPoster {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+  margin-top: auto;
+}
+
+.showWithPoster .showBoard {
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 0;
+}
+
+.showWithPoster .datePanel {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  min-height: 0;
+  padding: 12px 16px;
+  border-radius: 14px;
+}
+
+.showWithPoster .dateMonth {
+  margin-top: 0;
+}
+
+.showWithPoster .showMeta {
+  padding: 0;
+  border: 0;
+  background: none;
+  gap: 8px;
+}
+
+.showWithPoster .showNote {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+.posterWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  max-width: 280px;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+}
+
+.posterImage {
+  object-fit: contain;
 }
 
 .showBoard {
@@ -391,5 +451,16 @@
 
   .datePanel {
     min-height: 96px;
+  }
+}
+
+@media (max-width: 540px) {
+  .showWithPoster {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .posterWrap {
+    max-width: 240px;
+    justify-self: center;
   }
 }

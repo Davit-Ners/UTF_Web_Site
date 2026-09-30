@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./actionHub.module.css";
 import NewsletterForm from "../newsLetterForm/newsLetterForm";
 import { getNextConcert } from "@/app/lib/concerts";
@@ -105,6 +106,19 @@ export default async function ActionHub() {
                 metal scene.
               </p>
 
+              <div className={nextShow?.posterUrl ? styles.showWithPoster : styles.showContent}>
+              {nextShow?.posterUrl ? (
+                <div className={styles.posterWrap}>
+                  <Image
+                    src={nextShow.posterUrl}
+                    alt={`${nextShow.title ?? nextShow.venue} — concert poster`}
+                    fill
+                    sizes="(max-width: 540px) 240px, (max-width: 980px) 280px, 220px"
+                    className={styles.posterImage}
+                  />
+                </div>
+              ) : null}
+
               {nextShow ? (
                 <div className={styles.showBoard}>
                   <div className={styles.datePanel}>
@@ -142,6 +156,7 @@ export default async function ActionHub() {
                   </p>
                 </div>
               )}
+              </div>
             </Link>
 
             <div className={styles.sideColumn}>
