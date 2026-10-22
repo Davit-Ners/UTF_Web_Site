@@ -16,8 +16,9 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 6 | About + Merch (homepage) | Done and approved |
 | 7 | ActionHub removal, Mailing list, Booking / Contact, Footer refinement, page rhythm review | Done, **not committed**. The homepage structure is now complete |
 | 8 | `/music` page ("Sleeve") | Done |
-| 9 | `/music/[slug]` release page ("Booklet") | Done, **not committed** |
-| Next | Other internal pages (`/about`, `/concerts`, `/merch`, `/gallery`, `/booking`) still in the old card style; asset replacement | Not started; wait for go-ahead |
+| 9 | `/music/[slug]` release page ("Booklet") | Done |
+| 10 | `/concerts` ("Tour Poster") + `/concerts/past` redirect | Done, **not committed** |
+| Next | `/concerts/[slug]`, `/about`, `/merch`, `/gallery`, `/booking` still in the old card style; asset replacement | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
 
@@ -71,6 +72,7 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 ## Temporary code to revisit
 
 - `app/page.tsx`: try/catch around `getActiveMerchProducts`. The empty list is shown when the database is down.
+- `app/concerts/page.tsx`: try/catch around `getConcertBuckets` (Phase 10). It passes `null` to `TourPoster`, which shows "Dates unavailable right now" and "Archive unavailable right now". Real resilience: keep it.
 - `app/page.tsx`: try/catch around `getConcertBuckets`. On failure it passes `null` to Live, which shows the neutral unavailable state, not "No public dates". This is worth keeping as real resilience.
 - ~~`actionHub.tsx`: `getNextConcert().catch(() => null)`~~. Gone with ActionHub (Phase 7).
 - These were added because the local Postgres was not running. Decide whether to keep them as real resilience, which is recommended for the homepage, or remove them once the database setup is sorted.
@@ -369,6 +371,44 @@ Hierarchy: homepage = teaser, `/music` = record sleeve, `/music/[slug]` = full b
   - song notes render only for tracks 01, 03 and 04.
 - `/music` and `/` still render with the same release facts.
 
+## Phase 10: `/concerts` ("Tour Poster")
+
+Hierarchy: homepage Live = next dates teaser; `/concerts` = complete dates plus the live archive.
+
+**Composition** (new `app/components/concerts/tourPoster/*`; `app/concerts/page.tsx` rewritten, SEO metadata and `revalidate = 60` kept)
+- **Masthead (ink):** "LIVE" as the `h1`, condensed display at about 26vw. A mono count line with real numbers only: `NN upcoming — NN shows since YYYY` (year = earliest past show).
+- **Upcoming (ink),** by state:
+  - **0 dates:** one ruled line, "No public dates" / "Next announcement soon" (wording from the wireframe). No card.
+  - **1 date:** a featured spread. The poster at its natural ratio on columns 1–6 (or the text full width without a poster). "Next show", a giant "DD MON / YYYY", the city, the event title (only if useful), "with …" (real line-up), and a ruled facts list showing Venue and City, plus Doors / Show / Price **only when those fields exist**. The seeded 12:00 time is never shown. Then Tickets ↗ (if any) and Details →.
+  - **2+ dates:** the date is the object (giant "DD.MM" with a mono "'YY"), the city plus a mono country, a mono venue, an optional "with …" (max 3 acts, then "+N"), and Tickets ↗ or Details →. Posters of upcoming shows sit in a column 9–12 at natural ratio.
+  - **Data failure:** "Dates unavailable right now". No counts, no technical detail; the error is only logged on the server.
+- **Archive (bone, `id="archive"`, `scroll-margin-top` = header height):** one chapter per year, newest first.
+  - Each year has a giant numeral, a 2px ink rule and a real show count.
+  - Ruled rows: date, city, venue, and the event title in serif italic only when `usefulTitle()` says it adds information (it drops trailing " - venue, city" segments and titles that only repeat the venue or city). Each row links to `/concerts/[slug]`.
+  - That year's real posters are pinned in columns 9–12 at their **intrinsic aspect ratio**, never cropped (verified: rendered ratio equals natural ratio, Braine 1.00 and Arlon 1.91). There is no placeholder when a year has no poster.
+  - **Past shows never show ticket actions** (verified: 0 external links inside `#archive` in every state).
+- **End:** "Booking →" as a single ruled typographic row, replacing the old booking CTA card.
+- **Ticket links (upcoming only):** external `<a target="_blank" rel="noopener noreferrer">` with screen-reader text, e.g. "Tickets for Brussels, 13.03.2027 (opens in a new tab)". The old code used `<Link>` without `target`.
+- **At 900px and below:** upcoming rows stack (the date on its own line, then city/venue plus the action); archive rows become two lines (date + city / venue + title); posters follow their list at full width; the 1-date facts and actions stack with 48px rows.
+
+**Shared helpers** (new `app/lib/concertFormat.ts`, pure functions): `concertDateParts`, `splitCity`, `supportingActs` (filters out "Until They Fall" itself), `usefulTitle` and `groupByYear`. Homepage `live.tsx` is **not** changed; it keeps its own local copies, which a later cleanup could switch to these helpers.
+
+**Redirect** (`next.config.ts`): `/concerts/past` → `/concerts#archive`, permanent (308). Verified that the browser lands on `/concerts#archive` with the archive top at the header height. The homepage Live empty state, which links to `/concerts/past`, keeps working through the redirect.
+
+**Deleted** (no remaining imports, verified by grep):
+- Components: `app/components/concertCard/` (already unused), and `concerts/concertHero`, `concertCalendar`, `concertList`, `pastConcerts`, `concertBookingCTA`, `yearBlock`.
+- Route files: `app/concerts/past/` (page + `archivePage.module.css`) and `app/concerts/concerts.module.css`.
+- The stray duplicate poster `public/optimized/concerts/utf-arlon/utf-braine/utf-braine-optimized.webp` (no reference in the code, the seed or the rendered pages; the real page still loads the canonical `utf-braine/` file).
+
+`concertDetails` and `concertGallery` are kept, because `/concerts/[slug]` uses them.
+
+**Tested states (Phase 10)**
+- **Real zero-upcoming state:** the local database was reachable during this phase. Live data gives "00 upcoming — 12 shows since 2024", with 2026 (5 shows), 2025 (2) and 2024 (5). The same result comes from the seed data split at 22.10.2026.
+- **Mocked 1-date state and mocked 3-date state:** on a temporary preview route (since removed), with no fake dates added to data.
+- **Data-failure state:** `null` data on the preview.
+- 1920, 1440, 820 and 375: no horizontal overflow and no page errors in any state.
+- `tsc` passes; eslint passes on the changed files.
+
 ## Unresolved: mobile Hero visual is temporary
 
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
@@ -381,6 +421,12 @@ Hierarchy: homepage = teaser, `/music` = record sleeve, `/music/[slug]` = full b
 - The Hero must stay ready to take a dedicated mobile asset. `HERO_IMAGE` in `hero.tsx` is the single place to add it, e.g. a `srcMobile` rendered through `<picture>` / art direction at ≤720px. The layout does not depend on the asset.
 
 ## Known weaknesses / open items
+
+- **`/concerts` detail pages (Phase 10):** every archive row links to `/concerts/[slug]`, which is still in the old card style. It is the next obvious mismatch.
+- **`/concerts` zero state (Phase 10):** with no dates, the giant "LIVE" sits above a single ruled line and the bone archive becomes the real content. This is intentional, but the top half is sparse.
+- **`/concerts` archive alignment (Phase 10):** years with posters have narrower rows (columns 1–8) than years without (full width), so the venue column shifts between 2025 and 2024.
+- **Concert posters (Phase 10):** both are third-party festival artwork (magenta, yellow, cyan) that clash with ink/bone/ember. Only 2 of 12 shows have one. Do posters exist for the other shows?
+- **Concert data (Phase 10, not cleaned):** inconsistent `title`s (handled at display time by `usefulTitle()`); a long promotional `note` on Braine (not shown in lists); "Bruxelles" vs "Brussels" used for the same city in different rows; the Arlon `ticketUrl` points at a generic Utick catalogue (irrelevant now, since past shows show no ticket action).
 
 - **`/music` artwork (Phase 8):** as the dominant object, the saturated, AI-looking digital cover is even more prominent than on the homepage. The physical CD engraving would suit the direction better once a clean scan and credit exist.
 - **`/music` desktop (Phase 8):** at 1920 there is a wide ink gap between the artwork and the tracklist column, and the bone liner notes have empty space under the story. Both read as deliberate, but could be tightened.
