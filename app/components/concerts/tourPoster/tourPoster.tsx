@@ -223,7 +223,7 @@ function YearChapter({ year, shows }: { year: string; shows: Concert[] }) {
   const headingId = `archive-${year}`;
 
   return (
-    <section className={`${styles.year} ${posters.length ? styles.hasPosters : ""}`} aria-labelledby={headingId}>
+    <section className={`${styles.chapter} ${posters.length ? styles.hasPosters : ""}`} aria-labelledby={headingId}>
       <header className={styles.yearHead}>
         <h3 id={headingId} className={styles.yearNumber}>
           {year}
@@ -259,7 +259,12 @@ function YearChapter({ year, shows }: { year: string; shows: Concert[] }) {
       {posters.length ? (
         <div className={styles.yearPosters}>
           {posters.map((show) => (
-            <Poster key={show.id} show={show} sizes="(max-width: 900px) 100vw, 30vw" />
+            <figure key={show.id} className={styles.yearPoster}>
+              <Poster show={show} sizes="(max-width: 900px) 100vw, 30vw" />
+              <figcaption className={styles.yearPosterCaption}>
+                Poster — {longDate(show.date)} — {splitCity(show.city).name}
+              </figcaption>
+            </figure>
           ))}
         </div>
       ) : null}

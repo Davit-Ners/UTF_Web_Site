@@ -517,6 +517,12 @@ Hierarchy: homepage Live = teaser; `/concerts` = tour poster / archive; `/concer
   - the Arlon gallery association (`band1`, `bandall`) is unconfirmed;
   - photo credits have no data field yet.
 - **`/concerts` zero state (Phase 10):** with no dates, the giant "LIVE" sits above a single ruled line and the bone archive becomes the real content. This is intentional, but the top half is sparse.
+- **`/concerts` archive poster anchoring (Phase 11.1):**
+  - Archive year posters now hang from the year rule: poster top = rule = top of the first show row, left edge on the column 9 grid line (measured at 1920 and 1440).
+  - Each poster carries a mono caption from real data ("Poster — DD.MM.YYYY — City"). No frame, shadow or card.
+  - The year numerals keep a 10–18px gap above the rule on desktop and tablet.
+  - Fixed a class collision: the archive chapter was `.year`, the same class as the upcoming date's small year label. It is now `.chapter`.
+- **`/concerts` archive poster on tablet:** at 820px the poster stacks full width under the list (about 750px tall). It could be capped later.
 - **`/concerts` archive alignment (Phase 10):** years with posters have narrower rows (columns 1–8) than years without (full width), so the venue column shifts between 2025 and 2024.
 - **Concert posters (Phase 10):** both are third-party festival artwork (magenta, yellow, cyan) that clash with ink/bone/ember. Only 2 of 12 shows have one. Do posters exist for the other shows?
 - **Concert data (Phase 10, not cleaned):** inconsistent `title`s (handled at display time by `usefulTitle()`); a long promotional `note` on Braine (not shown in lists); "Bruxelles" vs "Brussels" used for the same city in different rows; the Arlon `ticketUrl` points at a generic Utick catalogue (irrelevant now, since past shows show no ticket action).
