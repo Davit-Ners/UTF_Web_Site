@@ -15,6 +15,8 @@ export type Release = {
   releaseDate?: string;
   type: ReleaseType;
   cover: string;
+  /* Highest-resolution artwork file, for large presentations */
+  coverMaster?: string;
   highlightTrack?: string;
   blurb: string;
   spotifyUrl?: string;
@@ -24,7 +26,9 @@ export type Release = {
   tracks?: Track[];
   story?: string;
   recordingNotes?: string[];
+  /* Confirmed credits only; omit any role that is not confirmed */
   credits?: { role: string; name: string }[];
+  airplay?: { track: string; station: string }[];
 };
 
 export const latestRelease: Release = {
@@ -35,6 +39,7 @@ export const latestRelease: Release = {
   releaseDate: "2023-12-01",
   type: "Album",
   cover: "/optimized/album-cover.webp",
+  coverMaster: "/album-cover.jpg",
   highlightTrack: "Sent To Die",
   blurb:
     "Aggressive riffs, atmospheric melodies and modern metal tension from Brussels.",
@@ -53,6 +58,10 @@ export const latestRelease: Release = {
   credits: [
     { role: "Recorded", name: "Project Zero Studio" },
     { role: "Produced", name: "Yarne Heylen" },
+  ],
+  airplay: [
+    { track: "Uprising", station: "Classic 21" },
+    { track: "Wrath Of Gaia", station: "Radio Panik" },
   ],
   tracks: [
     { id: "t1", title: "Sent To Die", length: "4:32", isSingle: true },

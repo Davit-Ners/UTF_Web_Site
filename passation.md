@@ -15,7 +15,8 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 5.1 | Video side-column and gallery tablet refinements | Done |
 | 6 | About + Merch (homepage) | Done and approved |
 | 7 | ActionHub removal, Mailing list, Booking / Contact, Footer refinement, page rhythm review | Done, **not committed**. The homepage structure is now complete |
-| Next | Asset replacement (see the temporary list), internal pages (`/music`, `/about`, `/concerts`, `/merch`, `/gallery`, `/booking`) still in the old card style | Not started; wait for go-ahead |
+| 8 | `/music` page ("Sleeve") | Done, **not committed** |
+| Next | Other internal pages (`/music/[slug]`, `/about`, `/concerts`, `/merch`, `/gallery`, `/booking`) still in the old card style; asset replacement | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
 
@@ -274,6 +275,42 @@ Nothing else imported it.
 - The footer uses all four. The header mobile menu now uses `BAND_PROFILES.spotify` and `BAND_PROFILES.youtube` instead of `latestRelease.spotifyUrl` / `youtubeMusicUrl` (the album and the album playlist). The Header design is unchanged.
 - `latestRelease` URLs in `music.ts` remain the release-specific links (used by Hero "Listen" and the Release section), which is correct for those contexts.
 
+## Phase 8: `/music` ("Sleeve")
+
+**Structure** (`app/music/page.tsx`, `app/music/music.module.css`, new `app/components/music/releaseSleeve/*`)
+- Compact masthead: `h1` "Music" plus mono "Discography — 01 release". It is deliberately small so the artwork owns the first screen.
+- A release index (numbered anchor rows) renders only when `discography` has 2+ releases.
+- One `ReleaseSleeve` per release, newest first by `releaseDate`. Alternate releases are mirrored (artwork on the right). Singles get a smaller front and no pinned link column.
+- Each sleeve:
+  - **Front (ink):** the 1875px `coverMaster`, square, uncropped, `min(cols 1–7, 74svh)`, bleeding off the page edge. No card, blur backdrop or offset.
+  - **Back (ink):** mono meta line (type — DD.MM.YYYY — NN tracks — runtime, all computed), condensed title, tracklist as the main typography (mono index, condensed title, mono duration, ember "Single" text instead of a pill), "Total" rule, then streaming links as plain ruled rows (Spotify, Apple Music, YouTube Music; Bandcamp only if filled, currently empty so hidden).
+  - **Liner notes (bone):** `story` in serif italic, and a colophon of confirmed `credits`, `airplay`, the line-up from `about.ts` (`members`), and "Live dates →".
+- No iframe, cards, radii, glow, pills, "For fans of", "Sound" or "Inside the record".
+- At 900px and below: full-bleed artwork, then meta, title, **streaming links before the tracklist** (listening is the main mobile action), tracklist, total, and stacked liner notes. Colophon rows stack label over value at ≤480px.
+- SEO metadata is unchanged.
+
+**Data model** (`app/lib/music.ts`)
+- `Release.coverMaster?`: the high-resolution artwork path (`/album-cover.jpg`, 1875px) for large presentations; `cover` stays the 1000px optimized file used elsewhere.
+- `Release.airplay?: { track, station }[]`: structured airplay data (Uprising — Classic 21; Wrath Of Gaia — Radio Panik), replacing the sentence form on `/music`.
+- `credits` is documented as confirmed-only. Unchanged values: Recorded — Project Zero Studio; Produced — Yarne Heylen.
+- The line-up is read from `about.ts`. The hard-coded `bandCredits` / `productionCredits` / `fanRefs` in the old page are gone.
+- `recordingNotes` is **not** rendered on `/music`. It contains "Produced, mixed and mastered by Yarne Heylen", and mix/master is unconfirmed. It stays in the data because `/music/[slug]` (not modified) still uses it.
+
+**Not changed:** `/music/[slug]` and its components (`musicFeaturedRelease`, `trackList`, `streamingRow`, `discographySection`) are untouched. The unused `musicHero` and `musicCredits` components are still in the repo.
+
+**Verification (Phase 8)**
+- `tsc` passes; eslint passes on the changed files.
+- Playwright at 1920, 1440, 820 and 375 on `/music` plus a temporary multi-release preview (a mock single plus the mirrored album; since removed): no horizontal overflow, no errors, no iframes.
+- The artwork is fully above the fold at 1440 and 1920.
+- Links checked 22.10.2026: Spotify and Apple Music resolve to the album. The YouTube Music link resolves (HTTP 200) to the first track of the "Sent To Die" album playlist on the "Until They Fall - Topic" channel, so it works; normalization can wait.
+
+**Unverified data (do not treat as confirmed)**
+- **Track durations:** all seven, and therefore the 29:45 total. Two tracks share 4:11. Verify against the master or Spotify.
+- **Mix/master credit:** still only in `recordingNotes`, used by `/music/[slug]`.
+- **Artwork credit:** not published anywhere on `/music`. The old page's "Artwork: Until They Fall" is removed until confirmed.
+- **Bandcamp:** hidden until the link is confirmed.
+- **Line-up for the album:** the colophon shows the *current* line-up from `about.ts`. Confirm it matches who played on Sent To Die (2023), or label it differently later.
+
 ## Unresolved: mobile Hero visual is temporary
 
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
@@ -286,6 +323,10 @@ Nothing else imported it.
 - The Hero must stay ready to take a dedicated mobile asset. `HERO_IMAGE` in `hero.tsx` is the single place to add it, e.g. a `srcMobile` rendered through `<picture>` / art direction at ≤720px. The layout does not depend on the asset.
 
 ## Known weaknesses / open items
+
+- **`/music` artwork (Phase 8):** as the dominant object, the saturated, AI-looking digital cover is even more prominent than on the homepage. The physical CD engraving would suit the direction better once a clean scan and credit exist.
+- **`/music` desktop (Phase 8):** at 1920 there is a wide ink gap between the artwork and the tracklist column, and the bone liner notes have empty space under the story. Both read as deliberate, but could be tightened.
+- **`/music` → `/music/sent-to-die` (Phase 8):** the homepage "Release →" link and future index links lead to the old card-style detail page. That route is the next obvious mismatch.
 
 - **TEMPORARY: video poster (Phase 5).** A 640px YouTube still, soft at desktop widths; a local 1920px+ still is needed (see Phase 5).
 - **TEMPORARY: signed gallery photography (Phases 4–5).** The visual break and gallery teaser photos carry the photographer's signature ("Henoumont T.") and a baked border. Confirm the credit and permission, and get clean high-resolution masters.

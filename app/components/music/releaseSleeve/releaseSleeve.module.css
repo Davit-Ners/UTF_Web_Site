@@ -1,0 +1,296 @@
+/*
+ * Sleeve: front (artwork) and back (tracklist) on ink, liner notes on bone.
+ * No cards, radii, glow or player embeds.
+ */
+.release {
+  scroll-margin-top: var(--header-h);
+}
+
+.sleeve {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  padding: 0 var(--margin) var(--space-s);
+  background: var(--ink);
+  color: var(--bone);
+}
+
+/* === Front === */
+.front {
+  grid-column: 1 / 8;
+  grid-row: 1;
+  position: relative;
+  justify-self: start;
+  width: min(calc(100% + var(--margin)), 74vh);
+  width: min(calc(100% + var(--margin)), 74svh);
+  margin-left: calc(-1 * var(--margin));
+  aspect-ratio: 1;
+  background: var(--char);
+}
+
+.cover {
+  object-fit: cover;
+}
+
+/* === Back === */
+.back {
+  grid-column: 8 / 13;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mirrored .front {
+  grid-column: 6 / 13;
+  justify-self: end;
+  margin-left: 0;
+  margin-right: calc(-1 * var(--margin));
+}
+
+.mirrored .back {
+  grid-column: 1 / 6;
+}
+
+/* Short tracklists keep the links close instead of pinning them to the base */
+.single .listen {
+  margin-top: 0;
+}
+
+.single .front {
+  width: min(calc(100% + var(--margin)), 56vh);
+  width: min(calc(100% + var(--margin)), 56svh);
+}
+
+.meta {
+  color: var(--bone-dim);
+}
+
+.title {
+  margin: 14px 0 clamp(20px, 2.4vw, 36px);
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 5vw, 6rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.84;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.tracks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.track {
+  display: grid;
+  grid-template-columns: 2.5ch minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 14px;
+  padding: clamp(8px, 0.9vw, 12px) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.trackIndex,
+.trackLength {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--bone-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.trackTitle {
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.8vw, 2rem);
+  font-stretch: 80%;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.singleMark {
+  margin-left: 0.8em;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--ember-text);
+  vertical-align: 0.35em;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--bone);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.listen {
+  margin: auto 0 0;
+  padding: clamp(28px, 3vw, 48px) 0 0;
+  list-style: none;
+}
+
+.listenLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--bone);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.listen li:first-child .listenLink {
+  border-top: 1px solid var(--rule);
+}
+
+.listenLink:hover {
+  color: var(--ember-text);
+}
+
+.arrow {
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+/* === Liner notes === */
+.notes {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: clamp(20px, 2.4vw, 32px);
+  padding: var(--space-m) var(--margin);
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.notesIndex {
+  grid-column: 1 / -1;
+  color: rgb(11 11 10 / 0.62);
+}
+
+.story {
+  grid-column: 1 / 7;
+  max-width: 34ch;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.1vw, 2rem);
+  font-style: italic;
+  line-height: 1.25;
+}
+
+.colophon {
+  grid-column: 8 / 13;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3vw, 44px);
+}
+
+.facts {
+  border-bottom: 1px solid var(--rule-ink);
+}
+
+.fact,
+.factHead {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--rule-ink);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fact dt {
+  color: rgb(11 11 10 / 0.62);
+}
+
+.fact dd {
+  color: var(--ink);
+}
+
+.factHead dt {
+  color: var(--ink);
+}
+
+.live {
+  align-self: flex-start;
+}
+
+/* === Stacked === */
+@media (max-width: 900px) {
+  .sleeve {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .front,
+  .mirrored .front,
+  .single .front {
+    width: calc(100% + 2 * var(--margin));
+    margin: 0 calc(-1 * var(--margin));
+  }
+
+  .back {
+    margin-top: 20px;
+  }
+
+  /* Listening is the main action on a phone: links come before the tracklist */
+  .listen {
+    order: 3;
+    margin: 0 0 28px;
+    padding: 0;
+  }
+
+  .meta {
+    order: 1;
+  }
+
+  .title {
+    order: 2;
+  }
+
+  .tracks {
+    order: 4;
+  }
+
+  .total {
+    order: 5;
+  }
+
+  .notes {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .story {
+    max-width: none;
+  }
+
+  .colophon {
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fact {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}
