@@ -1,0 +1,117 @@
+/*
+ * Irregular spread on bone: one dominant frame, a narrow portrait set high,
+ * and a landscape offset under the dominant one. No frames, no equal cells.
+ */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: clamp(20px, 2.4vw, 36px);
+  padding: var(--space-m) var(--margin);
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.index {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  color: rgb(11 11 10 / 0.62);
+}
+
+.photo {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: var(--char);
+}
+
+.image {
+  object-fit: cover;
+  object-position: var(--focus, 50% 50%);
+  transform: scale(var(--trim, 1));
+}
+
+.lead {
+  grid-column: 1 / 9;
+  grid-row: 2;
+  aspect-ratio: 3 / 2;
+}
+
+.side {
+  grid-column: 10 / 13;
+  grid-row: 2;
+  align-self: start;
+  aspect-ratio: 4 / 5;
+  margin-top: clamp(32px, 6vw, 112px);
+}
+
+.title {
+  grid-column: 1 / 5;
+  grid-row: 3;
+  align-self: end;
+  font-family: var(--font-display);
+  font-size: clamp(3.25rem, 7vw, 8rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.low {
+  grid-column: 5 / 11;
+  grid-row: 3;
+  aspect-ratio: 16 / 10;
+}
+
+.more {
+  grid-column: 11 / 13;
+  grid-row: 3;
+  align-self: end;
+  justify-self: end;
+}
+
+/* Stacked with deliberate offsets rather than a collapsed grid */
+@media (max-width: 900px) {
+  .gallery {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0;
+  }
+
+  .index {
+    margin-bottom: 20px;
+  }
+
+  .lead {
+    margin: 0 calc(-1 * var(--margin));
+    aspect-ratio: 4 / 5;
+  }
+
+  .side {
+    align-self: flex-end;
+    width: 64%;
+    margin-top: -12%;
+    z-index: 1;
+  }
+
+  .low {
+    align-self: flex-start;
+    width: 84%;
+    margin-top: 16px;
+  }
+
+  .title {
+    order: 1;
+    align-self: flex-start;
+    margin-top: 32px;
+    font-size: clamp(3.25rem, 17vw, 6.5rem);
+  }
+
+  .more {
+    order: 2;
+    align-self: flex-start;
+    margin-top: 16px;
+  }
+}

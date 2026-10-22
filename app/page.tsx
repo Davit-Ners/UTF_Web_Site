@@ -2,6 +2,7 @@ import ActionHub from "./components/homePage/actionHub/actionHub";
 import FeaturedMerch from "./components/homePage/featuredMerch/featuredMerch";
 import FeaturedRelease from "./components/homePage/featuredRelease/featuredRelease";
 import FeaturedVideo from "./components/homePage/featuredVideo/featuredVideo";
+import GalleryTeaser from "./components/homePage/galleryTeaser/galleryTeaser";
 import Hero from "./components/homePage/hero/hero";
 import Live from "./components/homePage/live/live";
 import VisualBreak from "./components/homePage/visualBreak/visualBreak";
@@ -37,14 +38,11 @@ export default async function Home() {
 
       <VisualBreak />
 
-      <ActionHub />
+      <FeaturedVideo videoId="9Wvpovk_Tg4" title="Sent To Die" label="Official video" />
 
-      <FeaturedVideo
-        videoId="9Wvpovk_Tg4"
-        title="Until They Fall - Sent To Die"
-        eyebrow="Official Video"
-        subtitle="The official video from Sent To Die. Heavy, melodic and built around the album’s darker edge."
-      />
+      <GalleryTeaser />
+
+      <ActionHub />
 
       <FeaturedMerch items={products} />
     </>

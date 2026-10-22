@@ -10,8 +10,9 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 2 | Visual foundation + Header / Hero / Latest Release compositions | Approved: Direction B "Monograph" backbone, Direction A for Live, Direction C as a subtle detail layer only |
 | 3 | Implementation: foundation, Header, Hero, Latest Release | Done, committed in `257ef71` |
 | 3.1 | Calibration pass on Header, Hero, Latest Release | Done and approved. Header, Hero and Release are frozen for now |
-| 4 | Live + Band / Live visual break | Done, **not committed** |
-| Next | Featured Video, Gallery, About, Merch, Mailing list, Booking, Footer | Not started; wait for go-ahead |
+| 4 | Live + Band / Live visual break (+ `#live` anchor and fetch-failure state) | Done |
+| 5 | Featured Video + Gallery teaser | Done, **not committed** |
+| Next | About, Merch, Mailing list, Booking, Footer | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
 
@@ -106,6 +107,45 @@ Homepage order is now Hero → Latest Release → Live → Visual break → (old
   - no page errors.
 - The real homepage shows the 0-dates state: the local database is unreachable, and the last seeded show is 17.10.2026, which is already past.
 
+## Phase 5: Featured Video + Gallery teaser
+
+Homepage order is now Hero → Release → Live → Visual break → Video → Gallery → (old) ActionHub → Featured Merch, following `utf-design/inventory.md`.
+
+**Featured Video** (`app/components/homePage/featuredVideo/*`, rewritten)
+- Removed: the neon frame, glow, rounded container, decorative orbs/corners, "4K available" and the subtitle copy. Props are now `{ videoId, title, label }`; the homepage passes "Sent To Die" / "Official video".
+- Layout on ink: mono "03 — Video". The poster spans columns 1–9 at 16:9 and dominates. Columns 10–12 are bottom-aligned with the label, the title in condensed display type, and "YouTube ↗".
+- At 900px and below the poster goes full-bleed and the text stacks under it.
+- The play action is the poster itself: one `<button>` with a typographic "PLAY ▶" (ember underline) in the lower-left corner. Its accessible name is "Play Sent To Die".
+- Privacy is kept: the iframe (`youtube-nocookie.com`, autoplay) only mounts after the click. The poster goes through `next/image`, so the server fetches it. Verified: zero YouTube or ytimg requests from the browser before the click.
+- **TEMPORARY POSTER.** No local high-quality still exists. The best YouTube still is `sddefault` (640×480, letterboxed; the 16:9 frame crops the bars; there is no `maxresdefault`). At 1440 it is upscaled about 1.5× and at 1920 about 2.1×, so it is visibly soft. **To do:** export a 1920px+ still from the video master and use it as the poster (local file, swap in `posterFor`).
+- Content question: the singer in the video still differs from the current live photos. Confirm this is still the video to feature.
+
+**Gallery teaser** (`app/components/homePage/galleryTeaser/*`, new)
+- 3 real photos, using the 2048px originals in `public/gallery/`:
+  - **Dominant: `dav1`.** Guitarist, head back, blue/amber light; the most editorial portrait, and a member other than the singer.
+  - **Support: `val1`.** Bassist at the mic, from the same cool lighting session.
+  - **Support: `band2`.** Singer mid-headbang in red, the warm counterpoint with full-stage energy.
+  - **Not used:**
+    - `band1`: already the visual break;
+    - `bandall`: full band small on a wide stage, repeating the hero;
+    - `utf-band-good`: large watermark;
+    - `band-test`: posed black-and-white promo, off-tone.
+- Layout on bone, irregular, with no frames or cards:
+  - top row: `dav1` on columns 1–8 (3:2), then `val1` on columns 10–12 (4:5), set lower;
+  - bottom row: "GALLERY" in display type on columns 1–4, `band2` offset on columns 5–10 (16:10), and "View gallery →" to `/gallery` on columns 11–12.
+- At 900px and below it stacks with offsets:
+  - the lead goes full-bleed at 4:5;
+  - `val1` is right-aligned at 64% width and overlaps the lead's lower edge;
+  - `band2` is left-aligned at 84% width;
+  - then the title and the link.
+- Border trim `1.04` and per-photo focal points are in the `PHOTOS` config. `sizes` accounts for the portrait cover-crops, so no file is upscaled at any tested width.
+- These photos also carry the "Henoumont T." signature and are cover-cropped for the teaser; the full uncropped images remain on `/gallery`. The same credit/permission and clean-master request as the visual break applies.
+
+**Verification (Phase 5)**
+- `tsc` passes; eslint passes on the changed files.
+- Playwright on the real homepage at 1920, 1440, 820 and 375: no horizontal overflow, no page errors.
+- Clicking play mounts the youtube-nocookie iframe.
+
 ## Unresolved: mobile Hero visual is temporary
 
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
@@ -118,6 +158,10 @@ Homepage order is now Hero → Latest Release → Live → Visual break → (old
 - The Hero must stay ready to take a dedicated mobile asset. `HERO_IMAGE` in `hero.tsx` is the single place to add it, e.g. a `srcMobile` rendered through `<picture>` / art direction at ≤720px. The layout does not depend on the asset.
 
 ## Known weaknesses / open items
+
+- **TEMPORARY: video poster (Phase 5).** A 640px YouTube still, soft at desktop widths; a local 1920px+ still is needed (see Phase 5).
+- **Gallery on tablet (Phase 5):** at 820px the full-bleed 4:5 lead is about 1025px tall. It is strong but long; it could be capped if the page feels slow to scroll.
+- **Video side column (Phase 5):** at 1920 the empty space above the bottom-aligned title is large. It is deliberate, but it could take a real data line later (e.g. runtime) if one is available.
 
 - **TEMPORARY: duplicate next-show block.** The old ActionHub, untouched, still contains its own "next show" card right after the visual break, so it duplicates Live. It will be removed when the Mailing list / Booking phase replaces ActionHub.
 - **Live list at 1920 (Phase 4):** a wide empty band between the city and venue columns. It is acceptable as poster air, but could be tightened.

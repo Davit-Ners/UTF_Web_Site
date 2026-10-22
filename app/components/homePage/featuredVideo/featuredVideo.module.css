@@ -1,91 +1,119 @@
-.section{ margin: 28px 0 12px }
-.compact .heading{ margin-bottom: 10px }
-
-.heading{ text-align:center; margin-bottom: 18px }
-.eyebrow{
-  display:inline-block; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
-  color: var(--color-text-muted); margin-bottom:6px;
-}
-.title{
-  font-family: var(--font-title, inherit);
-  color: var(--color-text-primary);
-  text-transform: uppercase; letter-spacing:.06em;
-  font-size: clamp(20px, 3.6vw, 34px);
-}
-.subtitle{ color: var(--color-text-secondary); margin-top:6px }
-
-/* Wrapper pour max-width contrôlé */
-.wrap{ max-width: 1100px; margin: 0 auto }
-
-/* Cadre vidéo ciné */
-.frame{
-  position:relative; border-radius: calc(var(--radius) + 2px);
-  overflow:hidden;
-  /* Gradient border (neon) */
-  padding: 2px;
-  background:
-    linear-gradient(120deg, var(--color-accent-gradient-start), var(--color-accent-gradient-end));
-  box-shadow: 0 18px 55px rgba(0,0,0,.35), 0 0 24px var(--color-glow);
+/* Image-first: the poster takes nine columns, type sits in the remaining three */
+.video {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: clamp(16px, 2vw, 28px);
+  padding: var(--space-m) var(--margin);
+  background: var(--ink);
+  color: var(--bone);
 }
 
-/* Ratio 21:9 pour le look ciné; fallback 16:9 en mobile */
-.frame > *{ border-radius: var(--radius); }
-.poster, .player{ position:relative; aspect-ratio: 21 / 9; display:block; width:100%; overflow:hidden }
-@media (max-width: 780px){ .poster, .player{ aspect-ratio: 16 / 9 } }
-
-/* Poster */
-.poster{ border:0; padding:0; cursor:pointer; background: transparent; }
-.posterImage{
-  width:100%; height:100%; object-fit: cover; display:block;
-  filter: brightness(.82) contrast(1.08) saturate(1.05);
-  transform: scale(1.02);
-  transition: transform .25s ease;
-}
-.poster:hover .posterImage{ transform: scale(1.04) }
-
-/* FX Overlay (glow + glass) */
-.fx{
-  position:absolute; inset:0; pointer-events:none;
-  background:
-    radial-gradient(80% 70% at 50% 90%, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 70%),
-    radial-gradient(70% 70% at 90% 15%, color-mix(in oklab, var(--color-accent-hover) 18%, transparent), transparent 70%),
-    linear-gradient(180deg, rgba(10,10,12,.25) 0%, rgba(10,10,12,.65) 100%);
-  mix-blend-mode: overlay;
+.index {
+  grid-column: 1 / -1;
+  color: var(--bone-dim);
 }
 
-/* Play en losange */
-.play{
-  position:absolute; left:50%; top:50%; transform: translate(-50%, -50%) rotate(45deg);
-  width: 72px; height:72px; border-radius: 16px;
-  background: var(--color-accent);
-  box-shadow: 0 0 22px var(--color-glow), 0 10px 30px rgba(0,0,0,.4);
-  border: 1px solid color-mix(in oklab, var(--color-accent), #000 30%);
-  display:grid; place-items:center; transition: transform .18s ease, background .2s ease;
+.screen {
+  grid-column: 1 / 10;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--char);
 }
-.play > span{
-  transform: rotate(-45deg);
-  color: #fff; font-weight: 800; font-size: 24px; line-height: 1;
-}
-.poster:hover .play{ transform: translate(-50%, -50%) rotate(45deg) scale(1.05) }
 
-/* Coins lumineux (détails premium) */
-.corner, .cornerRight{
-  position:absolute; bottom:-18px; width: 180px; height: 180px; pointer-events:none;
-  background: radial-gradient(closest-side, color-mix(in oklab, var(--color-accent) 25%, transparent), transparent 70%);
-  filter: blur(18px); opacity:.45;
+.poster {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
 }
-.corner{ left:-18px }
-.cornerRight{ right:-18px; background: radial-gradient(closest-side, color-mix(in oklab, var(--color-accent-hover) 22%, transparent), transparent 70%); }
 
-/* Player iframe */
-.player iframe{ position:absolute; inset:0; width:100%; height:100%; border:0 }
+.posterImage {
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
 
-/* Légende dessous */
-.caption{
-  display:flex; gap:.6rem; align-items:center; justify-content:center;
-  margin: 10px 0 0; color: var(--color-text-secondary);
+.poster:hover .posterImage {
+  opacity: 0.82;
 }
-.link{
-  color: var(--color-accent); font-weight:600;
+
+.play {
+  position: absolute;
+  left: clamp(16px, 2vw, 32px);
+  bottom: clamp(14px, 1.8vw, 28px);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--ember);
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.9;
+  text-transform: uppercase;
 }
-.link:hover{ color: var(--color-accent-hover) }
+
+.playMark {
+  font-size: 0.55em;
+}
+
+.poster:hover .play,
+.poster:focus-visible .play {
+  border-bottom-color: var(--bone);
+}
+
+.player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.side {
+  grid-column: 10 / 13;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 12px;
+  color: var(--bone-dim);
+}
+
+.title {
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.6vw, 4rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.88;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+
+.external {
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .video {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Full-bleed poster on narrow screens */
+  .screen {
+    margin: 0 calc(-1 * var(--margin));
+  }
+
+  .side {
+    gap: 10px;
+  }
+}
