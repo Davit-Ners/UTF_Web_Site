@@ -17,8 +17,9 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 7 | ActionHub removal, Mailing list, Booking / Contact, Footer refinement, page rhythm review | Done, **not committed**. The homepage structure is now complete |
 | 8 | `/music` page ("Sleeve") | Done |
 | 9 | `/music/[slug]` release page ("Booklet") | Done |
-| 10 | `/concerts` ("Tour Poster") + `/concerts/past` redirect | Done, **not committed** |
-| Next | `/concerts/[slug]`, `/about`, `/merch`, `/gallery`, `/booking` still in the old card style; asset replacement | Not started; wait for go-ahead |
+| 10 | `/concerts` ("Tour Poster") + `/concerts/past` redirect | Done |
+| 11 | `/concerts/[slug]` show page ("Show Dossier") | Done, **not committed** |
+| Next | `/about`, `/merch`, `/gallery` (incl. `/concerts/[slug]/gallery` via `GalleryFull`), `/booking` still in the old card style; asset replacement | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
 
@@ -409,6 +410,90 @@ Hierarchy: homepage Live = next dates teaser; `/concerts` = complete dates plus 
 - 1920, 1440, 820 and 375: no horizontal overflow and no page errors in any state.
 - `tsc` passes; eslint passes on the changed files.
 
+## Phase 11: `/concerts/[slug]` ("Show Dossier")
+
+Hierarchy: homepage Live = teaser; `/concerts` = tour poster / archive; `/concerts/[slug]` = the document for one show.
+
+**Composition** (new `app/components/concerts/showDossier/*`; `app/concerts/[slug]/page.tsx` rewritten, `revalidate = 60` kept, no `generateStaticParams`)
+- **Breadcrumb:** `Live / Archive / YYYY` for past shows (Archive links to `/concerts#archive`), `Live / Upcoming` otherwise.
+- **I. Masthead (ink):**
+  - optional kicker (short label-like `note` only, in ember mono);
+  - **the date as the object**: giant "DD.MM" plus the year in display;
+  - one mono line `Weekday — Archive|Upcoming` (weekday and status derived from the date);
+  - the **city as the `h1`** with a mono country, the venue in mono, and `usefulTitle()` in serif only when it adds information.
+  - With a poster: the date shrinks and the poster sits on columns 8–12 at its **intrinsic ratio** (verified: rendered = natural ratio). Without a poster the date runs at about 22vw, with no placeholder.
+- **II. Ticket action:** upcoming shows with a real `ticketUrl` only. One large ruled row "TICKETS ↗" with the price beside it. It opens in a new tab with screen-reader text. **Past shows never show it**, even if a `ticketUrl` is stored.
+- **III. Programme (bone):** rendered only if at least one of these exists:
+  - the **Bill** (`lineup` exactly as stored: Until They Fall is shown only where the data includes it, with no added running order);
+  - the **timetable** (Doors / Show / Entry, each only when filled; Entry moves next to the ticket action instead of repeating);
+  - `description`;
+  - the long `note`, **for upcoming shows only**;
+  - "Event page ↗" (the Facebook link, past or upcoming).
+- **IV. Photos (ink):** confirmed photos only (see the rule below), up to 5.
+  - The first one is full-bleed; the rest form an offset sequence.
+  - The photos keep their own ratio, with a 4% scale to trim the baked border.
+  - "All N photos →" links to `/concerts/[slug]/gallery` when there are more than 5.
+- **V. Neighbours:** previous and next show in chronological order (date plus city), and "All shows →" (to `/concerts#archive` for past shows).
+- **Data failure:** a try/catch around `getPublishedConcerts()` (one query, shared with `generateMetadata` through React `cache`). On failure the page renders `ShowUnavailable` ("Show unavailable right now" plus All shows), **not** a 404, and without technical detail.
+- **Unknown slug:** `notFound()` → 404 (verified).
+- **Removed:** cards, pills, the date box, "Tickets / Info" on past shows, "Book The Band", the filler "About this show" copy, the "Line-up details will be added soon" filler, the duplicated "Quick recap" sidebar, the "Official poster" label, and every repeated fact.
+
+**Rules encoded** (`app/lib/concertFormat.ts` additions, pure functions)
+- `weekday(date)`: deterministic, no time zone.
+- `isLabelNote(note)`: at most 60 characters with no sentence punctuation (label-like, e.g. "Tremplin Durbuy Rock Fest"). Longer, promotional notes are shown only for upcoming shows, never on archived ones.
+- `reliableTimes(show)`: only `doorsTime` / `showTime`, never the seeded 12:00 start time. **If doors and show are identical, both are omitted** (not corrected). Currently this affects Braine (18:00 / 18:00).
+- `formatLongDate`.
+
+**Confirmed photos** (new `app/lib/concertPhotos.ts`)
+- A concert gallery path is shown only when its entry in the photo catalogue (`app/lib/gallery.ts`) has `meta` naming the show's city. Uncatalogued paths, or paths catalogued elsewhere, are hidden.
+- **Arlon:** only `band2` ("Arlon, BE") shows. `band1` (catalogued "Brussels, BE") and `bandall` ("Festival stage") are excluded.
+- **Consequence:** future concert photos must be added to the catalogue with the city in `meta`, or a dedicated confirmation/credit field must be added to the data, before they appear.
+
+**Photo viewer** (`showPhotos.tsx`, client)
+- A native `<dialog>` opened with `showModal()`:
+  - Escape closes it (native), and so does a backdrop click;
+  - focus moves to "Close" on open and **returns to the photo that opened it** (verified);
+  - Previous / Next buttons and arrow keys when there are 2+ photos;
+  - a polite live caption "Arlon, 01.11.2025 — 01 / 01".
+- Accessible labels combine the context with the catalogue description, e.g. "Arlon, 01.11.2025, photo 1 of 1: Until They Fall live crowd". There is no generic "Live photo N".
+- The full-size image uses the 2048px original via the new `getOriginalImagePath()` in `imageOptimization.ts`.
+- The viewer shows the full uncropped file, so the baked border is visible there.
+
+**SEO / structured data**
+- `generateMetadata` per show:
+  - title "City — Venue, DD.MM.YYYY" (plus the template), e.g. "Arlon — L'Entrepot, 01.11.2025 | Until They Fall";
+  - description = useful title plus a factual archive line;
+  - canonical `/concerts/{slug}`;
+  - OG/Twitter image = the poster only when one exists.
+  - If the data fails it returns `{ title: "Concert" }`; an unknown slug returns `{}`.
+- schema.org `MusicEvent` JSON-LD from stored fields only:
+  - `name` (useful title, or "Venue, City");
+  - `startDate` (date, plus a time only when `showTime` is reliable), and `doorTime` only when reliable;
+  - `location` (Place, venue, locality, country);
+  - `performer` only from the stored `lineup`;
+  - `image` only from the poster;
+  - `offers` (url, plus a price/currency only when the label parses as "N EUR") only for upcoming shows with a ticket URL.
+  - **No** `eventStatus`, attendance mode, availability or organizer.
+  - The JSON is serialized with `<` escaped.
+
+**Deleted** (no remaining imports, verified):
+- `app/components/concerts/concertDetails/` (`concertDetailsHero`, `concertDetailsContentGrid`);
+- `app/components/concerts/concertGallery/`;
+- `app/concerts/[slug]/concertDetail.module.css`.
+
+**Kept:** `GalleryFull` (used by `/concerts/[slug]/gallery` and `/gallery/concert-photos`) and `/concerts/[slug]/gallery` itself, unchanged.
+
+**Tested (Phase 11)**
+- Real data (the local database was reachable):
+  - **Arlon** (past, poster, programme, 1 confirmed photo);
+  - **Braine** (past, poster, long note hidden, identical times omitted, entry only);
+  - **Namur** (past, no poster, no programme: masthead plus neighbours only).
+- Mocked, on a temporary preview (since removed): an upcoming show with tickets, poster, a long note and a full programme; an upcoming show with no ticket and no data; the data-failure state.
+- An unknown slug returns 404.
+- 1920, 1440, 820 and 375: no horizontal overflow and no page errors.
+- `/concerts/utf-arlon/gallery` still returns 200.
+- `tsc` passes; eslint passes on the changed files.
+
 ## Unresolved: mobile Hero visual is temporary
 
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
@@ -422,7 +507,15 @@ Hierarchy: homepage Live = next dates teaser; `/concerts` = complete dates plus 
 
 ## Known weaknesses / open items
 
-- **`/concerts` detail pages (Phase 10):** every archive row links to `/concerts/[slug]`, which is still in the old card style. It is the next obvious mismatch.
+- ~~`/concerts` detail pages~~: resolved (Phase 11).
+- **Show pages without data (Phase 11):** 10 of 12 shows have only date, city and venue. Their pages are the masthead plus neighbours: a single ink plane with no bone section. This is intentional, but sparse.
+- **`/concerts/[slug]/gallery` (Phase 11, not redesigned):** still uses `GalleryFull` (old style) and shows **all** stored gallery paths, including the unconfirmed `band1` / `bandall` for Arlon. It is not linked from the show page unless there are more than 5 confirmed photos. Redesign it, or apply `confirmedPhotos()`, in the gallery phase.
+- **Concert data to verify (Phase 11):**
+  - Braine doors = show = 18:00 (both omitted until confirmed);
+  - Arlon's line-up omits Until They Fall while Braine's includes it;
+  - Namur's note "Tremplin Durbuy Rock Fest" is the same label as Arlon's (correct?);
+  - the Arlon gallery association (`band1`, `bandall`) is unconfirmed;
+  - photo credits have no data field yet.
 - **`/concerts` zero state (Phase 10):** with no dates, the giant "LIVE" sits above a single ruled line and the bone archive becomes the real content. This is intentional, but the top half is sparse.
 - **`/concerts` archive alignment (Phase 10):** years with posters have narrower rows (columns 1–8) than years without (full width), so the venue column shifts between 2025 and 2024.
 - **Concert posters (Phase 10):** both are third-party festival artwork (magenta, yellow, cyan) that clash with ink/bone/ember. Only 2 of 12 shows have one. Do posters exist for the other shows?

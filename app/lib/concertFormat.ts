@@ -54,3 +54,34 @@ export function groupByYear(shows: Concert[]) {
     .sort(([a], [b]) => b.localeCompare(a))
     .map(([year, items]) => ({ year, shows: items }));
 }
+
+const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+/* Deterministic weekday from the calendar date, no time zone involved */
+export function weekday(date: string) {
+  const [year, month, day] = date.split("-").map(Number);
+  return WEEKDAYS[new Date(Date.UTC(year, month - 1, day)).getUTCDay()];
+}
+
+export function formatLongDate(date: string) {
+  const { day, month, year } = concertDateParts(date);
+  return `${day}.${month}.${year}`;
+}
+
+/* A short, label-like note ("Tremplin Durbuy Rock Fest") as opposed to promotional prose */
+export function isLabelNote(note?: string) {
+  if (!note) return false;
+  const text = note.trim();
+  return text.length <= 60 && !/[.!?]/.test(text);
+}
+
+/*
+ * Doors/show times only when explicitly filled. Identical doors and show
+ * times are treated as unreliable and both omitted rather than corrected.
+ */
+export function reliableTimes(show: Concert) {
+  if (show.doorsTime && show.showTime && show.doorsTime === show.showTime) {
+    return { doors: undefined, show: undefined, suspicious: true };
+  }
+  return { doors: show.doorsTime, show: show.showTime, suspicious: false };
+}

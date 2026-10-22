@@ -33,3 +33,9 @@ export function getOptimizedImagePath(src?: string | null) {
 
   return OPTIMIZED_IMAGE_PATHS[src] ?? src;
 }
+
+/* Reverse lookup: the full-size source for an optimized path, if known */
+export function getOriginalImagePath(src: string) {
+  const entry = Object.entries(OPTIMIZED_IMAGE_PATHS).find(([, optimized]) => optimized === src);
+  return entry ? entry[0] : src;
+}
