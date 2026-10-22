@@ -8,6 +8,7 @@ import {
   validateMerchOrderPayload,
 } from "@/lib/merch-order";
 import prisma from "@/lib/prisma";
+import { calculateShipping } from "@/app/lib/shipping";
 import { Resend } from "resend";
 
 const MAX_QTY_PER_ITEM = 20;
@@ -48,11 +49,6 @@ function buildOrderNumber() {
   const suffix = Math.random().toString(36).slice(2, 8).toUpperCase();
 
   return `UTF-${stamp}-${suffix}`;
-}
-
-function calculateShipping(subtotal: number) {
-  if (subtotal <= 0) return 0;
-  return subtotal >= 80 ? 0 : 7;
 }
 
 async function buildOrderSummary(

@@ -1,17 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import CartSidebar from "../components/merch/cartSiderbar/cartSiderbar";
-import MerchFilters from "../components/merch/merchFilters/merchFilters";
-import MerchGrid from "../components/merch/merchGrid/merchGrid";
-import type { CartItem, Product, ProductCategory } from "../lib/products";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Catalogue from "../components/merch/catalogue/catalogue";
+import OrderPanel from "../components/merch/orderPanel/orderPanel";
+import { needsSize } from "../lib/merchPresentation";
+import type { CartItem, Product } from "../lib/products";
 import styles from "./merch.module.css";
 
 type Props = {
     products: Product[];
 };
 
-type CategoryFilter = "all" | ProductCategory;
 const DEFAULT_MAX_QTY = 20;
 
 function getMaxQty(product: Product) {
@@ -30,11 +29,12 @@ function clampQty(product: Product, quantity: number) {
 }
 
 export default function MerchStoreClient({ products }: Props) {
-    const [category, setCategory] = useState<CategoryFilter>("all");
     const [cart, setCart] = useState<CartItem[]>([]);
     const [orderStatus, setOrderStatus] = useState<
         { type: "idle" } | { type: "loading" } | { type: "success"; message: string } | { type: "error"; message: string }
     >({ type: "idle" });
+    const panelRef = useRef<HTMLDivElement>(null);
+    const [panelVisible, setPanelVisible] = useState(false);
 
     function handleAddToCart(product: Product) {
         const maxQty = getMaxQty(product);
@@ -125,11 +125,6 @@ export default function MerchStoreClient({ products }: Props) {
         }
     }
 
-    const filteredProducts = useMemo(() => {
-        if (category === "all") return products;
-        return products.filter((product) => product.category === category);
-    }, [category, products]);
-
     const subtotal = useMemo(
         () =>
             cart.reduce(
@@ -139,35 +134,42 @@ export default function MerchStoreClient({ products }: Props) {
         [cart]
     );
 
+    const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const hasSizedItem = cart.some((item) => needsSize(item.product.slug));
+
+    /* The mobile jump bar hides while the panel itself is on screen */
+    useEffect(() => {
+        const node = panelRef.current;
+        if (!node) return;
+        const observer = new IntersectionObserver(([entry]) => setPanelVisible(entry.isIntersecting));
+        observer.observe(node);
+        return () => observer.disconnect();
+    }, []);
+
     return (
-        <section className={styles.section}>
-            <div className="container">
-                <div className={styles.layout}>
-                    <div className={styles.productsColumn}>
-                        <MerchFilters
-                            active={category}
-                            onChange={setCategory}
-                            count={filteredProducts.length}
-                        />
-
-                        <MerchGrid
-                            products={filteredProducts}
-                            onAddToCart={handleAddToCart}
-                        />
-                    </div>
-
-                    <aside className={styles.cartColumn}>
-                        <CartSidebar
-                            items={cart}
-                            subtotal={subtotal}
-                            onUpdateQty={handleUpdateQty}
-                            onRemove={handleRemove}
-                            onRequestOrder={handleRequestOrder}
-                            orderStatus={orderStatus}
-                        />
-                    </aside>
-                </div>
+        <div className={styles.store}>
+            <div className={styles.catalogueColumn}>
+                <Catalogue products={products} onAdd={handleAddToCart} />
             </div>
-        </section>
+
+            <div ref={panelRef} className={styles.panelColumn}>
+                <OrderPanel
+                    items={cart}
+                    subtotal={subtotal}
+                    onUpdateQty={handleUpdateQty}
+                    onRemove={handleRemove}
+                    onRequestOrder={handleRequestOrder}
+                    orderStatus={orderStatus}
+                    hasSizedItem={hasSizedItem}
+                />
+            </div>
+
+            {cart.length > 0 && !panelVisible ? (
+                <a href="#order-request" className={styles.jumpBar}>
+                    <span>Order request ({itemCount})</span>
+                    <span aria-hidden="true">↓</span>
+                </a>
+            ) : null}
+        </div>
     );
 }

@@ -1,0 +1,245 @@
+/* Band Catalogue: numbered objects, information outside the image */
+.catalogue {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(64px, 7vw, 120px);
+}
+
+/* === Plates === */
+.plateA,
+.plateB {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  column-gap: var(--gap);
+  align-items: start;
+}
+
+/* Lead: image on the left, label on the right */
+.plateA .product {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: end;
+}
+
+.plateA .media {
+  grid-column: 1 / 6;
+}
+
+.plateA .label {
+  grid-column: 6 / 9;
+}
+
+.plateA .small .media {
+  grid-column: 2 / 5;
+}
+
+.plateA .textOnly .label {
+  grid-column: 1 / 7;
+}
+
+/* Pair: two objects at different scales, the second dropped lower */
+.plateB .product:first-child {
+  grid-column: 1 / 5;
+}
+
+.plateB .product:nth-child(2) {
+  grid-column: 6 / 9;
+  margin-top: clamp(48px, 8vw, 140px);
+}
+
+.plateB .small .media {
+  width: 72%;
+}
+
+.product {
+  min-width: 0;
+}
+
+/* === Media === */
+.media {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Natural ratio from measured dimensions: never cropped */
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.extra {
+  align-self: flex-end;
+  width: 62%;
+  margin: 0;
+}
+
+.extraLabel {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(11 11 10 / 0.62);
+}
+
+/* === Label === */
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 2px solid var(--ink);
+  color: var(--ink);
+}
+
+.plateB .label {
+  margin-top: 16px;
+}
+
+.number {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: rgb(11 11 10 / 0.62);
+}
+
+.name {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.8vw, 3rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.lead .name {
+  font-size: clamp(2.25rem, 4vw, 4.5rem);
+}
+
+.textOnly .name {
+  font-size: clamp(2.5rem, 5vw, 5.5rem);
+}
+
+.desc {
+  max-width: 40ch;
+  color: rgb(11 11 10 / 0.72);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+.price {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: clamp(1.125rem, 1.4vw, 1.375rem);
+  font-variant-numeric: tabular-nums;
+}
+
+.state {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+
+/* Highly visible: sizes are only collected through the order notes */
+.sizeNote {
+  align-self: flex-start;
+  padding: 6px 0;
+  border-top: 1px solid var(--ember);
+  border-bottom: 1px solid var(--ember);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.add {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 6px;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid var(--rule-ink);
+  border-bottom: 1px solid var(--rule-ink);
+  background: none;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.add:hover {
+  color: var(--ember);
+}
+
+.add span[aria-hidden] {
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+/* Text-only plate: larger type on a ruled panel, no image */
+.textOnly .label {
+  padding: 20px 0 0;
+  border-top-width: 4px;
+}
+
+/* === Stacked === */
+@media (max-width: 900px) {
+  .plateA,
+  .plateB {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .plateA .product {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product,
+  .plateB .product:nth-child(2) {
+    margin-top: 0;
+  }
+
+  .plateA .label {
+    margin-top: 16px;
+  }
+
+  /* Asymmetry through offsets instead of columns */
+  .plateB .product:first-child .media {
+    width: 84%;
+  }
+
+  .plateB .product:nth-child(2) .media {
+    width: 84%;
+    margin-left: auto;
+  }
+
+  .small .media,
+  .plateA .small .media,
+  .plateB .small .media {
+    width: 64%;
+  }
+}

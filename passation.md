@@ -20,8 +20,9 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 10 | `/concerts` ("Tour Poster") + `/concerts/past` redirect | Done |
 | 11 | `/concerts/[slug]` show page ("Show Dossier") | Done |
 | 12 | `/gallery` ("Photo Book"), photo catalogue cleanup, shared `PhotoViewer`, `/gallery/concert-photos` redirect | Done |
-| 13 | `/about` ("Band Profile") | Done, **not committed** |
-| Next | `/merch`, `/booking`, `/concerts/[slug]/gallery` (still `GalleryFull`) in the old style; album line-up consistency pass; asset replacement | Not started; wait for go-ahead |
+| 13 | `/about` ("Band Profile") | Done |
+| 14 | `/merch` ("Band Catalogue") | Done, **not committed** |
+| Next | `/booking`, `/concerts/[slug]/gallery` (still `GalleryFull`) in the old style; album line-up consistency pass; merch size/variant system; asset replacement | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
 
@@ -633,6 +634,93 @@ The current line-up includes **Valentin Coutant (joined 2024)** and **Krys Bader
 - **To do in the consistency pass:** remove the current line-up from the album colophon, or relabel it so it is clearly not album personnel, and add historical album personnel only if it is confirmed.
 - No "Former members" section is planned until names are confirmed.
 
+## Phase 14: `/merch` ("Band Catalogue")
+
+**Live catalogue** (database, 6 active, order: featured, then sortOrder)
+1. Gerard T-Shirt, 25 €
+2. Until They Fall Patch (old), 5 €
+3. "Sent To Die" Album CD, 15 €
+4. Sticker Pack, 5 €
+5. Album Artwork Tee, 28 € (**no image**)
+6. Until They Fall Patch (New), 7 €
+
+No product has `ProductVariant` rows or extra `ProductImage` rows.
+
+**Composition** (`app/merch/page.tsx` server + metadata; new `app/merch/merchView.tsx`; `merchStoreClient.tsx` re-rendered; new `app/components/merch/catalogue/*` and `orderPanel/*`; `merch.module.css` rewritten)
+- **Masthead (ink):** "MERCH" (about 22vw, the `h1`) and a mono fact line "06 items — Ordered by email — Shipping 7 € — free from 80 €" (count from the data; shipping from the shared constants). Below it, the existing no-payment explanation in serif italic between rules.
+- **Catalogue (bone, columns 1–8 of 12):** a printed-catalogue rhythm. **Plate A** = one lead product (image on columns 1–5 of 8, label on 6–8). **Plate B** = two products at different scales (columns 1–4 and 6–8, the second dropped lower). The pattern repeats in product order.
+- **Each product:**
+  - mono catalogue number `001`;
+  - name in condensed display;
+  - the real `shortDesc`;
+  - price in mono;
+  - availability (only "Sold out" / "Pre-order", in ember mono);
+  - for products that need a size, an ember-ruled mono line **"Size: add it in your order notes"**;
+  - a ruled text button "Add to order +" with screen-reader text naming the product.
+  - Sold-out products stay at full strength and show "Sold out" instead of the button.
+- **Images:** the original files at their **natural ratio** (measured dimensions, so no layout shift and no crop). No cards, radius, hover lift or overlay badges.
+- **Missing image** (Album Artwork Tee): a **text-only plate** (larger name, 4px ink rule). No `/logo.jpg` and no mockup.
+- **Low-resolution image** (stickers, 1024px): shown smaller (narrower column in plate A, 72% in a pair, 64% on mobile).
+- **CD second view:** `cd2.jpg` (the opened case) appears inside the CD's plate as a smaller second photo, right-aligned under the main one, with a mono caption "Open case". There is no carousel.
+- **Order panel (ink, "Your order request", columns 9–12):**
+  - the no-payment notice;
+  - rows with a − / quantity / + stepper (44px, labelled) and Remove;
+  - underlined form fields (Name*, Email*, Country*, Notes; autocomplete set);
+  - totals; status messages in a `role="status"` live region;
+  - an ember "Request order →" button.
+  - When the order contains a sized product, the Notes label becomes "Notes — add your T-shirt size" (in ember).
+  - **Desktop:** sticky at the header height + 16px, `max-height` = viewport − header − 32px with internal scrolling, so it never traps content (verified at 1440×900: the panel ends at 884px and scrolls internally).
+- **Mobile (≤900px):** the catalogue stacks (pair items at 84%, alternating left/right); the order panel follows the catalogue at full width. A fixed bottom bar **"Order request (N) ↓"** appears only once an item has been added, and hides while the panel itself is on screen (IntersectionObserver).
+- **End:** "Questions about sizes or shipping?" plus a mailto link.
+- **Database failure:** a try/catch in `page.tsx`. `null` renders "Merch unavailable right now" plus the contact email, with no technical detail. An empty active catalogue renders "No merch online right now".
+- **SEO:** `metadata` with title "Merch", a description, canonical `/merch`, and OG/Twitter image `/merch/cd1.jpg` (2048×2048, real product photo).
+
+**Order logic preserved:**
+- All handlers in `merchStoreClient.tsx` are kept verbatim: `getMaxQty` / `clampQty` (stock-capped, max 20), add, update quantity, remove, the `/api/merch/order` POST body (`name, email, country, notes, faxNumber, items[{productId, quantity}]`), error/success messages and clearing the order on success.
+- `OrderPanel` keeps CartSidebar's form state, the hidden `faxNumber` spam trap, the reset on success, disabled states while loading or empty, and the subtotal / shipping / total maths.
+- The `−` / `+` buttons call the same `onUpdateQty` (clamped).
+- Verified with a mocked API at 1440 and 375:
+  - one and multiple items (tee ×1 + CD ×3 = 70 €, shipping 7 €, total 77 €);
+  - loading ("Sending…", disabled);
+  - error message shown;
+  - success shows the order number, clears the rows and form;
+  - the payload matches the contract.
+
+**Shared shipping source:** new `app/lib/shipping.ts` (`SHIPPING_FLAT_EUR = 7`, `FREE_SHIPPING_FROM_EUR = 80`, `calculateShipping`). It is used by the order API (`app/api/merch/order/route.ts`; the local copy was removed, logic identical), the order panel and the masthead.
+
+**Presentation data** (new `app/lib/merchPresentation.ts`, no schema change)
+- measured `IMAGE_DIMENSIONS` per image path;
+- `LOW_RES_BELOW = 1500`;
+- `SIZED_PRODUCTS` (slugs `tee-core-logo`, `tee-artwork`): patches are stored as category "apparel", so the size note is driven by this list rather than by category;
+- `EXTRA_VIEWS` (`cd-std` → `cd2.jpg`).
+- `getActiveMerchProducts()` now also returns `slug` (`Product.slug?` added in `products.ts`). The homepage is unaffected (verified).
+
+**Badges:** "New", "Limited", "Low stock" and "In stock" are no longer displayed. The `badge` values stay in the database and the type; "Pre-order" is still shown when present.
+
+**Deleted** (no remaining imports outside each other, verified):
+- `app/components/productCard/`, `app/components/productGrid/` (legacy, already unused);
+- `app/components/merch/merchHero/`, `merchFilters/`, `merchGrid/`, `productCard/`, `cartSiderbar/`.
+
+**Verification (Phase 14):**
+- the real live catalogue at 1920, 1440×900, 820 and 375: no horizontal overflow, no page errors, natural ratios (rendered = natural);
+- the text-only plate for the Album Artwork Tee;
+- mocked sold-out, pre-order and low-stock states (no urgency label);
+- the data-failure state;
+- the mobile jump bar;
+- `tsc` passes; eslint passes on the changed files.
+
+**Product-data uncertainties:**
+- **Gerard T-Shirt:** the photo (`t-shirt.jpg`) shows an engraved creature over a pile of bodies, not the Gerard mascot. The name, description and image are kept unchanged until confirmed.
+- **Album Artwork Tee:** active and in stock (25), but no photo.
+- **Sizes:** no size data exists; sizes come in free-text notes. A `ProductVariant`-based size system (data, API and stock per size) is a separate functional phase.
+- **Patches:** stored as category "apparel".
+- **Naming:** "(old)" and "(New)" are part of the stored product names.
+
+**Merch asset weaknesses:**
+- `stickers.png` is a flat 1024px digital mockup on black, unlike the photographed products. **A real sticker photo is needed.**
+- The Album Artwork Tee has no photo.
+- The wooden-surface photos are consistent but casually lit phone-quality shots; a matched product shoot would lift the catalogue.
+
 ## Unresolved: mobile Hero visual is temporary
 
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
@@ -693,11 +781,9 @@ The current line-up includes **Valentin Coutant (joined 2024)** and **Krys Bader
 
 - **TEMPORARY: video poster (Phase 5).** A 640px YouTube still, soft at desktop widths; a local 1920px+ still is needed (see Phase 5).
 - **TEMPORARY: signed gallery photography (Phases 4–5).** The visual break and gallery teaser photos carry the photographer's signature (Laurent Henoumont) and a baked border. Confirm the credit and permission, and get clean high-resolution masters.
-- **TEMPORARY: merch product imagery (Phase 6). This is the weakest asset on the homepage.**
-  - `core-tee.webp` is a phone screenshot of a mockup: teal UI arrows at the left edge, a status-bar edge at the top, and only 700px wide (872px source). It is upscaled in the primary slot at desktop widths.
-  - `skull-hoodie` is a dark, AI-looking mockup (1024px) that reads as an almost black square on bone.
-  - The product shots don't share a background or lighting, so the spread looks inconsistent.
-  - **To do:** shoot the real products (same background, same light, square, 2000px+), then update the image paths in the database.
+- ~~Merch product imagery (Phase 6): screenshot tee / AI hoodie~~ — **correction (Phase 14):** that note described the **seed** products (`scripts/seed-merch.ts`: Core Logo Tee `core-tee.jpg`, Skull Hoodie `skull-hoodie.png`), not the live catalogue.
+  - The **live** database shows real product photos on a consistent wooden surface. The homepage Merch section shows the first two live products: Gerard T-Shirt (`t-shirt.jpg`) and Until They Fall Patch (old) (`patch-1.jpg`).
+  - Remaining merch asset issues are listed under Phase 14.
 - **Video side column (Phase 5.1):** at 1920 a gap remains between the large title and "YouTube ↗". It now reads as heading/action spacing rather than an accident.
 - **About line-up:** taken from `about.ts`. Make sure it matches the people in the `band-test` photo and the current line-up.
 

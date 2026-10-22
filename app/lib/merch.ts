@@ -23,6 +23,7 @@ export async function getActiveMerchProducts(limit?: number): Promise<Product[]>
         ...(limit ? { take: limit } : {}),
         select: {
             id: true,
+            slug: true,
             name: true,
             price: true,
             image: true,
@@ -35,6 +36,7 @@ export async function getActiveMerchProducts(limit?: number): Promise<Product[]>
 
     return dbProducts.map((product) => ({
         id: product.id,
+        slug: product.slug ?? undefined,
         name: product.name,
         price: product.price,
         image: product.image ?? undefined,

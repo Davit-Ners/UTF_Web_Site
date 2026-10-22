@@ -1,0 +1,288 @@
+/* Order request: a calm ruled panel on ink */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px clamp(16px, 1.8vw, 28px) 28px;
+  background: var(--ink);
+  color: var(--bone);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--bone);
+}
+
+.title {
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.count,
+.notice,
+.empty {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+.notice {
+  color: var(--bone);
+  line-height: 1.5;
+}
+
+/* === Rows === */
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.rowInfo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rowName {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-stretch: 80%;
+  font-weight: 800;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.rowPrice {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  color: var(--bone-dim);
+}
+
+.rowActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--rule);
+}
+
+.stepper button {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: none;
+  color: var(--bone);
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  cursor: pointer;
+}
+
+.stepper button:disabled {
+  color: var(--grey);
+  cursor: default;
+}
+
+.qty {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-left: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  border-radius: 0;
+  background: transparent;
+  color: var(--bone);
+  font-family: var(--font-mono);
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.qty::-webkit-inner-spin-button,
+.qty::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.remove {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--bone-dim);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.remove:hover {
+  color: var(--bone);
+}
+
+/* === Form === */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.honey {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field span {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+.fieldFlag span {
+  color: var(--ember-text);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 1px solid var(--bone);
+  border-radius: 0;
+  background: transparent;
+  color: var(--bone);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--grey);
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-bottom: 2px solid var(--ember-text);
+}
+
+.field input:disabled,
+.field textarea:disabled {
+  border-bottom-color: var(--rule);
+}
+
+/* === Totals === */
+.totals {
+  margin-top: 4px;
+  border-top: 1px solid var(--rule);
+}
+
+.totals div {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+}
+
+.totals dt {
+  color: var(--bone-dim);
+  text-transform: uppercase;
+}
+
+.totals .total {
+  border-bottom: 2px solid var(--bone);
+  font-size: 1rem;
+}
+
+.totals .total dt {
+  color: var(--bone);
+}
+
+.status {
+  min-height: 1.2em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  line-height: 1.45;
+}
+
+.ok {
+  color: var(--bone);
+}
+
+.err {
+  color: var(--ember-text);
+}
+
+.submit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  padding: 0 18px;
+  border: 0;
+  background: var(--ember);
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-stretch: 80%;
+  font-weight: 850;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.submit:disabled {
+  background: var(--char);
+  color: var(--grey);
+  cursor: default;
+}

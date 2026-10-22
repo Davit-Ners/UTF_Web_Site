@@ -3,6 +3,7 @@ export type ProductBadge = "New" | "Limited" | "Pre-order";
 
 export type Product = {
     id: string;
+    slug?: string;
     name: string;
     price: number;
     image?: string;
