@@ -346,89 +346,16 @@
   display: block;
   width: 100%;
   height: auto;
-  /* The source photos carry a thin baked border; scale it out of frame */
-  transform: scale(1.04);
   transition: opacity 0.2s ease;
+}
+
+/* Files with a thin baked border: scale it out of frame */
+.trimmed {
+  transform: scale(1.04);
 }
 
 .allPhotos {
   margin-top: 32px;
-}
-
-/* === Photo viewer === */
-.viewer {
-  width: 100vw;
-  max-width: none;
-  height: 100dvh;
-  max-height: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: var(--ink);
-  color: var(--bone);
-}
-
-.viewer::backdrop {
-  background: rgb(11 11 10 / 0.92);
-}
-
-.viewer[open] {
-  display: flex;
-  flex-direction: column;
-}
-
-.viewerFrame {
-  position: relative;
-  flex: 1;
-  margin: var(--margin) var(--margin) 0;
-}
-
-.viewerImage {
-  object-fit: contain;
-}
-
-.viewerBar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px 24px;
-  padding: 12px var(--margin) 16px;
-  border-top: 1px solid var(--rule);
-  margin-top: 12px;
-}
-
-.viewerCaption {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--bone-dim);
-}
-
-.viewerControls {
-  display: flex;
-  gap: 24px;
-}
-
-.viewerButton {
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--bone);
-  font-family: var(--font-body);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  text-decoration: underline;
-  text-underline-offset: 6px;
-  cursor: pointer;
-}
-
-.viewerButton:hover {
-  text-decoration-color: var(--ember-text);
 }
 
 /* === V. Neighbours === */

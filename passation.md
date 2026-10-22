@@ -18,8 +18,9 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 8 | `/music` page ("Sleeve") | Done |
 | 9 | `/music/[slug]` release page ("Booklet") | Done |
 | 10 | `/concerts` ("Tour Poster") + `/concerts/past` redirect | Done |
-| 11 | `/concerts/[slug]` show page ("Show Dossier") | Done, **not committed** |
-| Next | `/about`, `/merch`, `/gallery` (incl. `/concerts/[slug]/gallery` via `GalleryFull`), `/booking` still in the old card style; asset replacement | Not started; wait for go-ahead |
+| 11 | `/concerts/[slug]` show page ("Show Dossier") | Done |
+| 12 | `/gallery` ("Photo Book"), photo catalogue cleanup, shared `PhotoViewer`, `/gallery/concert-photos` redirect | Done, **not committed** |
+| Next | `/about`, `/merch`, `/booking`, `/concerts/[slug]/gallery` (still `GalleryFull`) in the old style; asset replacement | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
 
@@ -102,7 +103,7 @@ Homepage order is now Hero → Latest Release → Live → Visual break → (old
 - **TEMPORARY ASSET, still to be replaced.** It is the strongest available photo, but:
   - its maximum resolution is 2048px, slightly soft on large retina screens;
   - it has a baked border, trimmed off;
-  - it carries the photographer's handwritten signature (reads roughly "Henoumont T."), which is deliberately left visible.
+  - it carries the photographer's handwritten signature (Laurent Henoumont, per the EXIF Artist/Copyright fields; the signature had been misread as "Henoumont T."), which is deliberately left visible.
   - **To do:** confirm the photographer's name and permission, ask for a clean high-resolution master, then set `credit` (mono "Photo — Name").
 - Other candidates in `public/gallery/`:
   - `band2` (red, hair-flying singer);
@@ -147,7 +148,7 @@ Homepage order is now Hero → Release → Live → Visual break → Video → G
   - `band2` is left-aligned at 84% width;
   - then the title and the link.
 - Border trim `1.04` and per-photo focal points are in the `PHOTOS` config. `sizes` accounts for the portrait cover-crops, so no file is upscaled at any tested width.
-- These photos also carry the "Henoumont T." signature and are cover-cropped for the teaser; the full uncropped images remain on `/gallery`. The same credit/permission and clean-master request as the visual break applies.
+- These photos also carry the Laurent Henoumont signature and are cover-cropped for the teaser; the full uncropped images remain on `/gallery`. The same credit/permission and clean-master request as the visual break applies.
 
 **Verification (Phase 5)**
 - `tsc` passes; eslint passes on the changed files.
@@ -494,6 +495,93 @@ Hierarchy: homepage Live = teaser; `/concerts` = tour poster / archive; `/concer
 - `/concerts/utf-arlon/gallery` still returns 200.
 - `tsc` passes; eslint passes on the changed files.
 
+## Phase 12: `/gallery` ("Photo Book") + photo catalogue
+
+**Catalogue rewrite** (`app/lib/gallery.ts`, the single source of truth for gallery and concert photos)
+- New `GalleryPhoto`:
+  - `id`;
+  - `src` (the **2048px original**);
+  - real `width` / `height`;
+  - `alt` (visual description);
+  - optional `caption` (short, visually defensible);
+  - optional `event` (a concert slug, **only when the show is confirmed**);
+  - optional `credit { name, source: "exif" | "watermark" }`;
+  - `chapter`;
+  - optional `bakedBorder` (trim flag).
+- `galleryChapters`: `live-henoumont` (opener allowed), `live-vangelder` (no opener: watermark), `promo`.
+- `SHOW_PHOTO_CREDITS` (currently `true`): **one switch hides every public photographer credit** (chapter credit lines, viewer captions, photographer count).
+- `creditedPhotographers()` returns the unique credit names (empty when credits are off).
+- Removed: `allConcertPhotos`, `galleryHeroPhotos`, the old `caption` / `meta` strings.
+
+**Corrected or removed associations**
+- **Removed** the contradictory event captions:
+  - "Release show — Brussels, BE" (`band1`);
+  - "Crowd release — Arlon, BE" (`band2`: there is no crowd in the image);
+  - "VK - Brussels" (`dav1`);
+  - "Club show" (`kev1`);
+  - "Festival stage" (`bandall`);
+  - "Live show" (`val1`).
+- **The six Henoumont photos** (`bandall`, `band1`, `dav1`, `kev1`, `val1`, `band2`) are one visual session (same backdrop, rig and stage). They have **no** event, city or date until confirmed.
+- New captions: Full band, Live, Lead guitar, Rhythm guitar, Bass / vocals, Live.
+- **`utf-band-good`:** a Peter Vangelder live image (credit source: the baked watermark). No concert slug, city or date; the "HELL" backdrop is **not** used to infer Hell Diest. Never the full-bleed opener.
+- **`band-test`:** the PROMO chapter, with no caption and no credit (no metadata).
+- **Member portraits** (`band/krys-about`, `band/sabari-about`, EXIF "Vangelder Peter") are **not** in `/gallery`; they stay on About.
+- **Credits stored:** Laurent Henoumont (EXIF Artist/Copyright on all six live photos; the hero `bandphoto.jpg` also carries it but is not in the gallery) and Peter Vangelder (watermark on `utf-band-good`).
+
+**Show Dossier consequence** (`app/lib/concertPhotos.ts` rewritten)
+- `confirmedPhotos(show)` now returns catalogue photos whose `event === show.id`. The `gallery` paths stored on the concert record are **no longer trusted**.
+- No catalogue photo has an `event` today, so **every Show Dossier has no Photos section**.
+- **Changed: Arlon** previously showed `band2`, based on the wrong "Arlon" caption. Its Photos section is now gone.
+- Braine and Namur had no photos and are unchanged. Verified on Arlon, Braine and Namur.
+- `/concerts/[slug]/gallery` now uses `confirmedPhotos()` too, so it returns 404 when a show has no confirmed photos (`/concerts/utf-arlon/gallery` is now 404). It had been showing the three unconfirmed Arlon photos.
+- **To re-attach photos to a show:** set `event: "<concert-slug>"` on the catalogue entries once the venue and date of the Henoumont session are confirmed.
+- The `gallery` arrays in `concerts.data.ts` / the database (Arlon: `band1`, `band2`, `bandall`) are now ignored and could be cleared in a data cleanup.
+
+**`/gallery` composition** (new `app/components/gallery/photoBook/*`; `app/gallery/page.tsx` keeps the SEO metadata, with the OG height corrected to the real 1329)
+- **Masthead (ink):** "GALLERY" (condensed, about 19vw, the `h1`) and a mono line of real counts: "08 photographs — 02 photographers". The photographer count shows only when credits are on.
+- **Chapters,** each headed by a bone band with a roman numeral, the title in condensed display, the credit in serif italic ("Photographs by …", only when credits are on) and a mono photo count, over a 2px ink rule:
+  - **I. Live — Laurent Henoumont (6):** full-bleed opener `bandall` (001), an offset pair `band1` (002, columns 1–7) plus `dav1` (003, columns 9–12, dropped lower), then a bone **contact strip** of `kev1`, `val1`, `band2` (004–006).
+  - **II. Live — Peter Vangelder (1):** `utf-band-good` (007) in the wide pair slot (columns 2–8), never full-bleed.
+  - **III. Promo (1):** `band-test` (008), wide slot.
+- **Rules:**
+  - an opener only when the chapter allows it, has 3+ photos and a landscape lead;
+  - then a pair, then strip rows of up to 4.
+  - Strip rows use a **justified natural-ratio row**: each item's flex-grow is its aspect ratio, so heights match and nothing is cropped.
+  - **Page-wide numbering** 001–008, in visual order, shared by the captions, triggers and viewer.
+  - Captions sit **under** the images in mono (number plus caption); there is no overlay or gradient.
+  - Natural ratios come from real dimensions (verified: frame ratio = natural ratio at every width, so no layout shift). Baked borders are trimmed with a 4% scale.
+  - No hover zoom (only a slight opacity change), no cards and no radius.
+- The 2048px originals are served for the opener and pair (1920w at full-bleed; strip 640w at 1x).
+- **End:** "Live archive →" to `/concerts#archive`.
+- **At 900px and below:** the chapter head stacks (numeral and count / title / credit), and the pair stacks with the narrow photo at 84% right-aligned. **At 600px and below** the strip wraps 2 per row, still ratio-driven.
+
+**Shared `PhotoViewer`** (new `app/components/photoViewer/*`, client)
+- `<PhotoViewer photos>` provides one native `<dialog>`; `<PhotoTrigger index>` opens it.
+- Navigation follows the `photos` order. On `/gallery` that is the **whole Photo Book in page order**, across chapters.
+- Behaviour (verified keyboard-only):
+  - Tab to a photo, then Enter opens it;
+  - focus moves to **Close**;
+  - ← / → step (and wrap); Home / End;
+  - Escape closes; backdrop click closes;
+  - **focus returns to the originating photo**.
+- Visible caption, e.g. "003 / 008 — Live — Lead guitar — photograph by Laurent Henoumont" (the caption is skipped when it only repeats the chapter title; the credit only when credits are on).
+- Accessible name, e.g. "Photo 3 of 8: <alt>. <context>". Full-resolution images.
+- **The Show Dossier now uses the same viewer** (`showPhotos.tsx` rewritten). Its sequence styling is unchanged; the viewer CSS moved from `showDossier.module.css` into `photoViewer.module.css`. Verified with a temporary 3-photo preview (since removed): arrows, Escape and focus return work.
+
+**Redirect** (`next.config.ts`): `/gallery/concert-photos` → `/gallery`, permanent (308). Verified.
+
+**Deleted:**
+- `app/gallery/galleryClient.tsx`, `app/gallery/gallery.module.css`, `app/gallery/concert-photos/page.tsx`;
+- `app/components/gallery/galleryHero/` and `galleryStrip/` (both already unused).
+
+**Kept:** `GalleryFull` and `galleryLightBox` (still used by `/concerts/[slug]/gallery`). They now use their own local `GalleryFullPhoto` type instead of the catalogue type.
+
+**Verification (Phase 12)**
+- 1920, 1440, 820 and 375: no horizontal overflow, no page errors, natural ratios preserved.
+- Keyboard-only viewer navigation and focus return pass on `/gallery` and on the Show Dossier.
+- The redirect works. The Show Dossiers were rechecked after the catalogue cleanup.
+- `tsc` passes; eslint passes on the changed files.
+
 ## Unresolved: mobile Hero visual is temporary
 
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
@@ -506,6 +594,18 @@ Hierarchy: homepage Live = teaser; `/concerts` = tour poster / archive; `/concer
 - The Hero must stay ready to take a dedicated mobile asset. `HERO_IMAGE` in `hero.tsx` is the single place to add it, e.g. a `srcMobile` rendered through `<picture>` / art direction at ≤720px. The layout does not depend on the asset.
 
 ## Known weaknesses / open items
+
+- **Photo attribution and permission (Phase 12):**
+  - The Henoumont session's venue and date are unknown, so no show can display photos until confirmed.
+  - Credits are stored from EXIF (Henoumont) and a watermark (Vangelder); **publication permission and credit wording are unconfirmed**. Flip `SHOW_PHOTO_CREDITS` to `false` to hide all credits.
+  - `band-test` (promo) has no photographer metadata.
+  - The "HELL" backdrop on `utf-band-good` is a visual clue only.
+- **Gallery assets (Phase 12):**
+  - only 8 photos, 6 from one session;
+  - 4 are already prominent elsewhere (`band1` visual break; `dav1`, `val1`, `band2` homepage teaser), and `band-test` is in the About teaser;
+  - baked signatures, borders and a watermark;
+  - 2048px maximum, so the full-bleed opener is slightly soft at 1920.
+- **Gallery rhythm (Phase 12):** chapters II and III hold one photo each, so the lower half of the page is two single images with a lot of ink around them. It will improve as more sets are added.
 
 - ~~`/concerts` detail pages~~: resolved (Phase 11).
 - **Show pages without data (Phase 11):** 10 of 12 shows have only date, city and venue. Their pages are the masthead plus neighbours: a single ink plane with no bone section. This is intentional, but sparse.
@@ -535,7 +635,7 @@ Hierarchy: homepage Live = teaser; `/concerts` = tour poster / archive; `/concer
 - **Contact email mismatch (not addressed):** `presskit.md` lists `untiltheyfallband@gmail.com`; the site uses `contact@untiltheyfall.com` everywhere (header, booking section, footer). Confirm which address is current.
 
 - **TEMPORARY: video poster (Phase 5).** A 640px YouTube still, soft at desktop widths; a local 1920px+ still is needed (see Phase 5).
-- **TEMPORARY: signed gallery photography (Phases 4–5).** The visual break and gallery teaser photos carry the photographer's signature ("Henoumont T.") and a baked border. Confirm the credit and permission, and get clean high-resolution masters.
+- **TEMPORARY: signed gallery photography (Phases 4–5).** The visual break and gallery teaser photos carry the photographer's signature (Laurent Henoumont) and a baked border. Confirm the credit and permission, and get clean high-resolution masters.
 - **TEMPORARY: merch product imagery (Phase 6). This is the weakest asset on the homepage.**
   - `core-tee.webp` is a phone screenshot of a mockup: teal UI arrows at the left edge, a status-bar edge at the top, and only 700px wide (872px source). It is upscaled in the primary slot at desktop widths.
   - `skull-hoodie` is a dark, AI-looking mockup (1024px) that reads as an almost black square on bone.

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import GalleryFull from "@/app/components/gallery/galleryFull/galleryFull";
+import GalleryFull, { type GalleryFullPhoto } from "@/app/components/gallery/galleryFull/galleryFull";
+import { confirmedPhotos } from "@/app/lib/concertPhotos";
 import { getConcertById } from "@/app/lib/concerts";
-import type { GalleryPhoto } from "@/app/lib/gallery";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -13,15 +13,18 @@ export default async function ConcertGalleryPage({ params }: Props) {
   const { slug } = await params;
   const concert = await getConcertById(slug);
 
-  if (!concert || concert.gallery.length === 0) {
+  /* Only catalogue photos explicitly linked to this show */
+  const confirmed = concert ? confirmedPhotos(concert) : [];
+  if (!concert || confirmed.length === 0) {
     notFound();
   }
 
   const title = concert.title ?? `${concert.city} - ${concert.venue}`;
-  const photos: GalleryPhoto[] = concert.gallery.map((src, index) => ({
-    id: `${concert.id}-${index}`,
-    src,
-    alt: `${title} live photo ${index + 1}`,
+  const photos: GalleryFullPhoto[] = confirmed.map((photo) => ({
+    id: photo.id,
+    src: photo.src,
+    alt: photo.alt,
+    caption: photo.caption,
     meta: concert.date,
   }));
 

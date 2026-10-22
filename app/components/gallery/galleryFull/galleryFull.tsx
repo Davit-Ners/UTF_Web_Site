@@ -3,18 +3,25 @@
 import { useState } from "react";
 import Image from "next/image";
 import styles from "./galleryFull.module.css";
-import type { GalleryPhoto } from "@/app/lib/gallery";
 import GalleryLightbox from "../galleryLightBox/galleryLightBox";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
+
+export type GalleryFullPhoto = {
+  id: string;
+  src: string;
+  alt: string;
+  caption?: string;
+  meta?: string;
+};
 
 type Props = {
   title: string;
   subtitle?: string;
-  photos: GalleryPhoto[];
+  photos: GalleryFullPhoto[];
 };
 
 export default function GalleryFull({ title, subtitle, photos }: Props) {
-  const [active, setActive] = useState<GalleryPhoto | null>(null);
+  const [active, setActive] = useState<GalleryFullPhoto | null>(null);
 
   return (
     <>

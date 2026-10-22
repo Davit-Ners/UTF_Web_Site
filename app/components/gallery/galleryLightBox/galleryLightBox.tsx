@@ -3,11 +3,11 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import styles from "./galleryLightbox.module.css";
-import type { GalleryPhoto } from "@/app/lib/gallery";
+import type { GalleryFullPhoto } from "../galleryFull/galleryFull";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 
 type Props = {
-  photo: GalleryPhoto;
+  photo: GalleryFullPhoto;
   onClose: () => void;
 };
 

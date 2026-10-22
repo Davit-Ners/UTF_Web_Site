@@ -1,0 +1,276 @@
+/* Photo Book: chapters, a full-bleed opener, offset pairs and a numbered contact strip */
+.page {
+  background: var(--ink);
+  color: var(--bone);
+}
+
+/* === Masthead === */
+.masthead {
+  padding: clamp(24px, 3vw, 40px) var(--margin) var(--space-s);
+}
+
+.word {
+  margin-left: -0.04em;
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 19vw, 19rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.76;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.counts {
+  margin-top: clamp(16px, 2vw, 28px);
+  color: var(--bone-dim);
+}
+
+/* === Chapter === */
+.chapter {
+  padding-bottom: var(--space-m);
+}
+
+.chapterHead {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  align-items: end;
+  padding: clamp(28px, 3vw, 48px) var(--margin) 16px;
+  background: var(--bone);
+  color: var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
+
+.roman {
+  grid-column: 1 / 2;
+  color: rgb(11 11 10 / 0.62);
+}
+
+.chapterTitle {
+  grid-column: 2 / 7;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 6vw, 6.5rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.credit {
+  grid-column: 7 / 11;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 1.4vw, 1.375rem);
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.chapterCount {
+  grid-column: 11 / 13;
+  justify-self: end;
+  color: rgb(11 11 10 / 0.62);
+}
+
+/* === Photo === */
+.figure {
+  margin: 0;
+}
+
+.trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: var(--char);
+  cursor: zoom-in;
+}
+
+.frame {
+  display: block;
+  overflow: hidden;
+}
+
+/* Natural ratio from real width/height; no crop */
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: opacity 0.2s ease;
+}
+
+.trigger:hover .image {
+  opacity: 0.9;
+}
+
+/* Files with a thin baked border: scale it out of frame */
+.trimmed {
+  transform: scale(1.04);
+}
+
+.caption {
+  display: flex;
+  gap: 14px;
+  padding-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+.number {
+  color: var(--bone);
+  font-variant-numeric: tabular-nums;
+}
+
+/* === Spreads (ink) === */
+.spreads {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(48px, 6vw, 96px);
+  padding-top: clamp(32px, 4vw, 64px);
+}
+
+.opener .caption {
+  padding-left: var(--margin);
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  align-items: start;
+  padding: 0 var(--margin);
+}
+
+.pairWide {
+  grid-column: 1 / 8;
+}
+
+.pairNarrow {
+  grid-column: 9 / 13;
+  margin-top: clamp(48px, 9vw, 160px);
+}
+
+.single .pairWide {
+  grid-column: 2 / 9;
+}
+
+/* === Contact strip (bone) === */
+.strip {
+  margin-top: clamp(48px, 6vw, 96px);
+  padding: clamp(24px, 3vw, 40px) var(--margin);
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.stripLabel {
+  margin-bottom: 16px;
+  color: rgb(11 11 10 / 0.62);
+}
+
+.stripRow {
+  display: flex;
+  gap: var(--gap);
+}
+
+.stripRow + .stripRow {
+  margin-top: var(--gap);
+}
+
+.stripItem {
+  flex: var(--ratio) 1 0;
+  min-width: 0;
+}
+
+.strip .caption {
+  color: rgb(11 11 10 / 0.62);
+}
+
+.strip .number {
+  color: var(--ink);
+}
+
+/* === End === */
+.end {
+  padding: 0 var(--margin) var(--space-m);
+}
+
+.endLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  border-top: 2px solid var(--bone);
+  border-bottom: 1px solid var(--rule);
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2.5rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.endLink:hover {
+  color: var(--ember-text);
+}
+
+/* === Stacked === */
+@media (max-width: 900px) {
+  .chapterHead {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    row-gap: 10px;
+  }
+
+  .roman {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .chapterCount {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .chapterTitle {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .credit {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+
+  .pair {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .pairWide,
+  .single .pairWide {
+    width: 100%;
+  }
+
+  .pairNarrow {
+    align-self: flex-end;
+    width: 84%;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Two per row on phones; ratios still drive widths */
+  .stripRow {
+    flex-wrap: wrap;
+    row-gap: var(--gap);
+  }
+
+  .stripItem {
+    flex-basis: calc(50% - var(--gap));
+  }
+}

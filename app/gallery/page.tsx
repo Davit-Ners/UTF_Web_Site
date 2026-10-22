@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import GalleryClient from "./galleryClient";
+import PhotoBook from "../components/gallery/photoBook/photoBook";
 
 export const metadata: Metadata = {
   title: "Gallery",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
       {
         url: "/gallery/band1.jpg",
         width: 2048,
-        height: 1365,
+        height: 1329,
         alt: "Until They Fall live on stage",
       },
     ],
@@ -32,5 +32,5 @@ export const metadata: Metadata = {
 };
 
 export default function GalleryPage() {
-  return <GalleryClient />;
+  return <PhotoBook />;
 }

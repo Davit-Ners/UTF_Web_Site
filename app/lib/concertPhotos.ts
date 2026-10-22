@@ -1,22 +1,11 @@
 import type { Concert } from "./concerts";
-import { splitCity } from "./concertFormat";
-import { allConcertPhotos } from "./gallery";
-import { getOptimizedImagePath } from "./imageOptimization";
-
-export type ShowPhoto = { src: string; description: string };
+import { galleryPhotos, type GalleryPhoto } from "./gallery";
 
 /*
- * A gallery path only counts as a photo of this show when the photo
- * catalogue (gallery.ts) explicitly names the show's city. Paths that are
- * uncatalogued, or catalogued with another place, are not shown.
+ * Photos of a show come only from the catalogue, and only when a photo's
+ * `event` is explicitly this show's slug. Gallery paths stored on the
+ * concert record are not trusted on their own.
  */
-export function confirmedPhotos(show: Concert): ShowPhoto[] {
-  const city = splitCity(show.city).name.toLowerCase();
-
-  return show.gallery.flatMap((path) => {
-    const src = getOptimizedImagePath(path) ?? path;
-    const entry = allConcertPhotos.find((photo) => (getOptimizedImagePath(photo.src) ?? photo.src) === src);
-    if (!entry?.meta || !entry.meta.toLowerCase().includes(city)) return [];
-    return [{ src, description: entry.alt }];
-  });
+export function confirmedPhotos(show: Concert): GalleryPhoto[] {
+  return galleryPhotos.filter((photo) => photo.event === show.id);
 }
