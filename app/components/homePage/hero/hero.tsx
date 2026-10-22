@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { CSSProperties } from "react";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import { latestRelease } from "@/app/lib/music";
@@ -75,9 +74,9 @@ export default function Hero() {
               Listen <span className="arrow" aria-hidden="true">↗</span>
             </a>
           ) : null}
-          <Link href="/concerts" className="action-link">
+          <a href="#live" className="action-link">
             Live <span className="arrow" aria-hidden="true">→</span>
-          </Link>
+          </a>
         </div>
       </div>
 

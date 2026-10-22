@@ -8,7 +8,7 @@ const MAX_ROWS = 5;
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 type Props = {
-  shows: Concert[];
+  shows: Concert[] | null;
 };
 
 function dateParts(date: string) {
@@ -25,10 +25,28 @@ function splitCity(city: string) {
 export default function Live({ shows }: Props) {
   return (
     <section id="live" className={styles.live} aria-labelledby="live-title">
-      {shows.length === 0 ? <NoDates /> : null}
-      {shows.length === 1 ? <FeaturedShow show={shows[0]} /> : null}
-      {shows.length > 1 ? <TourList shows={shows} /> : null}
+      {shows === null ? <Unavailable /> : null}
+      {shows?.length === 0 ? <NoDates /> : null}
+      {shows?.length === 1 ? <FeaturedShow show={shows[0]} /> : null}
+      {shows && shows.length > 1 ? <TourList shows={shows} /> : null}
     </section>
+  );
+}
+
+function Unavailable() {
+  return (
+    <>
+      <p className={`meta ${styles.index}`}>02 — Live</p>
+      <h2 id="live-title" className={`${styles.title} ${styles.titleSplit}`}>
+        Live
+      </h2>
+      <div className={styles.empty}>
+        <p className="meta">Dates unavailable right now</p>
+        <Link href="/concerts" className={`action-link ${styles.emptyLink}`}>
+          All concerts <span className="arrow" aria-hidden="true">→</span>
+        </Link>
+      </div>
+    </>
   );
 }
 

@@ -19,7 +19,8 @@ export default async function Home() {
     console.error("Homepage merch unavailable:", error);
   }
 
-  let upcoming: Concert[] = [];
+  // null means the fetch failed, which is distinct from zero upcoming shows
+  let upcoming: Concert[] | null = null;
   try {
     upcoming = (await getConcertBuckets()).upcoming;
   } catch (error) {
