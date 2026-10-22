@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import AllItems from "../components/merch/allItems/allItems";
 import Catalogue, { type NumberedProduct } from "../components/merch/catalogue/catalogue";
 import OrderPanel from "../components/merch/orderPanel/orderPanel";
@@ -11,6 +11,7 @@ import styles from "./merch.module.css";
 
 type Props = {
     products: Product[];
+    masthead: ReactNode;
 };
 
 const DEFAULT_MAX_QTY = 20;
@@ -31,7 +32,7 @@ function clampQty(product: Product, quantity: number) {
     return Math.min(Math.max(safeQty, 1), maxQty);
 }
 
-export default function MerchStoreClient({ products }: Props) {
+export default function MerchStoreClient({ products, masthead }: Props) {
     const [cart, setCart] = useState<CartItem[]>([]);
     const [orderStatus, setOrderStatus] = useState<
         { type: "idle" } | { type: "loading" } | { type: "success"; message: string } | { type: "error"; message: string }
@@ -39,6 +40,8 @@ export default function MerchStoreClient({ products }: Props) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
+    const mastheadButtonRef = useRef<HTMLButtonElement>(null);
+    const openerRef = useRef<HTMLElement | null>(null);
     const [justAdded, setJustAdded] = useState<string | null>(null);
     const [announcement, setAnnouncement] = useState("");
     const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -169,15 +172,40 @@ export default function MerchStoreClient({ products }: Props) {
         if (feedbackTimer.current) clearTimeout(feedbackTimer.current);
     }, []);
 
-    function openDrawer() {
+    function openDrawer(event: React.MouseEvent<HTMLButtonElement>) {
+        openerRef.current = event.currentTarget;
         dialogRef.current?.showModal();
         closeRef.current?.focus();
+    }
+
+    /* Return focus to the control that opened the drawer, or to whichever order control is still visible */
+    function restoreFocus() {
+        const candidates = [openerRef.current, triggerRef.current, mastheadButtonRef.current];
+        /* getClientRects works for fixed elements, unlike offsetParent */
+        const target = candidates.find((el) => el && el.isConnected && el.getClientRects().length > 0);
+        target?.focus();
     }
 
     const add = { onAdd: handleAddToCart, justAdded, inOrder };
 
     return (
         <>
+            <header className={styles.masthead}>
+                {masthead}
+                {/* Desktop: a normal, non-sticky action; mobile keeps its bottom bar */}
+                <button
+                    ref={mastheadButtonRef}
+                    type="button"
+                    className={styles.mastAction}
+                    onClick={openDrawer}
+                    aria-haspopup="dialog"
+                >
+                    <span>Order request ({itemCount})</span>
+                    {itemCount ? <span className={styles.triggerTotal}>{formatPrice(subtotal)}</span> : null}
+                    <span aria-hidden="true">▸</span>
+                </button>
+            </header>
+
             {featured.length ? (
                 <section className={styles.featured} aria-labelledby="featured-title">
                     <h2 id="featured-title" className={`meta ${styles.featuredLabel}`}>
@@ -189,7 +217,10 @@ export default function MerchStoreClient({ products }: Props) {
 
             <AllItems items={numbered} {...add} />
 
-            {/* Persistent trigger: quiet at 0, count and total once items are added */}
+            {/*
+              Mobile: persistent bottom bar (quiet at 0).
+              Desktop: an edge tab in the right page margin, only while the order is not empty.
+            */}
             <button
                 ref={triggerRef}
                 type="button"
@@ -210,7 +241,7 @@ export default function MerchStoreClient({ products }: Props) {
                 ref={dialogRef}
                 className={styles.drawer}
                 aria-label="Your order request"
-                onClose={() => triggerRef.current?.focus()}
+                onClose={restoreFocus}
                 onClick={(e) => {
                     if (e.target === e.currentTarget) dialogRef.current?.close();
                 }}

@@ -774,8 +774,21 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
 - `tsc` passes; eslint passes on the changed files.
 
 **Remaining weaknesses (Phase 14.1)**
-- The desktop trigger is a fixed element at the top right. It can sit over the right edge of a Featured image while scrolling; it is small and opaque, but placing it inside the site header would be cleaner (a Header change, so out of scope).
+- ~~The desktop trigger floats over content~~: resolved in 14.2.
 - Featured products appear twice (Featured plus All items). This is intentional, so the list is complete.
+
+### Phase 14.2: desktop order trigger + end spacing
+
+- **Masthead action (desktop, >900px):** the client store now renders the masthead. `MerchView` passes the masthead content as a `masthead` prop when a catalogue exists; the unavailable and empty states still render it server-side. It ends with a normal in-flow button, "Order request (N) [subtotal] ▸", which is never sticky and is always present, so the flow is discoverable at 0.
+- **Edge tab (desktop):** shown **only while the order is not empty**.
+  - A vertical tab fixed to the right viewport edge at mid-height, its text reading bottom to top.
+  - Count and subtotal; an ember rule with no right border, attached to the edge.
+  - Its width is `min(var(--margin), 48px)`, so it lives in the page gutter. Verified at 1920, 1440, 1100 and 920: the tab's left edge is at or beyond the right edge of every visible image, heading, row and button (8px clear at 1920/1440, flush at 1100/920), so there is **no overlap**.
+  - It disappears when the order becomes empty again; the masthead action remains.
+- **Focus return** after closing the drawer: the opener if it is still rendered, otherwise the visible order control. Visibility is tested with `getClientRects()`, because `offsetParent` is always null for fixed elements. Emptying the order inside the drawer and closing it returns focus to the masthead action (verified).
+- **Mobile (≤900px) unchanged:** the masthead action is hidden; the persistent bottom bar and the full-screen sheet are as approved.
+- **End spacing:** All items bottom padding is now `clamp(32px, 4vw, 56px)` (was `--space-m`, up to 160px) and the questions line has no top padding (was `--space-s`). The last row → "Questions about sizes or shipping?" gap is 56px at 1440/1920, about 33px on mobile (was about 250px).
+- The drawer and all order behaviour are unchanged. `tsc` passes; eslint passes on the changed files.
 
 ## Unresolved: mobile Hero visual is temporary
 

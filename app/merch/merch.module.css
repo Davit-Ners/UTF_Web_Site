@@ -51,20 +51,17 @@
   color: var(--ink);
 }
 
-/* === Order request trigger: persistent, quiet until something is added === */
-.trigger {
-  position: fixed;
-  z-index: 55;
-  top: calc(var(--header-h) + 12px);
-  right: var(--margin);
+/* === Masthead order action (desktop): in the page flow, never sticky === */
+.mastAction {
   display: inline-flex;
   align-items: center;
   gap: 14px;
   min-height: 44px;
+  margin-top: 20px;
   padding: 0 16px;
   border: 1px solid var(--rule);
-  background: var(--ink);
-  color: var(--bone-dim);
+  background: none;
+  color: var(--bone);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
@@ -72,14 +69,44 @@
   cursor: pointer;
 }
 
-.trigger:hover {
-  color: var(--bone);
+.mastAction:hover {
   border-color: var(--bone);
 }
 
-.triggerActive {
-  border-color: var(--ember);
+/*
+ * Desktop edge tab: shown only while the order is not empty. It is a
+ * vertical tab whose width never exceeds the page margin, so it sits in
+ * the empty gutter beside the content instead of on top of it.
+ */
+.trigger {
+  position: fixed;
+  z-index: 55;
+  top: 50%;
+  right: 0;
+  display: none;
+  align-items: center;
+  gap: 14px;
+  width: min(var(--margin), 48px);
+  padding: 18px 0;
+  border: 1px solid var(--ember);
+  border-right: 0;
+  background: var(--ink);
   color: var(--bone);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: translateY(-50%) rotate(180deg);
+  cursor: pointer;
+}
+
+.trigger:hover {
+  background: var(--char);
+}
+
+.triggerActive {
+  display: inline-flex;
 }
 
 .triggerTotal {
@@ -190,7 +217,7 @@
 }
 
 .questions {
-  padding: var(--space-s) var(--margin);
+  padding: 0 var(--margin) var(--space-s);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   letter-spacing: 0.06em;
@@ -198,24 +225,40 @@
   color: var(--bone-dim);
 }
 
-/* === Mobile: bottom order bar, full-screen sheet === */
+/* === Mobile: bottom order bar, full-screen sheet (approved, unchanged) === */
 @media (max-width: 900px) {
+  .mastAction {
+    display: none;
+  }
+
   .trigger {
     top: auto;
     left: 0;
     right: 0;
     bottom: 0;
+    display: flex;
     justify-content: space-between;
+    width: auto;
     min-height: 56px;
     padding: 0 var(--margin);
     padding-bottom: env(safe-area-inset-bottom);
     border: 0;
     border-top: 1px solid var(--rule);
+    color: var(--bone-dim);
     font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+
+  .trigger:hover {
+    background: var(--ink);
+    color: var(--bone);
   }
 
   .triggerActive {
     border-top: 2px solid var(--ember);
+    color: var(--bone);
   }
 
   .triggerTotal {

@@ -1,6 +1,7 @@
 /* All items: the practical layer, aligned rows on ink for fast scanning */
 .section {
-  padding: var(--space-m) var(--margin);
+  /* Short tail: the questions line follows directly */
+  padding: var(--space-m) var(--margin) clamp(32px, 4vw, 56px);
   background: var(--ink);
   color: var(--bone);
 }

@@ -13,15 +13,21 @@ export default function MerchView({ products }: { products: Product[] | null }) 
     `Shipping ${SHIPPING_FLAT_EUR} € — free from ${FREE_SHIPPING_FROM_EUR} €`,
   ].filter(Boolean);
 
+  const mastheadContent = (
+    <>
+      <h1 className={styles.word}>Merch</h1>
+      <p className={`meta ${styles.facts}`}>{facts.join(" — ")}</p>
+      <p className={styles.notice}>
+        No payment on the site. We confirm stock, shipping and payment details by email.
+      </p>
+    </>
+  );
+  const hasStore = products !== null && products.length > 0;
+
   return (
     <main className={styles.page}>
-      <header className={styles.masthead}>
-        <h1 className={styles.word}>Merch</h1>
-        <p className={`meta ${styles.facts}`}>{facts.join(" — ")}</p>
-        <p className={styles.notice}>
-          No payment on the site. We confirm stock, shipping and payment details by email.
-        </p>
-      </header>
+      {/* With a catalogue, the client store renders the masthead so it can hold the order action */}
+      {hasStore ? null : <header className={styles.masthead}>{mastheadContent}</header>}
 
       {products === null ? (
         <section className={styles.unavailable}>
@@ -38,7 +44,7 @@ export default function MerchView({ products }: { products: Product[] | null }) 
           </a>
         </section>
       ) : (
-        <MerchStoreClient products={products} />
+        <MerchStoreClient products={products} masthead={mastheadContent} />
       )}
 
       <footer className={styles.questions}>
