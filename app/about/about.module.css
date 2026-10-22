@@ -1,660 +1,419 @@
+/* Band Profile: cover, story, the band by joining year, on stage, end */
 .page {
-  padding-bottom: 56px;
+  background: var(--ink);
+  color: var(--bone);
 }
 
-.hero {
-  padding: 28px 0 10px;
+.label {
+  margin-bottom: clamp(24px, 3vw, 44px);
 }
 
-.heroGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  gap: 24px;
-  align-items: center;
+/* === I. Cover === */
+/*
+ * Natural ratio (1363/2048 of the width), capped at 66% of the viewport
+ * height so the band name appears in the first screen. When the cap applies,
+ * the trim comes almost entirely from the bottom (floor and feet); the
+ * members' heads sit in the top third and stay in frame.
+ */
+.coverFrame {
+  height: min(66.55vw, 66vh);
+  height: min(66.55vw, 66svh);
+  overflow: hidden;
+  background: var(--char);
 }
 
-.heroText {
-  max-width: 640px;
+.coverImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
 }
 
-.eyebrow,
-.sectionEyebrow {
-  display: inline-block;
-  margin-bottom: 8px;
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.eyebrow {
-  color: var(--color-text-muted);
-}
-
-.sectionEyebrow {
-  color: var(--color-accent);
+.coverText {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 32px;
+  padding: clamp(24px, 3vw, 44px) var(--margin) var(--space-s);
 }
 
 .title {
-  font-family: var(--font-title, inherit);
-  font-size: clamp(26px, 4vw, 42px);
-  line-height: 1.08;
+  margin-left: -0.03em;
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 11vw, 12rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.8;
+  letter-spacing: -0.025em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-text-primary);
 }
 
-.title span {
-  color: var(--color-accent);
+.fact {
+  color: var(--bone-dim);
 }
 
-.subtitle {
-  max-width: 60ch;
-  margin-top: 10px;
-  color: var(--color-text-secondary);
+/* === II. Story (bone) === */
+.story {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  padding: var(--space-m) var(--margin);
+  background: var(--bone);
+  color: var(--ink);
 }
 
-.heroMedia {
-  position: relative;
+.story .label {
+  grid-column: 1 / -1;
+  color: rgb(11 11 10 / 0.62);
+}
+
+.lede {
+  grid-column: 2 / 10;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3.1vw, 3.25rem);
+  font-style: italic;
+  line-height: 1.16;
+  letter-spacing: -0.005em;
+}
+
+.body {
+  grid-column: 5 / 10;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1em;
+  margin-top: clamp(32px, 4vw, 56px);
 }
 
-.heroImageWrap {
-  position: relative;
+.body p {
+  color: var(--ink);
+  font-size: clamp(1.0625rem, 1.2vw, 1.25rem);
+  line-height: 1.55;
+}
+
+.body a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--ember);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.body a:hover {
+  color: var(--ink);
+  text-decoration-color: var(--ink);
+}
+
+.closing {
+  grid-column: 2 / -1;
+  margin-top: clamp(48px, 6vw, 96px);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6.4vw, 7rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.86;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+/* === III. The band === */
+.band {
+  padding: var(--space-m) var(--margin);
+}
+
+.band .label {
+  color: var(--bone-dim);
+}
+
+.year + .year {
+  margin-top: clamp(48px, 6vw, 96px);
+}
+
+/* Joining year as a ruled divider */
+.yearRule {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: clamp(24px, 3vw, 40px);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  color: var(--bone);
+}
+
+.yearRule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/*
+ * Each member is a line of the page: name across the width, role in mono,
+ * the image beside it at its own ratio. Sides alternate; landscape images
+ * are wider, portraits narrower and taller.
+ */
+.member {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  align-items: end;
+}
+
+.member + .member {
+  margin-top: clamp(56px, 7vw, 120px);
+}
+
+.ident {
+  grid-row: 1;
+  align-self: end;
+}
+
+.name {
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 7.4vw, 8.5rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.84;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.role {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+.figure {
+  grid-row: 1;
+  margin: 0;
+}
+
+.imageRight .ident {
+  grid-column: 1 / 8;
+}
+
+.imageLeft .ident {
+  grid-column: 6 / 13;
+  text-align: right;
+}
+
+.imageRight.landscape .figure {
+  grid-column: 8 / 13;
+}
+
+.imageRight.portrait .figure {
+  grid-column: 9 / 12;
+}
+
+.imageLeft.landscape .figure {
+  grid-column: 1 / 6;
+}
+
+.imageLeft.portrait .figure {
+  grid-column: 2 / 5;
+}
+
+.noImage .ident {
+  grid-column: 1 / -1;
+}
+
+.frame {
+  display: block;
   overflow: hidden;
-  border-radius: 24px;
-  aspect-ratio: 4 / 3;
-  background: var(--color-surface-alt);
-  border: 1px solid color-mix(in oklab, var(--color-border) 78%, var(--color-accent) 22%);
-  box-shadow: var(--shadow);
+  background: var(--char);
 }
 
-.heroImageWrap :global(img) {
-  object-fit: cover;
-  transform: scale(1.02);
-  transition: transform 0.3s ease;
+/* Natural ratio from real width/height: never cropped */
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
-.heroImageWrap:hover :global(img) {
-  transform: scale(1.05);
+/* Files with a thin baked border: scale it out of frame */
+.trimmed {
+  transform: scale(1.04);
 }
 
-.heroBadge {
-  max-width: 280px;
-  padding: 12px 14px;
-}
-
-.heroBadgeLabel {
-  font-size: 0.74rem;
+.credit {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--color-text-muted);
+  color: var(--grey);
 }
 
-.heroBadgeTitle {
-  margin-top: 4px;
-  font-weight: 700;
-  color: var(--color-text-primary);
+/* === IV. On stage (bone) === */
+.stage {
+  padding: var(--space-m) var(--margin);
+  background: var(--bone);
+  color: var(--ink);
 }
 
-.heroBadgeMeta {
-  margin-top: 2px;
-  font-size: 0.88rem;
+.stage .label {
+  color: rgb(11 11 10 / 0.62);
 }
 
-.storySection,
-.membersSection,
-.highlightSection {
-  margin-top: 30px;
-}
-
-.storyGrid {
+.stageGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
-  gap: 18px;
-  align-items: stretch;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  align-items: start;
 }
 
-.storyCard {
-  padding: 24px;
-  border-radius: 28px;
-  background:
-    radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent) 14%, transparent), transparent 36%),
-    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 94%, black), color-mix(in oklab, var(--color-surface-alt) 88%, black));
-  border: 1px solid color-mix(in oklab, var(--color-border) 80%, var(--color-accent) 20%);
-}
-
-.sectionTitle {
-  font-size: clamp(1.35rem, 2.8vw, 2.35rem);
-  line-height: 0.96;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.storyCard p {
-  max-width: 68ch;
-}
-
-.storyCard p + p {
-  margin-top: 10px;
-}
-
-.storyMetaCard {
+.stageLists {
+  grid-column: 1 / 8;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 22px 20px;
-  border-radius: 28px;
-  background:
-    radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent 38%),
-    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 93%, black), color-mix(in oklab, var(--color-surface-alt) 87%, black));
-  border: 1px solid color-mix(in oklab, var(--color-border) 80%, var(--color-accent) 20%);
+  gap: clamp(32px, 4vw, 56px);
 }
 
-.storyMetaEyebrow {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
+.stageGroup {
+  border-top: 2px solid var(--ink);
+  padding-top: 14px;
+}
+
+.stageHead {
+  margin-bottom: 14px;
+  color: rgb(11 11 10 / 0.62);
+}
+
+/* Names flow as one typographic run, separated by thin dashes */
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2.75rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 1.05;
   text-transform: uppercase;
-  color: var(--color-accent);
 }
 
-.storyMetaTitle {
-  max-width: 14ch;
-  color: var(--color-text-primary);
-  font-size: 1.35rem;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.storyMetaText {
-  max-width: 30ch;
-  color: var(--color-text-secondary);
-}
-
-.storyMetaList {
-  display: grid;
-  gap: 0;
-  margin-top: auto;
-  border-top: 1px solid color-mix(in oklab, var(--color-border) 86%, transparent);
-}
-
-.storyMetaRow {
-  display: grid;
-  grid-template-columns: 72px 1fr;
-  gap: 14px;
-  align-items: start;
-  padding: 14px 0;
-  border-bottom: 1px solid color-mix(in oklab, var(--color-border) 86%, transparent);
-}
-
-.storyMetaLabel {
-  font-size: 0.72rem;
+.flowSmall {
+  font-size: clamp(1.125rem, 1.6vw, 1.625rem);
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-.storyMetaValue {
-  color: var(--color-text-primary);
-  font-size: 1rem;
   line-height: 1.25;
 }
 
-.membersIntro {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
-  gap: 18px;
-  align-items: end;
-  margin-bottom: 16px;
+.flow li:not(:last-child)::after {
+  content: "—";
+  margin: 0 0.4em;
+  font-weight: 400;
+  color: rgb(11 11 10 / 0.4);
 }
 
-.sectionText {
-  max-width: 46ch;
-  color: var(--color-text-secondary);
-}
-
-.lineupShell {
-  display: grid;
-  grid-template-columns: minmax(320px, 0.92fr) minmax(0, 1.08fr);
-  gap: 18px;
-  align-items: start;
-}
-
-.lineupFeature {
-  position: sticky;
-  top: 92px;
-  min-height: 620px;
-  overflow: hidden;
-  border-radius: 30px;
-  border: 1px solid color-mix(in oklab, var(--color-border) 76%, var(--color-accent) 24%);
-  background: color-mix(in oklab, var(--color-surface) 92%, black);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
-}
-
-.lineupFeatureMedia {
-  position: absolute;
-  inset: 0;
-}
-
-.lineupFeatureMedia :global(img) {
-  object-fit: cover;
-}
-
-.lineupFeatureOverlay {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 18% 18%, color-mix(in oklab, var(--color-accent) 26%, transparent), transparent 34%),
-    linear-gradient(180deg, rgba(5, 5, 8, 0.06), rgba(5, 5, 8, 0.8) 62%, rgba(5, 5, 8, 0.95));
-}
-
-.lineupFeatureBody {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 14px;
-  min-height: 620px;
-  padding: 24px;
-}
-
-.featureTag {
-  display: inline-flex;
-  align-items: center;
+.archiveLink {
   align-self: flex-start;
-  padding: 0.42rem 0.72rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(10, 10, 12, 0.38);
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  backdrop-filter: blur(12px);
 }
 
-.featureTitle {
-  max-width: 11ch;
-  color: #fff;
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 0.9;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.stageFigure {
+  grid-column: 9 / 13;
+  margin: 0;
 }
 
-.featureText {
-  max-width: 42ch;
-  color: rgba(255, 255, 255, 0.8);
+.creditOnBone {
+  color: rgb(11 11 10 / 0.62);
 }
 
-.featurePills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.featurePill {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.44rem 0.72rem;
-  border-radius: 999px;
-  background: rgba(15, 15, 18, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  backdrop-filter: blur(12px);
-}
-
-.membersGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.memberCard {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 14px;
-  border-radius: 24px;
-  background:
-    radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent 34%),
-    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 94%, black), color-mix(in oklab, var(--color-surface-alt) 88%, black));
-  border: 1px solid color-mix(in oklab, var(--color-border) 80%, var(--color-accent) 20%);
-  overflow: hidden;
-}
-
-.memberMedia {
-  position: relative;
-  min-height: 220px;
-  overflow: hidden;
-  border-radius: 18px;
-  background: color-mix(in oklab, var(--color-surface-alt) 82%, black);
-}
-
-.memberMedia :global(img) {
-  object-fit: cover;
-}
-
-.memberFallback {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at 25% 25%, color-mix(in oklab, var(--color-accent) 26%, transparent), transparent 28%),
-    linear-gradient(135deg, color-mix(in oklab, var(--color-surface-alt) 86%, black), color-mix(in oklab, var(--color-surface) 84%, black));
-}
-
-.memberFallback span {
-  font-size: clamp(2.8rem, 6vw, 4rem);
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  color: color-mix(in oklab, var(--color-text-primary) 82%, white);
-}
-
-.memberIndex {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 42px;
-  padding: 0.42rem 0.55rem;
-  border-radius: 999px;
-  background: rgba(10, 10, 12, 0.48);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #fff;
-  font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  backdrop-filter: blur(12px);
-}
-
-.memberBody {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.memberRole {
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-
-.memberName {
-  font-size: 1.2rem;
-  line-height: 1.02;
-  color: var(--color-text-primary);
-}
-
-.memberSignature {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--color-text-muted);
-}
-
-.memberBlurb {
-  font-size: 0.94rem;
-  color: var(--color-text-secondary);
-}
-
-.highlightFrame {
-  display: grid;
-  grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.05fr);
-  gap: 18px;
-  padding: 20px;
-  border-radius: 30px;
-  background:
-    radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent 34%),
-    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 95%, black), color-mix(in oklab, var(--color-surface-alt) 88%, black));
-  border: 1px solid color-mix(in oklab, var(--color-border) 80%, var(--color-accent) 20%);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
-}
-
-.highlightLead {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  min-height: 100%;
-  padding: 8px 6px 8px 4px;
-}
-
-.statementTitle,
-.statementText,
-.statementStats,
-.statementActions {
-  position: relative;
-  z-index: 1;
-}
-
-.statementTitle {
-  max-width: 12ch;
-  font-size: clamp(1.7rem, 3.5vw, 3rem);
-  line-height: 0.92;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.statementText {
-  max-width: 48ch;
-  color: var(--color-text-secondary);
-}
-
-.highlightPanel {
-  display: grid;
-  grid-template-rows: auto auto;
-  gap: 18px;
-  padding: 18px;
-  border-radius: 24px;
-  background:
-    linear-gradient(180deg, color-mix(in oklab, var(--color-surface) 92%, black), color-mix(in oklab, var(--color-surface-alt) 86%, black));
-  border: 1px solid color-mix(in oklab, var(--color-border) 82%, var(--color-accent) 18%);
-}
-
-.highlightRows {
-  display: grid;
-  gap: 0;
-}
-
-.highlightRow {
-  display: grid;
-  grid-template-columns: 54px 1fr;
-  gap: 14px;
-  padding: 16px 0;
-  border-bottom: 1px solid color-mix(in oklab, var(--color-border) 84%, transparent);
-}
-
-.highlightRow:first-child {
-  padding-top: 0;
-}
-
-.highlightRow:last-child {
-  padding-bottom: 0;
-  border-bottom: 0;
-}
-
-.highlightIndex {
-  color: var(--color-accent);
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.highlightRowBody {
-  max-width: 40ch;
-}
-
-.statementStats {
+/* === V. End === */
+.end {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  column-gap: var(--gap);
+  padding: var(--space-s) var(--margin) var(--space-m);
 }
 
-.statementStat {
+.endLink {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 0.85rem 0.9rem;
-  border-radius: 18px;
-  border: 1px solid color-mix(in oklab, var(--color-border) 82%, var(--color-accent) 18%);
-  background: color-mix(in oklab, var(--color-surface-alt) 76%, black);
-}
-
-.statLabel {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-.statValue {
-  color: var(--color-text-primary);
-  font-size: 0.95rem;
-}
-
-.statementActions {
-  margin-top: auto;
-  display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-}
-
-.secondaryLink {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.72rem 1rem;
-  border-radius: 999px;
-  border: 1px solid color-mix(in oklab, var(--color-border) 76%, var(--color-accent) 24%);
-  background: color-mix(in oklab, var(--color-surface-alt) 74%, transparent);
-  color: var(--color-text-primary);
-  font-weight: 700;
-}
-
-.secondaryLink:hover {
-  color: var(--color-accent-hover);
-  border-color: color-mix(in oklab, var(--color-accent) 44%, var(--color-border));
-}
-
-.highlightTitle {
-  font-size: 1rem;
-  color: var(--color-text-primary);
-}
-
-.highlightText {
-  margin-top: 8px;
-  color: var(--color-text-secondary);
-}
-
-.highlightFoot {
-  display: grid;
-  gap: 16px;
-  padding-top: 16px;
-  border-top: 1px solid color-mix(in oklab, var(--color-border) 84%, transparent);
-}
-
-.fanBlock {
-  max-width: 48ch;
-}
-
-.fanChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.fanChip {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.46rem 0.76rem;
-  border-radius: 999px;
-  border: 1px solid color-mix(in oklab, var(--color-border) 78%, var(--color-accent) 22%);
-  background: color-mix(in oklab, var(--color-surface-alt) 72%, black);
-  color: var(--color-text-secondary);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  justify-content: space-between;
+  min-height: 64px;
+  border-top: 2px solid var(--bone);
+  border-bottom: 1px solid var(--rule);
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2.5rem);
+  font-stretch: 80%;
+  font-weight: 850;
   text-transform: uppercase;
 }
 
-@media (max-width: 1100px) {
-  .membersGrid {
-    grid-template-columns: 1fr;
-  }
+.endLink:hover {
+  color: var(--ember-text);
 }
 
-@media (max-width: 960px) {
-  .heroGrid,
-  .storyGrid,
-  .membersIntro,
-  .lineupShell,
-  .highlightFrame {
+/* === Stacked === */
+@media (max-width: 900px) {
+  .story {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .member {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Image first, then name and role; asymmetry through alternating offsets */
+  .figure {
+    order: -1;
+    width: 84%;
+    margin-bottom: 20px;
+  }
+
+  .portrait .figure {
+    width: 64%;
+  }
+
+  .imageLeft .figure {
+    align-self: flex-start;
+  }
+
+  .imageRight .figure {
+    align-self: flex-end;
+  }
+
+  .imageLeft .ident {
+    text-align: left;
+  }
+
+  .name {
+    font-size: clamp(2.5rem, 12vw, 5rem);
+  }
+
+  .stageGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .end {
     grid-template-columns: 1fr;
   }
 
-  .lineupFeature {
-    position: relative;
-    top: auto;
-    min-height: 460px;
+  .endLink {
+    min-height: 56px;
+    border-top-width: 1px;
   }
 
-  .lineupFeatureBody {
-    min-height: 460px;
-  }
-}
-
-@media (max-width: 700px) {
-  .page {
-    padding-bottom: 42px;
-  }
-
-  .storyCard,
-  .storyMetaCard,
-  .highlightFrame,
-  .highlightPanel {
-    padding: 20px;
-  }
-
-  .heroImageWrap,
-  .lineupFeature,
-  .memberCard,
-  .highlightFrame,
-  .highlightPanel {
-    border-radius: 22px;
-  }
-
-  .memberMedia {
-    min-height: 200px;
-  }
-
-  .statementStats {
-    grid-template-columns: 1fr;
-  }
-
-  .storyMetaRow,
-  .highlightRow {
-    grid-template-columns: 1fr;
-    gap: 6px;
+  .endLink:first-child {
+    border-top-width: 2px;
   }
 }

@@ -19,8 +19,9 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 9 | `/music/[slug]` release page ("Booklet") | Done |
 | 10 | `/concerts` ("Tour Poster") + `/concerts/past` redirect | Done |
 | 11 | `/concerts/[slug]` show page ("Show Dossier") | Done |
-| 12 | `/gallery` ("Photo Book"), photo catalogue cleanup, shared `PhotoViewer`, `/gallery/concert-photos` redirect | Done, **not committed** |
-| Next | `/about`, `/merch`, `/booking`, `/concerts/[slug]/gallery` (still `GalleryFull`) in the old style; asset replacement | Not started; wait for go-ahead |
+| 12 | `/gallery` ("Photo Book"), photo catalogue cleanup, shared `PhotoViewer`, `/gallery/concert-photos` redirect | Done |
+| 13 | `/about` ("Band Profile") | Done, **not committed** |
+| Next | `/merch`, `/booking`, `/concerts/[slug]/gallery` (still `GalleryFull`) in the old style; album line-up consistency pass; asset replacement | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
 
@@ -582,6 +583,56 @@ Hierarchy: homepage Live = teaser; `/concerts` = tour poster / archive; `/concer
 - The redirect works. The Show Dossiers were rechecked after the catalogue cleanup.
 - `tsc` passes; eslint passes on the changed files.
 
+## Phase 13: `/about` ("Band Profile")
+
+**Data** (`app/lib/about.ts`, rewritten)
+- **Added** `since` (join year, from `presskit.md`): Davit Nersesyan 2018, Sabari Diakite 2018, Kevin Estrada 2018, Valentin Coutant **2024**, Krys Bader **2025**.
+- **Removed invented copy:**
+  - `blurb` and `signature` on every member (the press kit has only "(bio + autres groupes)" placeholders: no member bios exist);
+  - `highlightCards` (Sound / Record / Live);
+  - `fanRefs` (the "For fans of" chips);
+  - `storyFacts`;
+  - `getInitials` (the initials fallback).
+  - None was used outside `/about`.
+- **Image data restructured:** `Member.image` is now `MemberImage { src (full-resolution original), width, height, alt, credit?: PhotoCredit, bakedBorder? }`. It reuses `PhotoCredit` from `gallery.ts`.
+  - Davit → `/gallery/dav1.jpg` 2048×1360 (Henoumont, EXIF, border);
+  - Sabari → `/band/sabari-about.jpg` 1536×2048 (Vangelder, EXIF plus watermark);
+  - Kevin → `/gallery/kev1.jpg` 2048×1378 (Henoumont);
+  - Valentin → `/gallery/val1.jpg` 2048×1377 (Henoumont);
+  - Krys → `/band/krys-about.jpg` 1536×2048 (Vangelder).
+  - These were previously hard-coded 1100px optimized paths.
+- **Added** `festivals` (4) and `sharedBills` (12), exactly as in the press kit, with "Black Mirors" corrected to **Black Mirrors**. Nothing was added beyond the source.
+- `members` keeps `name` / `role` for the homepage About teaser and `/music` (both unchanged).
+
+**Biography source:** `copywriting.md` "Bio Moyenne" (the measured English version) for the lede and album facts, plus the press-kit facts (Project Zero Studio, 01.12.2023, airplay: Uprising on Classic 21, Wrath Of Gaia on Radio Panik, stages across Belgium and independent festivals) and the existing English live sentence, trimmed. The press kit's "fighting for its place among the biggest names" and similar phrasing is **not** used. "Unity in the chaos." appears once, as an unattributed closing statement.
+
+**Composition** (`app/about/page.tsx` and `about.module.css`, rewritten)
+- **I. Cover (ink):** `band-test` full-width at its natural ratio (1.50), with no overlay. Then the `h1` "Until They Fall" (condensed display) and the mono fact "Brussels, BE — formed 2018".
+- **II. Story (bone):** a large serif-italic lede (columns 2–9), two body paragraphs (columns 5–9) with "Sent To Die" linking to `/music/sent-to-die`, and "Unity in the chaos." in display type as the close.
+- **III. The band (ink):** **join years as ruled dividers** (2018 › Davit, Sabari, Kevin › 2024 › Valentin › 2025 › Krys).
+  - Each member is a line of the page: the name in very large condensed display, the role in mono beneath, both bottom-aligned with the image.
+  - The image sits at its natural ratio, and sides alternate. Landscape stage shots take 5 columns; the two vertical portraits take 3, so the different scales are intentional.
+  - A mono "Photo — name" credit appears under an image only when `SHOW_PHOTO_CREDITS` is on and a credit exists.
+  - No cards, no rounded portraits, no initials fallback (a member without an image renders the name line alone), no bios.
+- **IV. On stage (bone):** Festivals (condensed display, a flowing dash-separated run), Shared bills (smaller run) and "Live archive →". `utf-band-good` appears only as a supporting image on columns 9–12 (credit: Peter Vangelder), never full-width.
+- **V. End (ink):** ruled Music → / Live → / Booking →.
+- **At 900px and below:** each member stacks image (84%, or 64% for portraits, alternating left/right), then name, then role; the On stage lists stack above the image; the end links stack as 56px rows.
+- **OG/Twitter image** switched from the watermarked `utf-band-good` (which had a wrong 1365 height) to `band-test` with its real 2048×1363.
+
+**Verification (Phase 13)**
+- 1920, 1440, 820 and 375: no horizontal overflow and no page errors.
+- Every image's rendered ratio equals its natural ratio (only the 4% border trim on the Henoumont files). The cover is served at 1920w on desktop.
+- Member order and dividers verified.
+- `tsc` passes; eslint passes on the changed files.
+
+## Confirmed consistency issue: album line-up (to fix in a later pass)
+
+The current line-up includes **Valentin Coutant (joined 2024)** and **Krys Bader (joined 2025)**. *Sent To Die* was released on 01.12.2023, so they **must not be presented as personnel on that album** unless separate historical recording credits are confirmed. The album was recorded with an earlier bassist and singer, whose names are not in the site sources (the singer in the official video is that earlier vocalist).
+- **Affected:** `/music` (`releaseSleeve.tsx`), whose liner-notes colophon lists the current `members` under "Line-up" next to the 2023 album.
+- **Not affected:** `/music/[slug]`, which already omits Personnel.
+- **To do in the consistency pass:** remove the current line-up from the album colophon, or relabel it so it is clearly not album personnel, and add historical album personnel only if it is confirmed.
+- No "Former members" section is planned until names are confirmed.
+
 ## Unresolved: mobile Hero visual is temporary
 
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
@@ -594,6 +645,12 @@ Hierarchy: homepage Live = teaser; `/concerts` = tour poster / archive; `/concer
 - The Hero must stay ready to take a dedicated mobile asset. `HERO_IMAGE` in `hero.tsx` is the single place to add it, e.g. a `srcMobile` rendered through `<picture>` / art direction at ≤720px. The layout does not depend on the asset.
 
 ## Known weaknesses / open items
+
+- **About imagery (Phase 13):**
+  - The member images are a mixed set: three landscape stage crops from the Henoumont session (baked border plus signature) and two vertical Vangelder portraits with large baked watermarks.
+  - The cover (`band-test`) is the same image as the homepage About teaser, and the Henoumont crops also appear in `/gallery` and the homepage.
+  - `band-test` has no known photographer.
+  - A matched portrait session of the five members would be the single biggest improvement.
 
 - **Photo attribution and permission (Phase 12):**
   - The Henoumont session's venue and date are unknown, so no show can display photos until confirmed.

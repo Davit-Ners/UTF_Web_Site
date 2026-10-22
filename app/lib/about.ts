@@ -1,97 +1,113 @@
+import type { PhotoCredit } from "./gallery";
+
+export type MemberImage = {
+  /* Full-resolution source */
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  credit?: PhotoCredit;
+  /* The file has a thin border baked in that should be trimmed out of frame */
+  bakedBorder?: boolean;
+};
+
 export type Member = {
   name: string;
   role: string;
-  image?: string;
-  blurb: string;
-  signature: string;
+  /* Year the member joined (press kit) */
+  since: number;
+  image?: MemberImage;
 };
 
+const HENOUMONT: PhotoCredit = { name: "Laurent Henoumont", source: "exif" };
+const VANGELDER: PhotoCredit = { name: "Peter Vangelder", source: "exif" };
+
+/* Current line-up, in joining order */
 export const members: Member[] = [
   {
     name: "Davit Nersesyan",
     role: "Lead Guitar",
-    image: "/optimized/gallery/dav1.webp",
-    blurb:
-      "Melodic lead work, aggressive riffing and the guitar voice at the center of the band's sound.",
-    signature: "Lead guitars and melody",
+    since: 2018,
+    image: {
+      src: "/gallery/dav1.jpg",
+      width: 2048,
+      height: 1360,
+      alt: "Davit Nersesyan on stage, head thrown back, playing lead guitar",
+      credit: HENOUMONT,
+      bakedBorder: true,
+    },
   },
   {
     name: "Sabari Diakite",
     role: "Drums / Backing Vocals",
-    blurb:
-      "Power, precision and the rhythmic engine behind the band's live impact.",
-    signature: "Power and precision",
-    image: "/optimized/band/sabari-about.webp",
-  },
-  {
-    name: "Valentin Coutant",
-    role: "Bass / Backing Vocals",
-    image: "/optimized/gallery/val1.webp",
-    blurb:
-      "Low-end pressure and stage presence in the current line-up.",
-    signature: "Low-end pressure",
+    since: 2018,
+    image: {
+      src: "/band/sabari-about.jpg",
+      width: 1536,
+      height: 2048,
+      alt: "Sabari Diakite behind the drum kit",
+      credit: VANGELDER,
+    },
   },
   {
     name: "Kevin Estrada",
     role: "Rhythm Guitar / Backing Vocals",
-    image: "/optimized/gallery/kev1.webp",
-    blurb:
-      "Tight rhythm foundations and the weight that keeps the songs moving forward.",
-    signature: "Rhythm foundation",
+    since: 2018,
+    image: {
+      src: "/gallery/kev1.jpg",
+      width: 2048,
+      height: 1378,
+      alt: "Kevin Estrada bent over his guitar in amber stage light",
+      credit: HENOUMONT,
+      bakedBorder: true,
+    },
+  },
+  {
+    name: "Valentin Coutant",
+    role: "Bass / Backing Vocals",
+    since: 2024,
+    image: {
+      src: "/gallery/val1.jpg",
+      width: 2048,
+      height: 1377,
+      alt: "Valentin Coutant singing into the microphone with his bass",
+      credit: HENOUMONT,
+      bakedBorder: true,
+    },
   },
   {
     name: "Krys Bader",
     role: "Lead Vocals",
-    blurb:
-      "Frontline vocals and live intensity for the current era of the band.",
-    signature: "Frontline intensity",
-    image: "/optimized/band/krys-about.webp",
+    since: 2025,
+    image: {
+      src: "/band/krys-about.jpg",
+      width: 1536,
+      height: 2048,
+      alt: "Krys Bader singing at the microphone",
+      credit: VANGELDER,
+    },
   },
 ];
 
-export const highlightCards = [
-  {
-    title: "Sound",
-    body: "Melodic death metal, metalcore tension and technical edge, built around aggressive riffs and atmospheric melody.",
-  },
-  {
-    title: "Record",
-    body: "Sent To Die was released on December 1, 2023 and recorded at Project Zero Studio.",
-  },
-  {
-    title: "Live",
-    body: "Belgian stage experience, independent festivals and a set shaped around pressure, movement and release.",
-  },
+/* Live history from the press kit; do not add names that are not in the source */
+export const festivals = [
+  "Anvinium Metal Fest",
+  "Eristic Fest",
+  "BXL Survival Fest",
+  "Tremplin du Durbuy Rock Festival",
 ];
 
-export const fanRefs = [
-  "Melodic death metal",
-  "Metalcore tension",
-  "Technical edge",
-  "Atmospheric melodies",
-  "Live catharsis",
+export const sharedBills = [
+  "Hiraes",
+  "Through The Void",
+  "Baraka",
+  "Triagone",
+  "Aetherian",
+  "Mordkaul",
+  "Yerao",
+  "Nachtschatten",
+  "Echoes of Nihil",
+  "Down To Insanity",
+  "Black Mirrors",
+  "Kanzan",
 ];
-
-export const storyFacts = [
-  {
-    label: "Formed",
-    value: "2018",
-  },
-  {
-    label: "Base",
-    value: "Brussels, Belgium",
-  },
-  {
-    label: "Release",
-    value: "Sent To Die",
-  },
-];
-
-export function getInitials(name: string) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
