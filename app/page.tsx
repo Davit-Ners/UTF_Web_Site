@@ -3,6 +3,9 @@ import FeaturedMerch from "./components/homePage/featuredMerch/featuredMerch";
 import FeaturedRelease from "./components/homePage/featuredRelease/featuredRelease";
 import FeaturedVideo from "./components/homePage/featuredVideo/featuredVideo";
 import Hero from "./components/homePage/hero/hero";
+import Live from "./components/homePage/live/live";
+import VisualBreak from "./components/homePage/visualBreak/visualBreak";
+import { getConcertBuckets, type Concert } from "./lib/concerts";
 import { getActiveMerchProducts } from "./lib/merch";
 import { latestRelease } from "./lib/music";
 
@@ -16,11 +19,22 @@ export default async function Home() {
     console.error("Homepage merch unavailable:", error);
   }
 
+  let upcoming: Concert[] = [];
+  try {
+    upcoming = (await getConcertBuckets()).upcoming;
+  } catch (error) {
+    console.error("Homepage concerts unavailable:", error);
+  }
+
   return (
     <>
       <Hero />
 
       <FeaturedRelease release={latestRelease} />
+
+      <Live shows={upcoming} />
+
+      <VisualBreak />
 
       <ActionHub />
 

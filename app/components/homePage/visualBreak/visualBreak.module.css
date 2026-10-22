@@ -1,0 +1,33 @@
+.break {
+  position: relative;
+  background: var(--ink);
+}
+
+/* Full-bleed at the photo's own ratio on desktop: nothing is cropped but the border */
+.frame {
+  position: relative;
+  aspect-ratio: var(--break-ratio, 3 / 2);
+  overflow: hidden;
+}
+
+.photo {
+  object-fit: cover;
+  transform: scale(var(--break-trim, 1));
+}
+
+.credit {
+  position: absolute;
+  right: var(--margin);
+  bottom: 16px;
+  color: var(--bone-dim);
+}
+
+@media (max-width: 720px) {
+  .frame {
+    aspect-ratio: 4 / 5;
+  }
+
+  .photo {
+    object-position: var(--break-position-mobile, 50% 50%);
+  }
+}
