@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { latestRelease } from "@/app/lib/music";
 import styles from "./header.module.css";
 
 const NAV = [
@@ -15,92 +16,182 @@ const NAV = [
   { href: "/booking", label: "Booking" },
 ];
 
-export default function Header() {
-  const [open, setOpen] = useState(false);
-  const [atTop, setAtTop] = useState(true);
-  const pathname = usePathname();
+const EXTERNALS = [
+  latestRelease.spotifyUrl ? { href: latestRelease.spotifyUrl, label: "Spotify" } : null,
+  latestRelease.youtubeMusicUrl ? { href: latestRelease.youtubeMusicUrl, label: "YouTube" } : null,
+].filter(Boolean) as { href: string; label: string }[];
 
-  const closeMenu = () => setOpen(false);
+const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+export type HeaderTickets = {
+  href: string;
+  date: string;
+};
+
+type Props = {
+  tickets?: HeaderTickets | null;
+};
+
+export default function Header({ tickets }: Props) {
+  const pathname = usePathname();
+  // Menu state is tied to the path it was opened on, so navigating closes it.
+  const [openOn, setOpenOn] = useState<string | null>(null);
+  const open = openOn === pathname;
+  const [solid, setSolid] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const overlay = pathname === "/";
+
+  const closeMenu = () => setOpenOn(null);
 
   useEffect(() => {
-    const onScroll = () => setAtTop(window.scrollY < 8);
+    // On the homepage the header sits over the hero until the hero has scrolled away.
+    const onScroll = () => {
+      const threshold = overlay ? window.innerHeight - 80 : 8;
+      setSolid(window.scrollY > threshold);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [overlay]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenOn(null);
+        return;
+      }
+      if (event.key !== "Tab" || !headerRef.current) return;
+
+      const focusable = Array.from(
+        headerRef.current.querySelectorAll<HTMLElement>(FOCUSABLE)
+      ).filter((el) => el.offsetParent !== null);
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  const headerClass = [
+    styles.header,
+    overlay ? styles.overlay : "",
+    solid || open || !overlay ? styles.solid : "",
+  ].join(" ");
 
   return (
-    <header className={`${styles.header} ${atTop ? "" : styles.headerScrolled}`}>
-      <div className="container">
-        <div className={styles.row}>
-          <Link
-            href="/"
-            className={styles.brand}
-            aria-label="Until They Fall Home"
-            onClick={closeMenu}
-          >
-            <Image
-              src="/optimized/gerard-logo.webp"
-              alt="Until They Fall"
-              width={60}
-              height={60}
-              className={styles.logo}
-            />
-            <span className={styles.brandText}>Until They Fall</span>
-          </Link>
+    <header ref={headerRef} className={headerClass}>
+      <div className={styles.row}>
+        <Link href="/" className={styles.brand} aria-label="Until They Fall home" onClick={closeMenu}>
+          {/* Temporary mark: Gerard, until the four-eye SVG exists */}
+          <Image
+            src="/optimized/gerard-logo.webp"
+            alt=""
+            width={28}
+            height={28}
+            className={styles.mark}
+          />
+          <span className={styles.wordmark}>Until They Fall</span>
+        </Link>
 
-          <nav className={styles.nav} aria-label="Primary">
-            {NAV.map((item) => {
-              const active = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`${styles.link} ${active ? styles.active : ""}`}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className={styles.actions}>
-            <Link href="/concerts" className={`button ${styles.tickets}`}>
-              Tickets
-            </Link>
-            <button
-              className={styles.burger}
-              aria-label="Open menu"
-              aria-expanded={open}
-              onClick={() => setOpen(!open)}
-            >
-              <span />
-              <span />
-              <span />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className={`${styles.mobile} ${open ? styles.mobileOpen : ""}`} aria-hidden={!open}>
-        <nav className={styles.mobileNav}>
+        <nav className={styles.nav} aria-label="Primary">
           {NAV.map((item) => {
-            const active = pathname === item.href;
+            const active = pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`${styles.mobileLink} ${active ? styles.active : ""}`}
-                onClick={closeMenu}
+                className={`${styles.link} ${active ? styles.active : ""}`}
+                aria-current={active ? "page" : undefined}
               >
                 {item.label}
               </Link>
             );
           })}
-          <Link href="/concerts" className={`button ${styles.mobileCTA}`} onClick={closeMenu}>
-            Tickets
-          </Link>
         </nav>
+
+        <div className={styles.end}>
+          {tickets ? (
+            <a href={tickets.href} target="_blank" rel="noreferrer" className={styles.tickets}>
+              Tickets <span className={styles.ticketDate}>{tickets.date}</span>
+              <span className={styles.arrow} aria-hidden="true">↗</span>
+            </a>
+          ) : null}
+          <button
+            type="button"
+            className={styles.menuToggle}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpenOn(open ? null : pathname)}
+          >
+            {open ? "Close" : "Menu"}
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="mobile-menu"
+        className={`${styles.panel} ${open ? styles.panelOpen : ""}`}
+        inert={!open}
+      >
+        <nav className={styles.panelNav} aria-label="Mobile">
+          {NAV.map((item, index) => {
+            const active = pathname.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`${styles.panelLink} ${active ? styles.active : ""}`}
+                aria-current={active ? "page" : undefined}
+                onClick={closeMenu}
+              >
+                <span className={styles.index} aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className={styles.panelFoot}>
+          {tickets ? (
+            <a href={tickets.href} target="_blank" rel="noreferrer" className="action-link">
+              Tickets {tickets.date} <span className="arrow" aria-hidden="true">↗</span>
+            </a>
+          ) : null}
+          <a href="mailto:contact@untiltheyfall.com" className={styles.panelMeta}>
+            contact@untiltheyfall.com
+          </a>
+          <div className={styles.panelExternals}>
+            {EXTERNALS.map((item) => (
+              <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className={styles.panelMeta}>
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
     </header>
   );

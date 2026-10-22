@@ -12,6 +12,7 @@ export type Release = {
   title: string;
   subtitle?: string;
   year: number;
+  releaseDate?: string;
   type: ReleaseType;
   cover: string;
   highlightTrack?: string;
@@ -23,6 +24,7 @@ export type Release = {
   tracks?: Track[];
   story?: string;
   recordingNotes?: string[];
+  credits?: { role: string; name: string }[];
 };
 
 export const latestRelease: Release = {
@@ -30,6 +32,7 @@ export const latestRelease: Release = {
   title: "Sent To Die",
   subtitle: "Debut album",
   year: 2023,
+  releaseDate: "2023-12-01",
   type: "Album",
   cover: "/optimized/album-cover.webp",
   highlightTrack: "Sent To Die",
@@ -46,6 +49,10 @@ export const latestRelease: Release = {
     "Recorded at Project Zero Studio.",
     "Produced, mixed and mastered by Yarne Heylen.",
     "Uprising aired several times on Classic 21; Wrath Of Gaia aired on Radio Panik.",
+  ],
+  credits: [
+    { role: "Recorded", name: "Project Zero Studio" },
+    { role: "Produced", name: "Yarne Heylen" },
   ],
   tracks: [
     { id: "t1", title: "Sent To Die", length: "4:32", isSingle: true },

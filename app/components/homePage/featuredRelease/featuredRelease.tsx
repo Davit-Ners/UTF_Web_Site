@@ -1,106 +1,108 @@
-"use client";
-
 import Image from "next/image";
+import Link from "next/link";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
+import type { Release } from "@/app/lib/music";
 import styles from "./featuredRelease.module.css";
 
 type Props = {
-  title: string;
-  artist?: string;
-  year?: string;
-  coverSrc: string;
-  spotifyId?: string;
-  spotifyType?: "album" | "track" | "playlist";
-  blurb?: string;
-  appleUrl?: string;
-  youtubeMusicUrl?: string;
+  release: Release;
 };
 
-export default function FeaturedRelease({
-  title,
-  artist = "Until They Fall",
-  year,
-  coverSrc,
-  spotifyId,
-  spotifyType = "album",
-  blurb = "Out now on all platforms.",
-  appleUrl,
-  youtubeMusicUrl,
-}: Props) {
-  const hasSpotify = Boolean(spotifyId);
-  const spotifySrc = hasSpotify
-    ? `https://open.spotify.com/embed/${spotifyType}/${spotifyId}?utm_source=generator&theme=0`
-    : undefined;
+function formatRuntime(release: Release) {
+  if (!release.tracks?.length) return null;
+
+  const seconds = release.tracks.reduce((total, track) => {
+    const [min, sec] = track.length.split(":").map(Number);
+    return total + min * 60 + sec;
+  }, 0);
+
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
+function formatDate(isoDate?: string) {
+  if (!isoDate) return null;
+  const [year, month, day] = isoDate.split("-");
+  return `${day}.${month}.${year}`;
+}
+
+export default function FeaturedRelease({ release }: Props) {
+  const runtime = formatRuntime(release);
+  const facts = [
+    { label: "Released", value: formatDate(release.releaseDate) ?? String(release.year) },
+    { label: "Format", value: release.type },
+    release.tracks?.length
+      ? { label: "Tracks", value: String(release.tracks.length).padStart(2, "0") }
+      : null,
+    runtime ? { label: "Runtime", value: runtime } : null,
+  ].filter(Boolean) as { label: string; value: string }[];
+
+  const platforms = [
+    release.appleMusicUrl ? { href: release.appleMusicUrl, label: "Apple Music" } : null,
+    release.youtubeMusicUrl ? { href: release.youtubeMusicUrl, label: "YouTube Music" } : null,
+  ].filter(Boolean) as { href: string; label: string }[];
 
   return (
-    <section className={styles.wrap} aria-labelledby="featured-release-title">
-      <div className="container">
-        <div className={styles.card}>
-          <div className={styles.cover}>
-            <Image
-              src={coverSrc}
-              alt={`${title} cover`}
-              width={480}
-              height={480}
-              className={styles.coverImage}
-              sizes="(max-width: 600px) 100vw, 120px"
-              placeholder="blur"
-              blurDataURL={IMAGE_BLUR_DATA_URL}
-            />
+    <section className={styles.release} aria-labelledby="latest-release-title">
+      <div className={styles.plane} aria-hidden="true" />
+
+      <p className={`meta ${styles.index}`}>01 — Latest release</p>
+
+      <h2 id="latest-release-title" className={styles.title}>
+        {release.title}
+      </h2>
+
+      <div className={styles.cover}>
+        <Image
+          src={release.cover}
+          alt={`${release.title} album cover`}
+          width={1000}
+          height={1000}
+          className={styles.coverImage}
+          sizes="(max-width: 900px) 100vw, 55vw"
+          placeholder="blur"
+          blurDataURL={IMAGE_BLUR_DATA_URL}
+        />
+      </div>
+
+      <div className={styles.sheet}>
+        <dl className={styles.facts}>
+          {facts.map((fact) => (
+            <div key={fact.label} className={styles.fact}>
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))}
+          {release.credits?.map((credit) => (
+            <div key={credit.role} className={`${styles.fact} ${styles.credit}`}>
+              <dt>{credit.role}</dt>
+              <dd>{credit.name}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className={styles.close}>
+          {release.subtitle ? <p className={styles.note}>{release.subtitle}</p> : null}
+
+          <div className={styles.actions}>
+            {release.spotifyUrl ? (
+              <a href={release.spotifyUrl} target="_blank" rel="noreferrer" className="action-link on-bone">
+                Listen <span className="arrow" aria-hidden="true">↗</span>
+              </a>
+            ) : null}
+            <Link href={`/music/${release.id}`} className="action-link on-bone">
+              Release <span className="arrow" aria-hidden="true">→</span>
+            </Link>
           </div>
 
-          <div className={styles.meta}>
-            <span className={styles.eyebrow}>Sent To Die is out now</span>
-            <h3 id="featured-release-title" className={styles.title}>
-              {title} {year ? <span className={styles.year}>- {year}</span> : null}
-            </h3>
-            <p className={styles.artist}>{artist}</p>
-            <p className={styles.blurb}>{blurb}</p>
-
-            <div className={styles.links}>
-              {hasSpotify && (
-                <a
-                  className="button"
-                  href={`https://open.spotify.com/${spotifyType}/${spotifyId}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Listen Now
+          {platforms.length ? (
+            <div className={styles.platforms}>
+              {platforms.map((platform) => (
+                <a key={platform.href} href={platform.href} target="_blank" rel="noreferrer">
+                  {platform.label} <span aria-hidden="true">↗</span>
                 </a>
-              )}
-              {appleUrl && (
-                <a
-                  className={`button ${styles.btnAlt}`}
-                  href={appleUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Apple Music
-                </a>
-              )}
-              {youtubeMusicUrl && (
-                <a
-                  className={`button ${styles.btnAlt}`}
-                  href={youtubeMusicUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  YouTube Music
-                </a>
-              )}
+              ))}
             </div>
-          </div>
-
-          {hasSpotify && (
-            <div className={styles.player}>
-              <iframe
-                title={`${title} on Spotify`}
-                src={spotifySrc}
-                loading="lazy"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              />
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
     </section>

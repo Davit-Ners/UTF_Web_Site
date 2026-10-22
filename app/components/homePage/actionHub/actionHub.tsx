@@ -58,7 +58,10 @@ function IconMail() {
 }
 
 export default async function ActionHub() {
-  const nextShow = await getNextConcert();
+  const nextShow = await getNextConcert().catch((error) => {
+    console.error("Next concert unavailable:", error);
+    return null;
+  });
   const nextShowDate = nextShow ? new Date(`${nextShow.date}T12:00:00.000Z`) : null;
 
   return (

@@ -1,34 +1,57 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/footer/footer";
-import Header from "./components/header/header";
+import Header, { type HeaderTickets } from "./components/header/header";
+import { getNextConcert } from "./lib/concerts";
 import { getSiteUrl } from "@/lib/site";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+export const revalidate = 60;
+
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  axes: ["wdth"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
+  style: ["italic"],
 });
+
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+});
+
+async function getHeaderTickets(): Promise<HeaderTickets | null> {
+  try {
+    const nextShow = await getNextConcert();
+    if (!nextShow?.ticketUrl) return null;
+
+    const [, month, day] = nextShow.date.split("-");
+    return { href: nextShow.ticketUrl, date: `${day}.${month}` };
+  } catch {
+    return null;
+  }
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "Until They Fall | Modern Metal From Brussels",
+    default: "Until They Fall | Melodic Death Metal From Brussels",
     template: "%s | Until They Fall",
   },
   description:
-    "Official Until They Fall website. Concerts, music, gallery, merch and booking for the Brussels modern metal band.",
+    "Official Until They Fall website. Concerts, music, gallery, merch and booking for the Brussels melodic death metal band.",
   applicationName: "Until They Fall",
   keywords: [
     "Until They Fall",
     "metal band",
     "Brussels metal",
-    "modern metal",
+    "melodic death metal",
     "concerts",
     "merch",
     "booking",
@@ -40,7 +63,7 @@ export const metadata: Metadata = {
     type: "website",
     url: "/",
     siteName: "Until They Fall",
-    title: "Until They Fall | Modern Metal From Brussels",
+    title: "Until They Fall | Melodic Death Metal From Brussels",
     description:
       "Concerts, music, gallery, merch and booking for Until They Fall.",
     images: [
@@ -54,7 +77,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Until They Fall | Modern Metal From Brussels",
+    title: "Until They Fall | Melodic Death Metal From Brussels",
     description:
       "Concerts, music, gallery, merch and booking for Until They Fall.",
     images: ["/bandphoto.jpg"],
@@ -62,18 +85,25 @@ export const metadata: Metadata = {
   category: "music",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const tickets = await getHeaderTickets();
+
   return (
-    <html lang="en" data-theme="dark" style={{ backgroundColor: "#0a0a0d" }}>
+    <html
+      lang="en"
+      data-theme="dark"
+      className={`${archivo.variable} ${newsreader.variable} ${plexMono.variable}`}
+      style={{ backgroundColor: "#0b0b0a" }}
+    >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className="antialiased"
         style={{ backgroundColor: "var(--color-bg)" }}
       >
-        <Header />
+        <Header tickets={tickets} />
         {children}
         <Footer />
       </body>
