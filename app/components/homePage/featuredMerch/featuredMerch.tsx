@@ -1,10 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/app/lib/products";
-import {
-  IMAGE_BLUR_DATA_URL,
-  getOptimizedImagePath,
-} from "@/app/lib/imageOptimization";
+import { IMAGE_BLUR_DATA_URL, getOptimizedImagePath } from "@/app/lib/imageOptimization";
 import styles from "./featuredMerch.module.css";
 
 type Props = {
@@ -19,81 +16,62 @@ function formatPrice(price: number) {
   }).format(price);
 }
 
+/* Only states a buyer needs; marketing badges (New, Limited) are dropped */
+function availability(product: Product) {
+  if (product.stock === 0) return "Sold out";
+  if (product.badge === "Pre-order") return "Pre-order";
+  return null;
+}
+
+function MerchObject({ product, primary }: { product: Product; primary: boolean }) {
+  const status = availability(product);
+
+  return (
+    <Link href="/merch" className={`${styles.object} ${primary ? styles.primary : styles.secondary}`}>
+      <span className={styles.frame}>
+        <Image
+          src={getOptimizedImagePath(product.image) || "/logo.jpg"}
+          alt=""
+          fill
+          sizes={primary ? "(max-width: 900px) 100vw, 56vw" : "(max-width: 900px) 60vw, 26vw"}
+          className={styles.image}
+          placeholder="blur"
+          blurDataURL={IMAGE_BLUR_DATA_URL}
+        />
+      </span>
+      <span className={styles.caption}>
+        <span className={styles.name}>{product.name}</span>
+        <span className={styles.price}>
+          {formatPrice(product.price)}
+          {status ? <span className={styles.status}>{status}</span> : null}
+        </span>
+      </span>
+    </Link>
+  );
+}
+
 export default function FeaturedMerch({ items }: Props) {
   if (!items.length) return null;
 
+  const [primary, secondary] = items;
+
   return (
-    <section className={styles.section}>
-      <div className="container">
-        <div className={styles.shell}>
-          <div className={styles.copyCard}>
-            <span className={styles.eyebrow}>Store</span>
-            <h2 className={styles.title}>Official merch from the band.</h2>
-            <p className={styles.text}>
-              Support the band directly. Grab the current merch, CDs and patches
-              before the next show.
-            </p>
+    <section className={styles.merch} aria-labelledby="merch-title">
+      <p className={`meta ${styles.index}`}>06 — Merch</p>
 
-            <div className={styles.metaRow}>
-              <span className={styles.pill}>Official merch</span>
-              <span className={styles.pill}>Shipped from Brussels</span>
-            </div>
+      <MerchObject product={primary} primary />
 
-            <div className={styles.actions}>
-              <Link href="/merch" className="button">
-                Enter The Store
-              </Link>
-              <span className={styles.sideNote}>
-                {items.length} pieces featured
-              </span>
-            </div>
-          </div>
-
-          <div className={styles.products}>
-            {items.map((product, index) => (
-              <Link
-                key={product.id}
-                href="/merch"
-                className={`${styles.productCard} ${
-                  index === 0 ? styles.productCardPrimary : ""
-                }`}
-                aria-label={`Open merch store and view ${product.name}`}
-              >
-                <div className={styles.media}>
-                  <Image
-                    src={getOptimizedImagePath(product.image) || "/logo.jpg"}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 980px) 100vw, 34vw"
-                    placeholder="blur"
-                    blurDataURL={IMAGE_BLUR_DATA_URL}
-                  />
-                </div>
-
-                <div className={styles.overlay} />
-
-                <div className={styles.productBody}>
-                  <div className={styles.kickerRow}>
-                    <span className={styles.category}>{product.category}</span>
-                    {product.badge && (
-                      <span className={styles.badge}>{product.badge}</span>
-                    )}
-                  </div>
-
-                  <div className={styles.productFooter}>
-                    <div>
-                      <h3 className={styles.productTitle}>{product.name}</h3>
-                      {product.shortDesc && (
-                        <p className={styles.productText}>{product.shortDesc}</p>
-                      )}
-                    </div>
-                    <span className={styles.price}>{formatPrice(product.price)}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+      <div className={styles.aside}>
+        <div className={styles.head}>
+          <h2 id="merch-title" className={styles.title}>
+            Merch
+          </h2>
+          <Link href="/merch" className="action-link on-bone">
+            Shop <span className="arrow" aria-hidden="true">→</span>
+          </Link>
         </div>
+
+        {secondary ? <MerchObject product={secondary} primary={false} /> : null}
       </div>
     </section>
   );

@@ -11,8 +11,10 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 3 | Implementation: foundation, Header, Hero, Latest Release | Done, committed in `257ef71` |
 | 3.1 | Calibration pass on Header, Hero, Latest Release | Done and approved. Header, Hero and Release are frozen for now |
 | 4 | Live + Band / Live visual break (+ `#live` anchor and fetch-failure state) | Done |
-| 5 | Featured Video + Gallery teaser | Done, **not committed** |
-| Next | About, Merch, Mailing list, Booking, Footer | Not started; wait for go-ahead |
+| 5 | Featured Video + Gallery teaser | Done and approved |
+| 5.1 | Video side-column and gallery tablet refinements | Done, **not committed** |
+| 6 | About + Merch (homepage) | Done, **not committed** |
+| Next | Mailing list, Booking (replacing ActionHub), Footer | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
 
@@ -146,6 +148,53 @@ Homepage order is now Hero → Release → Live → Visual break → Video → G
 - Playwright on the real homepage at 1920, 1440, 820 and 375: no horizontal overflow, no page errors.
 - Clicking play mounts the youtube-nocookie iframe.
 
+## Phase 5.1: refinements
+
+- **Video side column:** "Official video" and the title now read from the poster's top edge, and "YouTube ↗" sits at the bottom, level with "PLAY" (`margin-top: auto`). The existing title is set larger (`clamp(2rem, 5.4vw, 7rem)`, two lines on desktop), so type carries the column instead of a void. Nothing was added.
+- **Gallery at tablet widths (601–900px):**
+  - the lead photo is 4:3 instead of 4:5 (about 615px tall at 820 instead of 1025px);
+  - `val1` is 46% wide and `band2` 70%;
+  - the stagger and overlap are kept, with no grid.
+- Phones (≤600px) keep the 4:5 lead.
+
+## Phase 6: About + Merch
+
+Homepage order is now Hero → Release → Live → Visual break → Video → Gallery → About → Merch → (old) ActionHub, following `inventory.md`. ActionHub sits where Mailing list / Booking will go.
+
+**About teaser** (`app/components/homePage/aboutTeaser/*`, new)
+- On ink. `public/gallery/band-test.jpg` (2048px): a black-and-white posed portrait of all five members, the only real photo of the current line-up together, with no border and no signature. It spans columns 1–7 at 3:2 and bleeds off the left page edge.
+- Columns 9–12:
+  - "Unity in the chaos." in Newsreader italic (existing `/about` copy);
+  - the one-sentence intro reused from the `/about` hero ("Formed in 2018…");
+  - a ruled mono line-up list (name, role) from `members` in `app/lib/about.ts`;
+  - "About →" to `/about`.
+- No new copy was written. The full biography stays on `/about`.
+- At 900px and below: the photo goes full-bleed, and the text sits below it, indented 14% (10% at ≤480px) for asymmetry. There is no text over the image. On phones each line-up entry stacks name over role.
+
+**Merch** (`app/components/homePage/featuredMerch/*`, rewritten)
+- Still data-driven: `getActiveMerchProducts(2)`, so the first item is the primary and the second the secondary. Routing to `/merch` is unchanged. `/merch` itself was not touched.
+- On bone, as an editorial spread:
+  - the primary product is a square frame on columns 1–7 (`min(100%, 76svh)`), with its name in condensed display type and the price in mono on a ruled caption below the image;
+  - columns 9–12 hold a giant "MERCH" and "Shop →" at the top, and the secondary product (`min(78%, 40svh)`) at the bottom, level with the primary's base.
+- Each product is a single link to `/merch`; its accessible name is the product name and price.
+- Removed:
+  - rounded cards, overlays and hover lift (hover is now a slight image fade plus an ember underline on the name);
+  - category pills and the "Official merch / Shipped from Brussels" pills;
+  - "N pieces featured";
+  - the marketing copy;
+  - the "New" and "Limited" badges.
+- Availability is shown only when it matters: "Sold out" when stock is 0, or "Pre-order", in mono ember next to the price.
+- Square frames match the square product shots, so the object isn't cropped, and a 4% trim removes mockup and screenshot edges.
+- At 900px and below: "MERCH" and "Shop →" go on one line, the primary goes full width (74% on tablet), and the secondary sits right-aligned at 60% (46% on tablet).
+- If there are no products, the section renders nothing, as before. Locally that is always the case, because the database is down.
+
+**Verification (Phase 5.1 / 6)**
+- `tsc` passes; eslint passes on the changed files.
+- Playwright at 1920, 1440, 820 and 375, on the real homepage (Video, Gallery, About) and on a temporary preview route with the two seeded featured products (Merch; since removed):
+  - no horizontal overflow;
+  - no page errors.
+- The merch link names read correctly ("Core Logo Tee (Black) 25 €").
+
 ## Unresolved: mobile Hero visual is temporary
 
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
@@ -160,8 +209,14 @@ Homepage order is now Hero → Release → Live → Visual break → Video → G
 ## Known weaknesses / open items
 
 - **TEMPORARY: video poster (Phase 5).** A 640px YouTube still, soft at desktop widths; a local 1920px+ still is needed (see Phase 5).
-- **Gallery on tablet (Phase 5):** at 820px the full-bleed 4:5 lead is about 1025px tall. It is strong but long; it could be capped if the page feels slow to scroll.
-- **Video side column (Phase 5):** at 1920 the empty space above the bottom-aligned title is large. It is deliberate, but it could take a real data line later (e.g. runtime) if one is available.
+- **TEMPORARY: signed gallery photography (Phases 4–5).** The visual break and gallery teaser photos carry the photographer's signature ("Henoumont T.") and a baked border. Confirm the credit and permission, and get clean high-resolution masters.
+- **TEMPORARY: merch product imagery (Phase 6). This is the weakest asset on the homepage.**
+  - `core-tee.webp` is a phone screenshot of a mockup: teal UI arrows at the left edge, a status-bar edge at the top, and only 700px wide (872px source). It is upscaled in the primary slot at desktop widths.
+  - `skull-hoodie` is a dark, AI-looking mockup (1024px) that reads as an almost black square on bone.
+  - The product shots don't share a background or lighting, so the spread looks inconsistent.
+  - **To do:** shoot the real products (same background, same light, square, 2000px+), then update the image paths in the database.
+- **Video side column (Phase 5.1):** at 1920 a gap remains between the large title and "YouTube ↗". It now reads as heading/action spacing rather than an accident.
+- **About line-up:** taken from `about.ts`. Make sure it matches the people in the `band-test` photo and the current line-up.
 
 - **TEMPORARY: duplicate next-show block.** The old ActionHub, untouched, still contains its own "next show" card right after the visual break, so it duplicates Live. It will be removed when the Mailing list / Booking phase replaces ActionHub.
 - **Live list at 1920 (Phase 4):** a wide empty band between the city and venue columns. It is acceptable as poster air, but could be tightened.

@@ -1,3 +1,4 @@
+import AboutTeaser from "./components/homePage/aboutTeaser/aboutTeaser";
 import ActionHub from "./components/homePage/actionHub/actionHub";
 import FeaturedMerch from "./components/homePage/featuredMerch/featuredMerch";
 import FeaturedRelease from "./components/homePage/featuredRelease/featuredRelease";
@@ -42,9 +43,11 @@ export default async function Home() {
 
       <GalleryTeaser />
 
-      <ActionHub />
+      <AboutTeaser />
 
       <FeaturedMerch items={products} />
+
+      <ActionHub />
     </>
   );
 }
