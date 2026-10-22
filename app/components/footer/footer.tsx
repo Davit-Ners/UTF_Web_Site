@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { latestRelease } from "@/app/lib/music";
 import styles from "./footer.module.css";
 
 const FOOTER_NAV = [
@@ -11,55 +10,55 @@ const FOOTER_NAV = [
   { href: "/booking", label: "Booking" },
 ];
 
+/* Official band profiles, as listed in presskit.md (tracking parameters removed) */
 const FOOTER_EXTERNALS = [
-  latestRelease.spotifyUrl
-    ? { href: latestRelease.spotifyUrl, label: "Spotify" }
-    : null,
-  latestRelease.youtubeMusicUrl
-    ? { href: latestRelease.youtubeMusicUrl, label: "YouTube" }
-    : null,
-].filter(Boolean) as { href: string; label: string }[];
+  { href: "https://open.spotify.com/artist/3NJKrEkHCtimOPbvBUW82L", label: "Spotify" },
+  { href: "https://www.youtube.com/channel/UCIXxu9KHo8HvETKE3oZ0UNA", label: "YouTube" },
+  { href: "https://www.instagram.com/until_they_fall/", label: "Instagram" },
+  { href: "https://www.facebook.com/profile.php?id=100090155035708", label: "Facebook" },
+];
+
+const CONTACT_EMAIL = "contact@untiltheyfall.com";
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
     <footer className={styles.footer}>
-      <div className="container">
-        <div className={styles.shell}>
-          <div className={styles.brandBlock}>
-            <Link href="/" className={styles.brand}>
-              Until They Fall
-            </Link>
-            <p className={styles.tagline}>Melodic death metal from Brussels.</p>
-          </div>
+      <div className={styles.brandBlock}>
+        <Link href="/" className={styles.brand}>
+          Until They Fall
+        </Link>
+        <p className="meta">Melodic death metal — Brussels</p>
+      </div>
 
-          <nav className={styles.nav} aria-label="Footer">
-            {FOOTER_NAV.map((item) => (
-              <Link key={item.href} href={item.href} className={styles.link}>
+      <nav className={styles.nav} aria-label="Footer">
+        <ul className={styles.list}>
+          {FOOTER_NAV.map((item) => (
+            <li key={item.href}>
+              <Link href={item.href} className={styles.link}>
                 {item.label}
               </Link>
-            ))}
-            {FOOTER_EXTERNALS.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                target="_blank"
-                rel="noreferrer"
-                className={styles.link}
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-          <div className={styles.meta}>
-            <a href="mailto:contact@untiltheyfall.com" className={styles.contact}>
-              contact@untiltheyfall.com
+      <ul className={`${styles.list} ${styles.externals}`} aria-label="Listen and follow">
+        {FOOTER_EXTERNALS.map((item) => (
+          <li key={item.href}>
+            <a href={item.href} target="_blank" rel="noreferrer" className={styles.link}>
+              {item.label} <span className={styles.arrow} aria-hidden="true">↗</span>
             </a>
-            <p className={styles.copy}>Copyright {year} Until They Fall. All rights reserved.</p>
-          </div>
-        </div>
+          </li>
+        ))}
+      </ul>
+
+      <div className={styles.base}>
+        <p className={styles.copy}>© {year} Until They Fall</p>
+        <a href={`mailto:${CONTACT_EMAIL}`} className={styles.contact}>
+          {CONTACT_EMAIL}
+        </a>
       </div>
     </footer>
   );

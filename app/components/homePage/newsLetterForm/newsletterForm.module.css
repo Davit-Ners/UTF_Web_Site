@@ -1,52 +1,132 @@
+/* One rule carries label, field and action: no box, no radius, no glow */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 12px;
+  width: 100%;
 }
 
 .row {
-  display: flex;
-  gap: 0.6rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  flex-wrap: wrap;
+  column-gap: 20px;
+  border-bottom: 1px solid var(--bone);
+  transition: border-color 0.2s ease;
+}
+
+.row:focus-within {
+  border-bottom-color: var(--ember-text);
+  box-shadow: 0 1px 0 0 var(--ember-text);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
 }
 
 .input {
-  flex: 1 1 260px;
-  min-width: 220px;
-  padding: 0.8rem 0.95rem;
-  border-radius: 14px;
-  background: color-mix(in oklab, var(--color-surface) 86%, black);
-  border: 1px solid color-mix(in oklab, var(--color-border) 78%, var(--color-accent) 22%);
-  color: var(--color-text-primary);
+  min-width: 0;
+  height: 60px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--bone);
+  font-family: var(--font-body);
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
 }
 
 .input::placeholder {
-  color: var(--color-text-muted);
+  color: var(--grey);
 }
 
-.input:focus {
+/* The row's underline is the focus indicator for the field */
+.input:focus,
+.input:focus-visible {
   outline: none;
-  border-color: color-mix(in oklab, var(--color-accent) 54%, var(--color-border));
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 18%, transparent);
 }
 
-.msgOk,
-.msgErr {
-  font-size: 0.82rem;
-  font-weight: 600;
+.submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  height: 60px;
+  padding: 0 0 0 8px;
+  border: 0;
+  background: none;
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.submit:hover {
+  color: var(--ember-text);
+}
+
+.submit:disabled {
+  color: var(--bone-dim);
+  cursor: progress;
+}
+
+.arrow {
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+.status {
+  min-height: 1.4em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .msgOk {
-  color: #22c55e;
+  color: var(--bone);
 }
 
 .msgErr {
-  color: var(--color-accent-hover);
+  color: var(--ember-text);
 }
 
+/* Field above action instead of squeezing both into one row */
 @media (max-width: 640px) {
   .row {
-    align-items: stretch;
+    grid-template-columns: minmax(0, 1fr);
+    border-bottom: 0;
+  }
+
+  .row:focus-within {
+    box-shadow: none;
+  }
+
+  .label {
+    padding-top: 4px;
+  }
+
+  .input {
+    height: 52px;
+    border-bottom: 1px solid var(--bone);
+  }
+
+  .input:focus {
+    border-bottom: 2px solid var(--ember-text);
+  }
+
+  .submit {
+    justify-content: space-between;
+    width: 100%;
+    height: 52px;
+    padding: 0;
+    border-bottom: 1px solid var(--rule);
   }
 }

@@ -12,9 +12,10 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 3.1 | Calibration pass on Header, Hero, Latest Release | Done and approved. Header, Hero and Release are frozen for now |
 | 4 | Live + Band / Live visual break (+ `#live` anchor and fetch-failure state) | Done |
 | 5 | Featured Video + Gallery teaser | Done and approved |
-| 5.1 | Video side-column and gallery tablet refinements | Done, **not committed** |
-| 6 | About + Merch (homepage) | Done, **not committed** |
-| Next | Mailing list, Booking (replacing ActionHub), Footer | Not started; wait for go-ahead |
+| 5.1 | Video side-column and gallery tablet refinements | Done |
+| 6 | About + Merch (homepage) | Done and approved |
+| 7 | ActionHub removal, Mailing list, Booking / Contact, Footer refinement, page rhythm review | Done, **not committed**. The homepage structure is now complete |
+| Next | Asset replacement (see the temporary list), internal pages (`/music`, `/about`, `/concerts`, `/merch`, `/gallery`, `/booking`) still in the old card style | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
 
@@ -69,7 +70,7 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 
 - `app/page.tsx`: try/catch around `getActiveMerchProducts`. The empty list is shown when the database is down.
 - `app/page.tsx`: try/catch around `getConcertBuckets`. On failure it passes `null` to Live, which shows the neutral unavailable state, not "No public dates". This is worth keeping as real resilience.
-- `app/components/homePage/actionHub/actionHub.tsx`: `getNextConcert().catch(() => null)`.
+- ~~`actionHub.tsx`: `getNextConcert().catch(() => null)`~~. Gone with ActionHub (Phase 7).
 - These were added because the local Postgres was not running. Decide whether to keep them as real resilience, which is recommended for the homepage, or remove them once the database setup is sorted.
 - `/merch` and `/concerts` still crash without the database.
 
@@ -195,6 +196,78 @@ Homepage order is now Hero → Release → Live → Visual break → Video → G
   - no page errors.
 - The merch link names read correctly ("Core Logo Tee (Black) 25 €").
 
+## Phase 7: ActionHub removal, Mailing list, Booking, Footer, rhythm
+
+Final homepage order: Hero → Release → Live → Visual break → Video → Gallery → About → Merch → Mailing list → Booking → Footer.
+
+Colour planes:
+
+| Section | Plane |
+| --- | --- |
+| Hero | ink (photo) |
+| Release | ink/bone split |
+| Live | ink |
+| Visual break | photo |
+| Video | ink |
+| Gallery | bone |
+| About | ink |
+| Merch | bone |
+| Mailing list | ink |
+| Booking | bone |
+| Footer | ink |
+
+**ActionHub: removed completely.** `app/components/homePage/actionHub/` is deleted, with nothing left of "Start here", cards, rail pills, icons, the booking card, the newsletter card or the duplicate next-show block. Its responsibilities moved:
+- next show → Live;
+- newsletter → Mailing list;
+- booking → Booking.
+
+Nothing else imported it.
+
+**Mailing list** (`app/components/homePage/mailingList/*`, new; `newsLetterForm/*` restyled)
+- On ink: mono "07 — Mailing list", a giant "JOIN THE LIST" on columns 1–5, and on columns 7–12 the existing ActionHub line ("New dates, videos and merch drops straight from the band.", serif italic) with the form.
+- `NewsletterForm` behaviour is unchanged: the same state machine (idle/loading/ok/err), the same `POST /api/newsletter` with `{ email }`, the same success and error messages, the field cleared on success.
+- Presentation and accessibility changes only:
+  - a visible `<label>` ("Email", tied by `useId`), `autoComplete="email"`, `type="submit"`;
+  - the status sits in a `role="status"` / `aria-live="polite"` region, and the form gets `aria-busy` while loading;
+  - the loading label is "Joining…" and the button is disabled meanwhile.
+- Look: label, field and "JOIN →" share one bone underline, which turns ember on `:focus-within` (the focus indicator for the field). No box, radius or glow.
+- At 640px and below, the field (52px) stacks above a full-width "JOIN →" row (52px).
+- Verified with a mocked API at 1440 and 375: loading disables the button, success shows "Subscribed…", and a 500 shows "Subscription failed…".
+
+**Booking / Contact** (`app/components/homePage/bookingContact/*`, new)
+- On bone: mono "08 — Booking", a giant "BOOKING", and `contact@untiltheyfall.com` as large condensed display type (a mailto link with an ember underline).
+- On columns 9–12, ruled rows: "Book the band →" to `/booking`, and "Tech rider PDF ↗" to `/docs/UTF_technical_rider_2026.pdf`, the real file, opening in a new tab.
+- No pills, cards, icons or lore.
+
+**Footer** (`app/components/footer/*`, refined; it appears on every page)
+- Removed: the blur, the semi-transparent `color-mix` surface, the 56px top margin, and the single crowded inline row.
+- Now flat ink with a hairline top rule:
+  - the wordmark (condensed display) plus mono "Melodic death metal — Brussels" on columns 1–5;
+  - site links in a vertical list on columns 8–9;
+  - external links on columns 10–12;
+  - a base row with "© year Until They Fall" and the email.
+- At 720px and below the two lists sit side by side under the wordmark.
+- **Link corrections:**
+  - "YouTube" pointed to the album playlist (`youtubeMusicUrl`); it now goes to the band channel (`youtube.com/channel/UCIXxu9KHo8HvETKE3oZ0UNA`).
+  - "Spotify" pointed to the album; it now goes to the artist page (`open.spotify.com/artist/3NJKrEkHCtimOPbvBUW82L`).
+  - Added Instagram (`instagram.com/until_they_fall/`) and Facebook (`facebook.com/profile.php?id=100090155035708`).
+  - All of these come from `presskit.md`, with the tracking parameters (`si=`, `igsh=`, `intl-fr`) removed. Each returned HTTP 200 on 22.10.2026.
+  - Bandcamp is not linked: `music.ts` leaves `bandcampUrl` empty and the press-kit URL refuses automated checks (403). Add it if it is confirmed live.
+- No symbol was added. The four-eye mark can sign the footer once the real SVG exists.
+
+**Page rhythm review**
+- Every completed section uses the same `--space-m` vertical padding (Release ends on `--space-s`; the footer uses `--space-s` top), so there is no accidental doubling.
+- There are no same-colour collisions after Gallery: the planes alternate ink/bone down to the footer.
+- The only long ink run is Live → Visual break (photo) → Video. It is broken by the photograph, and was approved earlier, so it was left as is.
+- No spacing changes were needed in the completed sections.
+- Internal pages: the last content still has its own bottom padding before the new footer (checked on `/about`, `/music` and `/gallery`).
+
+**Verification (Phase 7)**
+- `tsc` passes; eslint passes on the changed files.
+- Playwright at 1920, 1440, 820 and 375 on a temporary full-homepage preview with the seeded merch (since removed), plus internal pages:
+  - no horizontal overflow;
+  - no page errors.
+
 ## Unresolved: mobile Hero visual is temporary
 
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
@@ -218,7 +291,7 @@ Homepage order is now Hero → Release → Live → Visual break → Video → G
 - **Video side column (Phase 5.1):** at 1920 a gap remains between the large title and "YouTube ↗". It now reads as heading/action spacing rather than an accident.
 - **About line-up:** taken from `about.ts`. Make sure it matches the people in the `band-test` photo and the current line-up.
 
-- **TEMPORARY: duplicate next-show block.** The old ActionHub, untouched, still contains its own "next show" card right after the visual break, so it duplicates Live. It will be removed when the Mailing list / Booking phase replaces ActionHub.
+- ~~Duplicate next-show block~~: resolved, ActionHub removed (Phase 7).
 - **Live list at 1920 (Phase 4):** a wide empty band between the city and venue columns. It is acceptable as poster air, but could be tightened.
 - **Featured Live state (Phase 4):** tested only with the Braine 1:1 poster. A wide poster (e.g. Arlon, 1400×733) will render shorter next to the giant date; check it once real data exists.
 - **TEMPORARY: visual break asset.** `band1.jpg` stays until a confirmed, credited, clean high-resolution master is available (see Phase 4).
@@ -228,6 +301,8 @@ Homepage order is now Hero → Release → Live → Visual break → Video → G
 - **Header mark:** Gerard at 28px is still a smudge. It needs the four-eye SVG; don't invent a new symbol in the meantime.
 - **Bone column at 1920:** below the platforms, the bone column runs empty next to the lower cover and the title. It now reads as an open plane rather than a gap, but it could be revisited when the next section is designed.
 - **Cover artwork:** its saturated, AI-looking style dominates the section. This is a content issue, not a layout one.
-- **Style clash below:** ActionHub, FeaturedVideo and FeaturedMerch still use the old rounded and card styling. They are out of scope until the next phases.
+- ~~Homepage style clash~~: resolved; every homepage section is now redesigned. The **internal pages** still use the old rounded/card styling (with the ember remap) and now clash with the new header and footer.
+- **Header mobile menu links (out of scope in Phase 7):** its Spotify/YouTube links still use `latestRelease` (the album and the album playlist), while the footer now uses the artist page and channel. Align them when the header is next touched.
+- **Local merch section:** while the local database is down, Merch renders nothing, so About is followed directly by the Mailing list (both ink). In production, with products, the bone Merch plane sits between them.
 - **Tickets link:** untested with real data, because the database is unavailable locally.
 - **Dev only:** the Next.js dev badge overlaps the lower-left corner on mobile.

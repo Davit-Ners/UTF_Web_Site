@@ -1,11 +1,12 @@
 import AboutTeaser from "./components/homePage/aboutTeaser/aboutTeaser";
-import ActionHub from "./components/homePage/actionHub/actionHub";
+import BookingContact from "./components/homePage/bookingContact/bookingContact";
 import FeaturedMerch from "./components/homePage/featuredMerch/featuredMerch";
 import FeaturedRelease from "./components/homePage/featuredRelease/featuredRelease";
 import FeaturedVideo from "./components/homePage/featuredVideo/featuredVideo";
 import GalleryTeaser from "./components/homePage/galleryTeaser/galleryTeaser";
 import Hero from "./components/homePage/hero/hero";
 import Live from "./components/homePage/live/live";
+import MailingList from "./components/homePage/mailingList/mailingList";
 import VisualBreak from "./components/homePage/visualBreak/visualBreak";
 import { getConcertBuckets, type Concert } from "./lib/concerts";
 import { getActiveMerchProducts } from "./lib/merch";
@@ -47,7 +48,9 @@ export default async function Home() {
 
       <FeaturedMerch items={products} />
 
-      <ActionHub />
+      <MailingList />
+
+      <BookingContact />
     </>
   );
 }

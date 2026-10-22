@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import styles from "./newsletterForm.module.css";
 
 export default function NewsletterForm() {
     const [email, setEmail] = useState("");
     const [state, setState] = useState<"idle" | "loading" | "ok" | "err">("idle");
+    const inputId = useId();
 
     async function onSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -34,29 +35,37 @@ export default function NewsletterForm() {
             onSubmit={onSubmit}
             className={styles.form}
             aria-label="Subscribe to the Until They Fall mailing list"
+            aria-busy={state === "loading"}
         >
             <div className={styles.row}>
+                <label htmlFor={inputId} className={styles.label}>
+                    Email
+                </label>
                 <input
+                    id={inputId}
                     type="email"
                     name="email"
                     required
+                    autoComplete="email"
                     placeholder="your@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className={styles.input}
-                    aria-label="Email address"
                 />
-                <button className="button small" disabled={state === "loading"}>
-                    {state === "loading" ? "..." : "Join"}
+                <button type="submit" className={styles.submit} disabled={state === "loading"}>
+                    {state === "loading" ? "Joining…" : "Join"}
+                    <span className={styles.arrow} aria-hidden="true">→</span>
                 </button>
             </div>
 
-            {state === "ok" && (
-                <span className={styles.msgOk}>Subscribed. See you before the next show.</span>
-            )}
-            {state === "err" && (
-                <span className={styles.msgErr}>Subscription failed. Try again.</span>
-            )}
+            <p className={styles.status} role="status" aria-live="polite">
+                {state === "ok" && (
+                    <span className={styles.msgOk}>Subscribed. See you before the next show.</span>
+                )}
+                {state === "err" && (
+                    <span className={styles.msgErr}>Subscription failed. Try again.</span>
+                )}
+            </p>
         </form>
     );
 }
