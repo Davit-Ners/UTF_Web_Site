@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { latestRelease } from "@/app/lib/music";
+import { BAND_PROFILES } from "@/app/lib/links";
 import styles from "./header.module.css";
 
 const NAV = [
@@ -16,10 +16,7 @@ const NAV = [
   { href: "/booking", label: "Booking" },
 ];
 
-const EXTERNALS = [
-  latestRelease.spotifyUrl ? { href: latestRelease.spotifyUrl, label: "Spotify" } : null,
-  latestRelease.youtubeMusicUrl ? { href: latestRelease.youtubeMusicUrl, label: "YouTube" } : null,
-].filter(Boolean) as { href: string; label: string }[];
+const EXTERNALS = [BAND_PROFILES.spotify, BAND_PROFILES.youtube];
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 

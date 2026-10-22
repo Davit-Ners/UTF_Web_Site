@@ -268,6 +268,12 @@ Nothing else imported it.
   - no horizontal overflow;
   - no page errors.
 
+## Phase 7.1: shared band profile links
+
+- New `app/lib/links.ts` exports `BAND_PROFILES` (Spotify artist page, YouTube channel, Instagram, Facebook). It is the single source for official profile URLs.
+- The footer uses all four. The header mobile menu now uses `BAND_PROFILES.spotify` and `BAND_PROFILES.youtube` instead of `latestRelease.spotifyUrl` / `youtubeMusicUrl` (the album and the album playlist). The Header design is unchanged.
+- `latestRelease` URLs in `music.ts` remain the release-specific links (used by Hero "Listen" and the Release section), which is correct for those contexts.
+
 ## Unresolved: mobile Hero visual is temporary
 
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
@@ -302,7 +308,7 @@ Nothing else imported it.
 - **Bone column at 1920:** below the platforms, the bone column runs empty next to the lower cover and the title. It now reads as an open plane rather than a gap, but it could be revisited when the next section is designed.
 - **Cover artwork:** its saturated, AI-looking style dominates the section. This is a content issue, not a layout one.
 - ~~Homepage style clash~~: resolved; every homepage section is now redesigned. The **internal pages** still use the old rounded/card styling (with the ember remap) and now clash with the new header and footer.
-- **Header mobile menu links (out of scope in Phase 7):** its Spotify/YouTube links still use `latestRelease` (the album and the album playlist), while the footer now uses the artist page and channel. Align them when the header is next touched.
+- ~~Header mobile menu links~~: resolved in Phase 7.1. The header and footer share `BAND_PROFILES`.
 - **Local merch section:** while the local database is down, Merch renders nothing, so About is followed directly by the Mailing list (both ink). In production, with products, the bone Merch plane sits between them.
 - **Tickets link:** untested with real data, because the database is unavailable locally.
 - **Dev only:** the Next.js dev badge overlaps the lower-left corner on mobile.

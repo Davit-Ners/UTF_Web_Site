@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BAND_PROFILES } from "@/app/lib/links";
 import styles from "./footer.module.css";
 
 const FOOTER_NAV = [
@@ -10,12 +11,11 @@ const FOOTER_NAV = [
   { href: "/booking", label: "Booking" },
 ];
 
-/* Official band profiles, as listed in presskit.md (tracking parameters removed) */
 const FOOTER_EXTERNALS = [
-  { href: "https://open.spotify.com/artist/3NJKrEkHCtimOPbvBUW82L", label: "Spotify" },
-  { href: "https://www.youtube.com/channel/UCIXxu9KHo8HvETKE3oZ0UNA", label: "YouTube" },
-  { href: "https://www.instagram.com/until_they_fall/", label: "Instagram" },
-  { href: "https://www.facebook.com/profile.php?id=100090155035708", label: "Facebook" },
+  BAND_PROFILES.spotify,
+  BAND_PROFILES.youtube,
+  BAND_PROFILES.instagram,
+  BAND_PROFILES.facebook,
 ];
 
 const CONTACT_EMAIL = "contact@untiltheyfall.com";
