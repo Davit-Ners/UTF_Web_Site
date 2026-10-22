@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CONTACT_EMAIL } from "@/app/lib/contact";
 import { BAND_PROFILES } from "@/app/lib/links";
 import styles from "./footer.module.css";
 
@@ -17,8 +18,6 @@ const FOOTER_EXTERNALS = [
   BAND_PROFILES.instagram,
   BAND_PROFILES.facebook,
 ];
-
-const CONTACT_EMAIL = "contact@untiltheyfall.com";
 
 export default function Footer() {
   const year = new Date().getFullYear();

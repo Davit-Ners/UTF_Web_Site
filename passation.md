@@ -22,8 +22,9 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 12 | `/gallery` ("Photo Book"), photo catalogue cleanup, shared `PhotoViewer`, `/gallery/concert-photos` redirect | Done |
 | 13 | `/about` ("Band Profile") | Done |
 | 14 | `/merch` ("Band Catalogue") | Done; superseded in structure by 14.1 |
-| 14.1 | `/merch` Hybrid: Featured + All items + order-request drawer | Done, **not committed** |
-| Next | `/booking`, `/concerts/[slug]/gallery` (still `GalleryFull`) in the old style; album line-up consistency pass; merch size/variant system; asset replacement | Not started; wait for go-ahead |
+| 14.1 | `/merch` Hybrid: Featured + All items + order-request drawer | Done (14.2 included) |
+| 15 | `/booking` ("Booking Sheet") + shared contact constant | Done, **not committed** |
+| Next | `/concerts/[slug]/gallery` (still `GalleryFull`) in the old style; album line-up consistency pass; merch size/variant system; asset replacement | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
 
@@ -790,6 +791,71 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
 - **End spacing:** All items bottom padding is now `clamp(32px, 4vw, 56px)` (was `--space-m`, up to 160px) and the questions line has no top padding (was `--space-s`). The last row → "Questions about sizes or shipping?" gap is 56px at 1440/1920, about 33px on mobile (was about 250px).
 - The drawer and all order behaviour are unchanged. `tsc` passes; eslint passes on the changed files.
 
+## Phase 15: `/booking` ("Booking Sheet")
+
+**Contact centralised** (new `app/lib/contact.ts`)
+- `CONTACT_EMAIL = "contact@untiltheyfall.com"`, the single source for the public address.
+- It is now used by: the Header mobile menu, the Footer, the homepage Booking section, `/merch` (`merchView.tsx`), the `/booking` page and form, and the **API fallbacks** in `app/api/send/route.ts` (booking) and `app/api/merch/order/route.ts` (merch, sender and recipient). No other hard-coded copy remains in `app/` or `lib/` (grep verified).
+- **Internal destinations stay environment-controlled and are not assumed equal to the public address:** `BOOKING_TO_EMAIL`, `MERCH_TO_EMAIL`, `RESEND_FROM_EMAIL` (set in `.env.local`; values not inspected or exposed).
+- `TECH_RIDER = { href, version: "18.02.2026", pages: 5, sizeLabel: "206 KB" }` in the same file, used by `/booking` and the homepage Booking section.
+- **Open conflict:** `presskit.md` lists `untiltheyfallband@gmail.com`. `untiltheyfall.com` has OVH MX records (mail can be received by the domain), but whether `contact@` is read, and whether the Gmail address is old or still monitored, needs confirmation from the band.
+
+**Composition** (`app/booking/page.tsx` is now a server component; `bookingClient.tsx` now renders only the request form, with its submit logic verbatim; `booking.module.css` rewritten)
+- **I. Contact (ink):**
+  - "BOOKING" (about 19vw, the `h1`);
+  - mono identity line "Melodic death metal — Brussels, BE — 5 members";
+  - **`contact@untiltheyfall.com` as the dominant element** (display type, a mailto link, ember underline);
+  - two ruled actions: "Booking request ↓" (anchor `#booking-request`, landing below the header) and "Tech rider PDF ↗" (new tab, `noopener`), with mono "v. 18.02.2026 — 5 pages — 206 KB".
+- **II. Technical sheet (bone):**
+  - "Technical summary", labelled "Technical rider — v. 18.02.2026";
+  - ruled label/value rows **derived only from the rider**: Line-up 5 members · Backline own or venue · Guitars Line 6 Helix / Helix Stomp · Bass Ampeg PF-500 via DI · Sample pad via DI · Monitoring all members on IEM, own digital mixer and splitter · Inputs 19 channels · Venue provides PA and required drum microphones · Vocal mics 3 × SM58 or similar · Backdrop 1.80 × 2.00 m · Optional smoke machine and 2 EgoRisers;
+  - "Full rider: input list and stage plot ↗".
+  - **Secondary "Stage history"** (columns 9–12): the real show count from the concert data ("12 shows since 2024"; omitted if the database is unavailable), festivals and shared bills (from `about.ts`), airplay (from `music.ts`), and "Live archive →".
+- **III. Booking request (ink):**
+  - the existing form, restyled: underlined sharp fields in two columns (one column at ≤900px), each label showing "Required" (ember) or "Optional";
+  - an ember "Send booking request →";
+  - "Or email contact@untiltheyfall.com" beside the submit;
+  - status messages in a `role="status"` live region.
+
+**Removed unsupported claims:** "30–60 min" set length, "across Belgium and Europe", "fast changeovers", "Modern metal sound", the slogans ("A heavy set built for the room", "tech rider ready") and the FAQ repeating them. No fee range, hospitality, travel or response-time promise is shown. Geography is limited to Brussels, BE.
+
+**Form-default fix:** "Event type" and "Budget" start empty ("Select event type" / "Select budget", `value=""`), so nothing is submitted unless chosen. Previously they silently sent "Festival" and ">= 1000". Both remain optional; the API already accepts empty strings.
+- **Everything else unchanged:** field names (`name, email, org, type, city, capacity, date, budget, message, faxNumber`), client and server validation (`lib/booking.ts`), spam trap, Turnstile (`bookingTurnstile.tsx` untouched), `/api/booking` → `/api/send`, the `BookingRequest` database storage, the band and promoter emails, and the loading/success/error behaviour and form reset.
+
+**SEO:**
+- Title unchanged ("Booking").
+- The description no longer carries "tech rider ready" and adds no marketing claims.
+- OG/Twitter image is now `/gallery/band-test.jpg` (2048×1363, correct dimensions; it was the watermarked `utf-band-good.jpg` with a wrong 1365 height).
+- New schema.org `MusicGroup` JSON-LD with confirmed fields only: name, url, genre "Melodic death metal", foundingDate 2018, foundingLocation Brussels, Belgium, email `CONTACT_EMAIL`, and `sameAs` from `BAND_PROFILES`.
+
+**Deleted:** `bookingPage/bookingHero.tsx`, `whyBookUs.tsx` + `whyBookUs.module.css`, `bookingFAQ.tsx` (no references, verified). **Kept:** `bookingForm.tsx` (restyled), `bookingTurnstile.tsx`, the client submit logic, the API, validation and email templates.
+
+**Verification (Phase 15)**
+- 1920, 1440×900, 820 and 375: no horizontal overflow, no page errors.
+- The mailto link is correct; the rider returns HTTP 200 (PDF) and opens in a new tab; the anchor lands the form under the header.
+- Event type and Budget are empty by default, and a mocked submission sends `type: ""` and `budget: ""`.
+- **Client validation:** an empty submit shows "Please fill all required fields."
+- **Mocked success** (API intercepted in the browser, Turnstile mocked): loading "Sending…", then "Thanks. We'll get back to you shortly.", and the form resets.
+- **Server validation** on the real API: missing fields → 400 "Please fill all required fields."; **spam trap** → 400 "Invalid request." Both are rejected before Turnstile, the database or email. No valid payload was sent to the real API (to avoid creating a real booking or sending email).
+- **Client spam trap:** "Invalid request. Please try again." with no API call.
+- **Turnstile enabled:** the widget block renders; with the script blocked (no token), submit stays disabled; with a mocked token, submit is enabled and the token is sent. **Turnstile disabled** (empty site key): the widget is skipped and submit is not token-gated (code path unchanged; not toggled here, because the dev server reads the key from `.env.local`).
+- No rider phone numbers appear on the page. `tsc` passes; eslint passes on the changed files.
+
+**Remaining contact / rider uncertainties**
+- **Email:** `contact@untiltheyfall.com` (site) vs `untiltheyfallband@gmail.com` (press kit). Which is monitored, and does `BOOKING_TO_EMAIL` deliver to a read inbox?
+- **The public rider contains personal mobile numbers** (Sabari Diakite, Davit Nersesyan) on pages 1–2 of `UTF_technical_rider_2026.pdf`. **The band should consciously decide** whether to keep them in a publicly downloadable document. The PDF was not edited, and the numbers are not reproduced on the page.
+- **Set length, touring geography beyond Belgium, fees, hospitality, travel, response time:** not shown until confirmed.
+- **Promoter downloads:** no press-kit PDF or press-photo pack exists yet.
+- The rider is v. 18.02.2026, with the current line-up. When it changes, update `TECH_RIDER` (version and size) together with the file.
+
+### Phase 15.1: Turnstile site-key guard
+
+- `bookingClient.tsx` checks the shape of `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (`/^[0-3]x[A-Za-z0-9_-]+$/`, i.e. `0x…` live keys or `1x…`/`2x…`/`3x…` Cloudflare test keys).
+- **A malformed key no longer crashes the widget** ("Invalid input for parameter sitekey"). The widget is skipped and a clear `console.error` explains what to fix.
+- Cause found locally: line 7 of `.env.local` held a URL instead of a site key, and `NEXT_PUBLIC_SITE_URL` is declared twice (lines 5–6). `.env.local` was not edited.
+- **For local development,** use Cloudflare's paired test keys (site `1x00000000000000000000AA`, secret `1x0000000000000000000000000000000AA`) and restart the dev server.
+- With the widget skipped but a real `TURNSTILE_SECRET_KEY` set, the server still requires a token, so submissions return the existing verification error (no silent bypass).
+
 ## Unresolved: mobile Hero visual is temporary
 
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
@@ -846,7 +912,7 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
 - ~~`/music` → `/music/sent-to-die`~~: resolved, the release page is rebuilt (Phase 9).
 - **Release page cover spread (Phase 9):** at 1920×1080 the plate fills the viewport height, so the title and listen row sit just below the fold. That is intentional (the artwork as the object), but the main listen action needs one scroll on large screens.
 - **Release page archive (Phase 9):** with one release, the archive part is only two links on a full ink band. It will fill out when more releases exist.
-- **Contact email mismatch (not addressed):** `presskit.md` lists `untiltheyfallband@gmail.com`; the site uses `contact@untiltheyfall.com` everywhere (header, booking section, footer). Confirm which address is current.
+- **Contact email conflict (open, see Phase 15):** the public site address is `contact@untiltheyfall.com` (now one constant). `presskit.md` still lists `untiltheyfallband@gmail.com`. **The band must confirm whether the Gmail address is old or still monitored.**
 
 - **TEMPORARY: video poster (Phase 5).** A 640px YouTube still, soft at desktop widths; a local 1920px+ still is needed (see Phase 5).
 - **TEMPORARY: signed gallery photography (Phases 4–5).** The visual break and gallery teaser photos carry the photographer's signature (Laurent Henoumont) and a baked border. Confirm the credit and permission, and get clean high-resolution masters.

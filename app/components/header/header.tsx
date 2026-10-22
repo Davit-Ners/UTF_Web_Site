@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { CONTACT_EMAIL } from "@/app/lib/contact";
 import { BAND_PROFILES } from "@/app/lib/links";
 import styles from "./header.module.css";
 
@@ -178,8 +179,8 @@ export default function Header({ tickets }: Props) {
               Tickets {tickets.date} <span className="arrow" aria-hidden="true">↗</span>
             </a>
           ) : null}
-          <a href="mailto:contact@untiltheyfall.com" className={styles.panelMeta}>
-            contact@untiltheyfall.com
+          <a href={`mailto:${CONTACT_EMAIL}`} className={styles.panelMeta}>
+            {CONTACT_EMAIL}
           </a>
           <div className={styles.panelExternals}>
             {EXTERNALS.map((item) => (

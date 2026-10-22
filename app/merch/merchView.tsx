@@ -1,9 +1,8 @@
+import { CONTACT_EMAIL } from "../lib/contact";
 import type { Product } from "../lib/products";
 import { FREE_SHIPPING_FROM_EUR, SHIPPING_FLAT_EUR } from "../lib/shipping";
 import MerchStoreClient from "./merchStoreClient";
 import styles from "./merch.module.css";
-
-const CONTACT_EMAIL = "contact@untiltheyfall.com";
 
 /* products === null means the catalogue could not be loaded */
 export default function MerchView({ products }: { products: Product[] | null }) {

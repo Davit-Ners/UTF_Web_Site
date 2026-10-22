@@ -1,8 +1,6 @@
 import Link from "next/link";
+import { CONTACT_EMAIL, TECH_RIDER } from "@/app/lib/contact";
 import styles from "./bookingContact.module.css";
-
-const CONTACT_EMAIL = "contact@untiltheyfall.com";
-const RIDER_PATH = "/docs/UTF_technical_rider_2026.pdf";
 
 export default function BookingContact() {
   return (
@@ -22,7 +20,7 @@ export default function BookingContact() {
           Book the band <span className="arrow" aria-hidden="true">→</span>
         </Link>
         <a
-          href={RIDER_PATH}
+          href={TECH_RIDER.href}
           target="_blank"
           rel="noreferrer"
           className={`action-link on-bone ${styles.action}`}

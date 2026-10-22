@@ -10,6 +10,7 @@ import {
 import prisma from "@/lib/prisma";
 import { calculateShipping } from "@/app/lib/shipping";
 import { Resend } from "resend";
+import { CONTACT_EMAIL } from "@/app/lib/contact";
 
 const MAX_QTY_PER_ITEM = 20;
 const resend = process.env.RESEND_API_KEY
@@ -18,11 +19,11 @@ const resend = process.env.RESEND_API_KEY
 
 const merchFromEmail =
   process.env.RESEND_FROM_EMAIL ??
-  "Until They Fall Merch <contact@untiltheyfall.com>";
+  `Until They Fall Merch <${CONTACT_EMAIL}>`;
 const merchToEmail =
   process.env.MERCH_TO_EMAIL ??
   process.env.BOOKING_TO_EMAIL ??
-  "contact@untiltheyfall.com";
+  CONTACT_EMAIL;
 
 export type MerchOrderSummary = {
   orderId: string;

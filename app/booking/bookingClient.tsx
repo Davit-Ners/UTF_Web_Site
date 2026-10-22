@@ -2,13 +2,24 @@
 
 import { useState } from "react";
 import { buildBookingPayload, validateBookingPayload } from "@/lib/booking";
-import styles from "./booking.module.css";
 import BookingForm from "../components/bookingPage/bookingForm";
-import BookingFAQ from "../components/bookingPage/bookingFAQ";
-import BookingHero from "../components/bookingPage/bookingHero";
-import WhyBookUs from "../components/bookingPage/whyBookUs";
 
-const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+const rawTurnstileSiteKey = (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "").trim();
+
+/* Turnstile site keys look like "0x4AAA…" (or "1x…"/"2x…"/"3x…" test keys) */
+const TURNSTILE_KEY_SHAPE = /^[0-3]x[A-Za-z0-9_-]+$/;
+const turnstileKeyValid = TURNSTILE_KEY_SHAPE.test(rawTurnstileSiteKey);
+
+/* A malformed key would make the Cloudflare widget throw; skip it and say why */
+if (rawTurnstileSiteKey && !turnstileKeyValid) {
+  console.error(
+    "[booking] NEXT_PUBLIC_TURNSTILE_SITE_KEY is set but is not a Turnstile site key " +
+      '(expected something like "0x4AAA…"). The verification widget is disabled. ' +
+      "Check .env.local, then restart the dev server."
+  );
+}
+
+const turnstileSiteKey = turnstileKeyValid ? rawTurnstileSiteKey : "";
 
 export default function BookingClient() {
   const [loading, setLoading] = useState(false);
@@ -92,12 +103,8 @@ export default function BookingClient() {
     }
   }
 
+  /* The request section only; the page around it is server-rendered */
   return (
-    <main className={styles.page}>
-      <BookingHero />
-
-      <WhyBookUs />
-
       <BookingForm
         handleSubmit={handleSubmit}
         error={error}
@@ -108,8 +115,5 @@ export default function BookingClient() {
         turnstileResetCounter={turnstileResetCounter}
         turnstileSiteKey={turnstileSiteKey}
       />
-
-      <BookingFAQ />
-    </main>
   );
 }

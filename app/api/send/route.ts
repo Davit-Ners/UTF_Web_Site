@@ -10,6 +10,7 @@ import prisma from "@/lib/prisma";
 import { validateTurnstileToken } from "@/lib/turnstile";
 import { BOOKING_TURNSTILE_ACTION } from "@/lib/turnstile.shared";
 import { Resend } from "resend";
+import { CONTACT_EMAIL } from "@/app/lib/contact";
 
 export type EmailContent = ValidBookingRequestPayload;
 
@@ -19,9 +20,9 @@ const resend = process.env.RESEND_API_KEY
 
 const bookingFromEmail =
   process.env.RESEND_FROM_EMAIL ??
-  "Until They Fall Booking <contact@untiltheyfall.com>";
+  `Until They Fall Booking <${CONTACT_EMAIL}>`;
 const bookingToEmail =
-  process.env.BOOKING_TO_EMAIL ?? "contact@untiltheyfall.com";
+  process.env.BOOKING_TO_EMAIL ?? CONTACT_EMAIL;
 
 function readTurnstileToken(input: unknown) {
   if (typeof input !== "object" || input === null) {
