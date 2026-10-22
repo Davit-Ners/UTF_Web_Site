@@ -3,6 +3,7 @@ import Link from "next/link";
 import { members } from "@/app/lib/about";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import type { Release } from "@/app/lib/music";
+import { formatReleaseDate, getListenLinks, getRuntime } from "@/app/lib/release";
 import styles from "./releaseSleeve.module.css";
 
 type Props = {
@@ -11,35 +12,14 @@ type Props = {
   mirrored?: boolean;
 };
 
-function toSeconds(length: string) {
-  const [min, sec] = length.split(":").map(Number);
-  return min * 60 + sec;
-}
-
-function formatSeconds(total: number) {
-  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
-}
-
-function formatDate(release: Release) {
-  if (!release.releaseDate) return String(release.year);
-  const [year, month, day] = release.releaseDate.split("-");
-  return `${day}.${month}.${year}`;
-}
-
 export default function ReleaseSleeve({ release, mirrored = false }: Props) {
   const tracks = release.tracks ?? [];
-  const runtime = tracks.length ? formatSeconds(tracks.reduce((sum, t) => sum + toSeconds(t.length), 0)) : null;
-
-  const listen = [
-    release.spotifyUrl ? { label: "Spotify", href: release.spotifyUrl } : null,
-    release.appleMusicUrl ? { label: "Apple Music", href: release.appleMusicUrl } : null,
-    release.youtubeMusicUrl ? { label: "YouTube Music", href: release.youtubeMusicUrl } : null,
-    release.bandcampUrl ? { label: "Bandcamp", href: release.bandcampUrl } : null,
-  ].filter(Boolean) as { label: string; href: string }[];
+  const runtime = getRuntime(release);
+  const listen = getListenLinks(release);
 
   const meta = [
     release.type,
-    formatDate(release),
+    formatReleaseDate(release),
     tracks.length ? `${String(tracks.length).padStart(2, "0")} tracks` : null,
     runtime,
   ].filter(Boolean);

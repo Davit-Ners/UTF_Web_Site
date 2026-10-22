@@ -15,8 +15,9 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 5.1 | Video side-column and gallery tablet refinements | Done |
 | 6 | About + Merch (homepage) | Done and approved |
 | 7 | ActionHub removal, Mailing list, Booking / Contact, Footer refinement, page rhythm review | Done, **not committed**. The homepage structure is now complete |
-| 8 | `/music` page ("Sleeve") | Done, **not committed** |
-| Next | Other internal pages (`/music/[slug]`, `/about`, `/concerts`, `/merch`, `/gallery`, `/booking`) still in the old card style; asset replacement | Not started; wait for go-ahead |
+| 8 | `/music` page ("Sleeve") | Done |
+| 9 | `/music/[slug]` release page ("Booklet") | Done, **not committed** |
+| Next | Other internal pages (`/about`, `/concerts`, `/merch`, `/gallery`, `/booking`) still in the old card style; asset replacement | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
 
@@ -296,7 +297,7 @@ Nothing else imported it.
 - The line-up is read from `about.ts`. The hard-coded `bandCredits` / `productionCredits` / `fanRefs` in the old page are gone.
 - `recordingNotes` is **not** rendered on `/music`. It contains "Produced, mixed and mastered by Yarne Heylen", and mix/master is unconfirmed. It stays in the data because `/music/[slug]` (not modified) still uses it.
 
-**Not changed:** `/music/[slug]` and its components (`musicFeaturedRelease`, `trackList`, `streamingRow`, `discographySection`) are untouched. The unused `musicHero` and `musicCredits` components are still in the repo.
+**Not changed in Phase 8:** `/music/[slug]` (rebuilt in Phase 9).
 
 **Verification (Phase 8)**
 - `tsc` passes; eslint passes on the changed files.
@@ -305,11 +306,68 @@ Nothing else imported it.
 - Links checked 22.10.2026: Spotify and Apple Music resolve to the album. The YouTube Music link resolves (HTTP 200) to the first track of the "Sent To Die" album playlist on the "Until They Fall - Topic" channel, so it works; normalization can wait.
 
 **Unverified data (do not treat as confirmed)**
-- **Track durations:** all seven, and therefore the 29:45 total. Two tracks share 4:11. Verify against the master or Spotify.
+- **Track durations:** all seven, and therefore the 29:45 total. Two tracks share 4:11. Verify against the master or Spotify. Now displayed prominently on `/music/[slug]` as chapter durations too.
 - **Mix/master credit:** still only in `recordingNotes`, used by `/music/[slug]`.
 - **Artwork credit:** not published anywhere on `/music`. The old page's "Artwork: Until They Fall" is removed until confirmed.
 - **Bandcamp:** hidden until the link is confirmed.
 - **Line-up for the album:** the colophon shows the *current* line-up from `about.ts`. Confirm it matches who played on Sent To Die (2023), or label it differently later.
+
+## Phase 9: `/music/[slug]` ("Booklet")
+
+Hierarchy: homepage = teaser, `/music` = record sleeve, `/music/[slug]` = full booklet / archive entry.
+
+**Composition** (`app/music/[slug]/page.tsx`, `releasePage.module.css`, both rewritten)
+- Breadcrumb in mono (`Music / Sent To Die`, with `aria-current`).
+- **I. Cover spread (ink):**
+  - the `coverMaster` artwork as a centred, uncropped plate (`object-fit: contain`, `min(100%, 86svh)`);
+  - a caption with a roman marker, a mono line (type — date — tracks — runtime) and the **only** `h1` (the release title);
+  - a listen row directly under it: plain ruled links side by side on desktop, stacked 48px rows on mobile.
+- **II. Songs (bone):** each track as an oversized numbered chapter: mono number, title as an `h2` in large condensed type, mono duration. A note line appears **only with real data**: "Single" (ember), "Airplay — station" (matched from `airplay`), "Video ↗" (from the new `videoId`).
+- **III. Story (bone):** `release.story` in large serif italic, columns 4–10. It is not rendered without a story; there is no fallback copy.
+- **IV. Credits (ink):** only confirmed data, in columns: Recording (`credits`) and Broadcast (`airplay`). **Personnel is omitted** until the 2023 recording line-up is confirmed. Mix/master, artwork, label and catalogue are omitted.
+- **V. Archive (ink):** other releases as a typographic index (only when there are any), plus "Discography →" and "Merch →".
+- Roman markers are computed from the parts that actually render, so they never skip a number.
+- At 900px and below: the plate goes full-bleed, the listen links stack, and each song shows its number and duration on one line with the title below; the credit columns stack.
+- Removed: all cards and rounded panels, the disabled Spotify iframe, the filler story copy, the "Book The Band" button, the hard-coded "Sent To Die era" merch card, `SectionHeading`, the "Single" pills, the `->` arrows, the duplicated title and year, and the unconfirmed `recordingNotes` sentence.
+- Routing is preserved: `/music/[slug]`, and `notFound()` for unknown slugs (verified 404 on `/music/does-not-exist`). `params` is now typed as a Promise (Next 16).
+
+**SEO** (new on this route)
+- `generateStaticParams`: one static page per `discography` entry.
+- `generateMetadata` per release:
+  - title `Sent To Die (Album, 2023)`, which the layout template turns into "… | Until They Fall";
+  - `description` = `release.blurb`;
+  - canonical `/music/{id}`;
+  - Open Graph `music.album` with the artwork (`coverMaster`), and a Twitter large card.
+- Unknown slugs return empty metadata, plus the 404.
+- Before this phase the route had no metadata of its own: it inherited the site's default title and the canonical "/".
+
+**Shared helpers** (new `app/lib/release.ts`, pure functions)
+- `formatReleaseDate`, `getRuntime` and `getListenLinks`, used by the release page, `releaseSleeve` (`/music`) and the homepage `featuredRelease`.
+- Their local copies were removed. Output is identical (verified: `/music` meta line and homepage facts unchanged).
+- No visual component was extracted (the Colophon cleanup is deferred).
+
+**Data model** (`app/lib/music.ts`)
+- `Track.videoId?`: the YouTube id of the track's official video. Set `9Wvpovk_Tg4` on "Sent To Die" (the official video, also featured on the homepage).
+- `recordingNotes` and `highlightTrack` are now **not rendered anywhere**. `recordingNotes` contains the unconfirmed "Produced, mixed and mastered by Yarne Heylen". It is kept in the data for now; delete it, or split it into confirmed `credits`, once mix/master is confirmed.
+
+**Deleted dead components** (no remaining imports, verified by grep before deletion)
+- `app/components/music/musicFeaturedRelease/`
+- `app/components/music/trackList/`
+- `app/components/music/streamingRow/`
+- `app/components/music/discographySection/`
+- `app/components/music/musicHero/`
+- `app/components/music/musicCredits/`
+- `app/components/sectionHeading/`
+
+`app/components/music/` now contains only `releaseSleeve/`.
+
+**Verification (Phase 9)**
+- `tsc` passes; eslint passes on the changed files.
+- Playwright at 1920, 1440, 820 and 375:
+  - HTTP 200, no horizontal overflow, no errors, no iframes, a single `h1`;
+  - correct title, description, canonical and `og:image`;
+  - song notes render only for tracks 01, 03 and 04.
+- `/music` and `/` still render with the same release facts.
 
 ## Unresolved: mobile Hero visual is temporary
 
@@ -326,7 +384,10 @@ Nothing else imported it.
 
 - **`/music` artwork (Phase 8):** as the dominant object, the saturated, AI-looking digital cover is even more prominent than on the homepage. The physical CD engraving would suit the direction better once a clean scan and credit exist.
 - **`/music` desktop (Phase 8):** at 1920 there is a wide ink gap between the artwork and the tracklist column, and the bone liner notes have empty space under the story. Both read as deliberate, but could be tightened.
-- **`/music` → `/music/sent-to-die` (Phase 8):** the homepage "Release →" link and future index links lead to the old card-style detail page. That route is the next obvious mismatch.
+- ~~`/music` → `/music/sent-to-die`~~: resolved, the release page is rebuilt (Phase 9).
+- **Release page cover spread (Phase 9):** at 1920×1080 the plate fills the viewport height, so the title and listen row sit just below the fold. That is intentional (the artwork as the object), but the main listen action needs one scroll on large screens.
+- **Release page archive (Phase 9):** with one release, the archive part is only two links on a full ink band. It will fill out when more releases exist.
+- **Contact email mismatch (not addressed):** `presskit.md` lists `untiltheyfallband@gmail.com`; the site uses `contact@untiltheyfall.com` everywhere (header, booking section, footer). Confirm which address is current.
 
 - **TEMPORARY: video poster (Phase 5).** A 640px YouTube still, soft at desktop widths; a local 1920px+ still is needed (see Phase 5).
 - **TEMPORARY: signed gallery photography (Phases 4–5).** The visual break and gallery teaser photos carry the photographer's signature ("Henoumont T.") and a baked border. Confirm the credit and permission, and get clean high-resolution masters.

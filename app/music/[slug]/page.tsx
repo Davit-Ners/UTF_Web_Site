@@ -1,113 +1,242 @@
-import { notFound } from "next/navigation";
-import styles from "./releasePage.module.css";
-import { getReleaseBySlug, getOtherReleases } from "@/app/lib/music";
-import SectionHeading from "@/app/components/sectionHeading/sectionHeading";
+import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import FeaturedRelease from "@/app/components/music/musicFeaturedRelease/musicFeaturedRelease";
-import TracklistCard from "@/app/components/music/trackList/trackList";
-import StreamingRow from "@/app/components/music/streamingRow/streamingRow";
-import DiscographySection from "@/app/components/music/discographySection/discographySection";
+import { notFound } from "next/navigation";
+import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
+import { discography, getOtherReleases, getReleaseBySlug } from "@/app/lib/music";
+import { formatReleaseDate, getListenLinks, getRuntime } from "@/app/lib/release";
+import styles from "./releasePage.module.css";
 
 type Props = {
-    params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
+
+export function generateStaticParams() {
+  return discography.map((release) => ({ slug: release.id }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const release = getReleaseBySlug(slug);
+  if (!release) return {};
+
+  const title = `${release.title} (${release.type}, ${release.year})`;
+  const image = release.coverMaster ?? release.cover;
+
+  return {
+    title,
+    description: release.blurb,
+    alternates: { canonical: `/music/${release.id}` },
+    openGraph: {
+      type: "music.album",
+      title: `${title} | Until They Fall`,
+      description: release.blurb,
+      url: `/music/${release.id}`,
+      images: [{ url: image, alt: `${release.title} artwork` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Until They Fall`,
+      description: release.blurb,
+      images: [image],
+    },
+  };
+}
 
 export default async function ReleasePage({ params }: Props) {
-    const { slug } = await params;
-    const release = getReleaseBySlug(slug);
+  const { slug } = await params;
+  const release = getReleaseBySlug(slug);
+  if (!release) notFound();
 
-    if (!release) return notFound();
+  const tracks = release.tracks ?? [];
+  const runtime = getRuntime(release);
+  const listen = getListenLinks(release);
+  const others = getOtherReleases(slug);
+  const caption = [
+    release.type,
+    formatReleaseDate(release),
+    tracks.length ? `${String(tracks.length).padStart(2, "0")} tracks` : null,
+    runtime,
+  ].filter(Boolean);
 
-    const others = getOtherReleases(slug);
+  const recording = release.credits ?? [];
+  const broadcast = release.airplay ?? [];
+  const hasCredits = recording.length > 0 || broadcast.length > 0;
 
-    return (
-        <main className={styles.page}>
-        <section className={styles.breadcrumbWrap}>
-            <div className="container">
-            <nav className={styles.breadcrumb}>
-                <Link href="/music">Music</Link>
-                <span className={styles.sep}>/</span>
-                <span className={styles.current}>{release.title}</span>
-            </nav>
-            </div>
+  /* Section markers follow only the parts that render */
+  const parts = ["cover", tracks.length ? "songs" : null, release.story ? "story" : null, hasCredits ? "credits" : null, "archive"].filter(Boolean);
+  const marker = (part: string) => ["I", "II", "III", "IV", "V", "VI"][parts.indexOf(part)];
+
+  return (
+    <main className={styles.page}>
+      <nav className={styles.crumbs} aria-label="Breadcrumb">
+        <Link href="/music">Music</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{release.title}</span>
+      </nav>
+
+      {/* I — Cover spread */}
+      <section className={styles.cover} aria-labelledby="release-title">
+        <div className={styles.plate}>
+          <Image
+            src={release.coverMaster ?? release.cover}
+            alt={`${release.title} artwork`}
+            fill
+            priority
+            sizes="(max-width: 900px) 100vw, 86vh"
+            className={styles.plateImage}
+            placeholder="blur"
+            blurDataURL={IMAGE_BLUR_DATA_URL}
+          />
+        </div>
+
+        <div className={styles.caption}>
+          <p className={`meta ${styles.marker}`}>{marker("cover")}</p>
+          <p className={`meta ${styles.captionMeta}`}>{caption.join(" — ")}</p>
+          <h1 id="release-title" className={styles.title}>
+            {release.title}
+          </h1>
+        </div>
+
+        {listen.length ? (
+          <ul className={styles.listen} aria-label={`Listen to ${release.title}`}>
+            {listen.map((link) => (
+              <li key={link.label}>
+                <a href={link.href} target="_blank" rel="noreferrer" className={styles.listenLink}>
+                  {link.label}
+                  <span className={styles.arrow} aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
+
+      {/* Songs as chapters */}
+      {tracks.length ? (
+        <section className={styles.songs} aria-labelledby="songs-title">
+          <p className={`meta ${styles.sectionHead}`}>
+            <span>{marker("songs")}</span>
+            <span id="songs-title">Songs</span>
+          </p>
+
+          <ol className={styles.songList}>
+            {tracks.map((track, index) => {
+              const airplay = broadcast.filter((item) => item.track === track.title);
+              const notes = [
+                track.isSingle ? <span key="single" className={styles.single}>Single</span> : null,
+                ...airplay.map((item) => <span key={item.station}>Airplay — {item.station}</span>),
+                track.videoId ? (
+                  <a
+                    key="video"
+                    href={`https://www.youtube.com/watch?v=${track.videoId}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.video}
+                  >
+                    Video <span className="srOnly">for {track.title}</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                ) : null,
+              ].filter(Boolean);
+
+              return (
+                <li key={track.id} className={styles.song}>
+                  <span className={styles.songNo}>{String(index + 1).padStart(2, "0")}</span>
+                  <h2 className={styles.songTitle}>{track.title}</h2>
+                  <span className={styles.songLength}>{track.length}</span>
+                  {notes.length ? <p className={styles.songNotes}>{notes}</p> : null}
+                </li>
+              );
+            })}
+          </ol>
         </section>
+      ) : null}
 
-        <section className={styles.heroSection}>
-            <div className="container">
-            <FeaturedRelease release={release} />
-            </div>
+      {/* Story: only real copy, never a fallback */}
+      {release.story ? (
+        <section className={styles.story} aria-labelledby="story-title">
+          <p className={`meta ${styles.sectionHead}`}>
+            <span>{marker("story")}</span>
+            <span id="story-title">Story</span>
+          </p>
+          <p className={styles.storyText}>{release.story}</p>
         </section>
+      ) : null}
 
-        <section className={styles.section}>
-            <div className="container">
-            <div className={styles.split}>
-                {release.tracks && (
-                <TracklistCard release={release} />
-                )}
-                <StreamingRow release={release} />
+      {/* Confirmed credits only */}
+      {hasCredits ? (
+        <section className={styles.credits} aria-labelledby="credits-title">
+          <p className={`meta ${styles.sectionHead}`}>
+            <span>{marker("credits")}</span>
+            <span id="credits-title">Credits</span>
+          </p>
 
-                <div className={`card ${styles.storyCard}`}>
-                <h3 className={styles.storyTitle}>Story</h3>
-                {release.story ? (
-                    <p className={styles.storyText}>{release.story}</p>
-                ) : (
-                    <p className={styles.storyText}>
-                    A focused release built around pressure, melody and the will
-                    to rise again.
-                    </p>
-                )}
-
-                {release.recordingNotes && (
-                    <ul className={styles.notesList}>
-                    {release.recordingNotes.map((note, i) => (
-                        <li key={i}>{note}</li>
-                    ))}
-                    </ul>
-                )}
-
-                <div className={styles.storyCta}>
-                    <Link href="/booking" className="button">
-                    Book The Band
-                    </Link>
+          <div className={styles.creditColumns}>
+            {recording.length ? (
+              <dl className={styles.creditList}>
+                <div className={styles.creditHead}>
+                  <dt>Recording</dt>
                 </div>
+                {recording.map((credit) => (
+                  <div key={credit.role} className={styles.creditRow}>
+                    <dt>{credit.role}</dt>
+                    <dd>{credit.name}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
+
+            {broadcast.length ? (
+              <dl className={styles.creditList}>
+                <div className={styles.creditHead}>
+                  <dt>Broadcast</dt>
                 </div>
-            </div>
-            </div>
+                {broadcast.map((item) => (
+                  <div key={`${item.track}-${item.station}`} className={styles.creditRow}>
+                    <dt>{item.station}</dt>
+                    <dd>{item.track}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
+          </div>
         </section>
+      ) : null}
 
-        <section className={styles.section}>
-            <div className="container">
-            <div className={`card ${styles.merchCta}`}>
-                <div>
-                <span className={styles.merchEyebrow}>Merch</span>
-                <h2 className={styles.merchTitle}>Support the record</h2>
-                <p className={styles.merchText}>
-                    Grab the CD, hoodie or stickers from the Sent To Die era and
-                    support the band directly.
-                </p>
-                </div>
-                <div className={styles.merchActions}>
-                <Link href="/merch" className="button">
-                    Enter The Store
+      {/* Archive */}
+      <section className={styles.archive} aria-label="More from the archive">
+        <p className={`meta ${styles.sectionHead}`}>
+          <span>{marker("archive")}</span>
+          <span>Archive</span>
+        </p>
+
+        {others.length ? (
+          <ol className={styles.others} aria-label="Other releases">
+            {others.map((other, i) => (
+              <li key={other.id}>
+                <Link href={`/music/${other.id}`} className={styles.otherRow}>
+                  <span className={styles.otherNo}>{String(i + 1).padStart(2, "0")}</span>
+                  <span className={styles.otherTitle}>{other.title}</span>
+                  <span className={styles.otherMeta}>
+                    {other.type} — {other.year}
+                  </span>
+                  <span aria-hidden="true">→</span>
                 </Link>
-                </div>
-            </div>
-            </div>
-        </section>
+              </li>
+            ))}
+          </ol>
+        ) : null}
 
-        {others.length > 0 && (
-            <section className={styles.section}>
-            <div className="container">
-                <SectionHeading
-                eyebrow="More music"
-                title="Other releases"
-                variant="subtle"
-                align="left"
-                />
-                <DiscographySection releases={others} />
-            </div>
-            </section>
-        )}
-        </main>
-    );
-};
+        <div className={styles.archiveLinks}>
+          <Link href="/music" className="action-link">
+            Discography <span className="arrow" aria-hidden="true">→</span>
+          </Link>
+          <Link href="/merch" className="action-link">
+            Merch <span className="arrow" aria-hidden="true">→</span>
+          </Link>
+        </div>
+      </section>
+    </main>
+  );
+}

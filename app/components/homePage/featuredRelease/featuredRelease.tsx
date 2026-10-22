@@ -2,33 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import type { Release } from "@/app/lib/music";
+import { formatReleaseDate, getRuntime } from "@/app/lib/release";
 import styles from "./featuredRelease.module.css";
 
 type Props = {
   release: Release;
 };
 
-function formatRuntime(release: Release) {
-  if (!release.tracks?.length) return null;
-
-  const seconds = release.tracks.reduce((total, track) => {
-    const [min, sec] = track.length.split(":").map(Number);
-    return total + min * 60 + sec;
-  }, 0);
-
-  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
-}
-
-function formatDate(isoDate?: string) {
-  if (!isoDate) return null;
-  const [year, month, day] = isoDate.split("-");
-  return `${day}.${month}.${year}`;
-}
-
 export default function FeaturedRelease({ release }: Props) {
-  const runtime = formatRuntime(release);
+  const runtime = getRuntime(release);
   const facts = [
-    { label: "Released", value: formatDate(release.releaseDate) ?? String(release.year) },
+    { label: "Released", value: formatReleaseDate(release) },
     { label: "Format", value: release.type },
     release.tracks?.length
       ? { label: "Tracks", value: String(release.tracks.length).padStart(2, "0") }

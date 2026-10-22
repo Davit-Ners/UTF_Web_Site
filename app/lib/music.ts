@@ -3,6 +3,8 @@ export type Track = {
   title: string;
   length: string;
   isSingle?: boolean;
+  /* YouTube id of the official video for this track, if one exists */
+  videoId?: string;
 };
 
 export type ReleaseType = "Album" | "EP" | "Single";
@@ -64,7 +66,7 @@ export const latestRelease: Release = {
     { track: "Wrath Of Gaia", station: "Radio Panik" },
   ],
   tracks: [
-    { id: "t1", title: "Sent To Die", length: "4:32", isSingle: true },
+    { id: "t1", title: "Sent To Die", length: "4:32", isSingle: true, videoId: "9Wvpovk_Tg4" },
     { id: "t2", title: "Doppelganger", length: "3:58" },
     { id: "t3", title: "Uprising", length: "4:05" },
     { id: "t4", title: "Wrath Of Gaia", length: "5:01" },

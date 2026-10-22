@@ -1,148 +1,431 @@
+/* Booklet: cover plate and listen row on ink, songs and story on bone, credits and archive on ink */
 .page {
-  padding-bottom: 40px;
+  background: var(--ink);
+  color: var(--bone);
 }
 
-/* breadcrumb */
-
-.breadcrumbWrap {
-  padding-top: 18px;
+.crumbs {
+  display: flex;
+  gap: 10px;
+  padding: clamp(20px, 2.4vw, 32px) var(--margin) 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey);
 }
 
-.breadcrumb {
-  font-size: .8rem;
-  color: var(--color-text-muted);
+.crumbs a {
+  color: var(--bone-dim);
+}
+
+.crumbs a:hover {
+  color: var(--bone);
+}
+
+.crumbs [aria-current] {
+  color: var(--bone);
+}
+
+/* Shared section label: roman marker + name */
+.sectionHead {
+  display: flex;
+  gap: 16px;
+  margin-bottom: clamp(24px, 3vw, 48px);
+}
+
+/* === Cover spread === */
+.cover {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  padding: clamp(24px, 3vw, 48px) var(--margin) var(--space-s);
+}
+
+.plate {
+  grid-column: 1 / -1;
+  justify-self: center;
+  position: relative;
+  width: min(100%, 86vh);
+  width: min(100%, 86svh);
+  aspect-ratio: 1;
+  background: var(--char);
+}
+
+.plateImage {
+  object-fit: contain;
+}
+
+.caption {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  align-items: baseline;
+  margin-top: clamp(20px, 2.4vw, 36px);
+}
+
+.marker {
+  grid-column: 1 / 2;
+  color: var(--bone-dim);
+}
+
+.captionMeta {
+  grid-column: 2 / -1;
+  color: var(--bone-dim);
+}
+
+.title {
+  grid-column: 2 / -1;
+  margin-top: 12px;
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 9rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.listen {
+  grid-column: 2 / -1;
+  display: flex;
+  margin: clamp(28px, 3vw, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.listen li {
+  flex: 1 1 0;
+}
+
+.listen li + li {
+  border-left: 1px solid var(--rule);
+}
+
+.listenLink {
   display: flex;
   align-items: center;
-  gap: 6px;
-}
-
-.breadcrumb a {
-  color: var(--color-text-secondary);
-}
-
-.breadcrumb a:hover {
-  color: var(--color-accent-hover);
-}
-
-.sep {
-  opacity: .7;
-}
-
-.current {
-  color: var(--color-text-primary);
-}
-
-/* sections */
-
-.heroSection {
-  margin: 10px 0 8px;
-}
-
-.section {
-  margin: 20px 0 26px;
-}
-
-/* milieu : tracklist + streaming + story */
-
-.split {
-  display: grid;
-  grid-template-columns: minmax(260px, 1.3fr) minmax(220px, 1fr) minmax(260px, 1.3fr);
-  gap: 16px;
-  align-items: flex-start;
-}
-
-@media (max-width: 1100px) {
-  .split {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: auto;
-  }
-}
-
-@media (max-width: 800px) {
-  .split {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Story card */
-
-.storyCard {
-  padding: 12px 12px 10px;
-}
-
-.storyTitle {
-  font-family: var(--font-title, inherit);
-  font-size: .9rem;
+  justify-content: space-between;
+  min-height: 56px;
+  padding: 0 16px;
+  color: var(--bone);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  letter-spacing: .06em;
-  margin-bottom: 6px;
+}
+
+.listen li:first-child .listenLink {
+  padding-left: 0;
+}
+
+.listenLink:hover {
+  color: var(--ember-text);
+}
+
+.arrow {
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+/* === Songs === */
+.songs {
+  padding: var(--space-m) var(--margin) var(--space-s);
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.songs .sectionHead {
+  color: rgb(11 11 10 / 0.62);
+}
+
+.songList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule-ink);
+}
+
+.song {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  align-items: baseline;
+  padding: clamp(14px, 1.6vw, 24px) 0;
+  border-bottom: 1px solid var(--rule-ink);
+}
+
+.songNo,
+.songLength {
+  font-family: var(--font-mono);
+  font-size: clamp(0.875rem, 1.1vw, 1.125rem);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: rgb(11 11 10 / 0.62);
+}
+
+.songNo {
+  grid-column: 1 / 2;
+}
+
+.songTitle {
+  grid-column: 2 / 12;
+  min-width: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5.6vw, 6.5rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.86;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+
+.songLength {
+  grid-column: 12 / 13;
+  justify-self: end;
+}
+
+.songNotes {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(11 11 10 / 0.62);
+}
+
+.single {
+  color: var(--ember);
+}
+
+.video {
+  display: inline-flex;
+  gap: 0.4em;
+  min-height: 24px;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.video:hover {
+  color: var(--ink);
+  text-decoration-color: var(--ember);
+}
+
+/* === Story === */
+.story {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  padding: 0 var(--margin) var(--space-m);
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.story .sectionHead {
+  grid-column: 1 / -1;
+  padding-top: var(--space-s);
+  border-top: 1px solid var(--rule-ink);
+  color: rgb(11 11 10 / 0.62);
 }
 
 .storyText {
-  font-size: .88rem;
-  color: var(--color-text-secondary);
-  margin-bottom: 8px;
+  grid-column: 4 / 11;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.8vw, 2.75rem);
+  font-style: italic;
+  line-height: 1.2;
 }
 
-.notesList {
-  margin: 0;
-  padding-left: 16px;
-  font-size: .84rem;
-  color: var(--color-text-secondary);
+/* === Credits === */
+.credits {
+  padding: var(--space-m) var(--margin) var(--space-s);
 }
 
-.notesList li + li {
-  margin-top: 4px;
+.credits .sectionHead {
+  color: var(--bone-dim);
 }
 
-.storyCta {
-  margin-top: 10px;
+.creditColumns {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 40px;
 }
 
-/* Merch CTA */
+.creditList {
+  grid-column: span 4;
+  border-bottom: 1px solid var(--rule);
+}
 
-.merchCta {
-  padding: 14px 14px 12px;
+.creditHead,
+.creditRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.creditHead dt {
+  color: var(--bone);
+}
+
+.creditRow dt {
+  color: var(--bone-dim);
+}
+
+.creditRow dd {
+  color: var(--bone);
+}
+
+/* === Archive === */
+.archive {
+  padding: var(--space-s) var(--margin);
+  border-top: 1px solid var(--rule);
+}
+
+.archive .sectionHead {
+  color: var(--bone-dim);
+}
+
+.others {
+  margin: 0 0 32px;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.otherRow {
+  display: grid;
+  grid-template-columns: 3ch minmax(0, 1fr) auto 2ch;
+  align-items: baseline;
+  column-gap: 16px;
+  min-height: 48px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--bone);
+}
+
+.otherRow:hover {
+  color: var(--ember-text);
+}
+
+.otherNo,
+.otherMeta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+.otherTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  font-stretch: 80%;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.archiveLinks {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
+  gap: 8px 40px;
 }
 
-.merchEyebrow {
-  display: inline-block;
-  font-size: .75rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  margin-bottom: 4px;
-}
-
-.merchTitle {
-  font-family: var(--font-title, inherit);
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-}
-
-.merchText {
-  font-size: .86rem;
-  color: var(--color-text-secondary);
-  margin-top: 4px;
-  max-width: 50ch;
-}
-
-.merchActions {
-  margin-left: auto;
-}
-
-@media (max-width: 700px) {
-  .merchCta {
+/* === Stacked === */
+@media (max-width: 900px) {
+  .cover {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
   }
 
-  .merchActions {
-    margin-left: 0;
+  .plate {
+    width: calc(100% + 2 * var(--margin));
+    margin: 0 calc(-1 * var(--margin));
+  }
+
+  .caption {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 14px;
+  }
+
+  .title {
+    flex-basis: 100%;
+    font-size: clamp(2.75rem, 14vw, 6rem);
+  }
+
+  .listen {
+    flex-direction: column;
+    border-bottom: 0;
+  }
+
+  .listen li + li {
+    border-left: 0;
+  }
+
+  .listenLink,
+  .listen li:first-child .listenLink {
+    min-height: 48px;
+    padding: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* Number and duration share a line; the title takes the full width below */
+  .song {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 6px;
+  }
+
+  .songNo {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .songLength {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .songTitle {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    font-size: clamp(2rem, 10.5vw, 4rem);
+  }
+
+  .songNotes {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+  }
+
+  .storyText {
+    grid-column: 1 / -1;
+  }
+
+  .creditList {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .creditRow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
   }
 }
