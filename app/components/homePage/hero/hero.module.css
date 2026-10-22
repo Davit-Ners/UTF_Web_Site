@@ -32,21 +32,12 @@
   }
 }
 
-/* Functional scrims only: header legibility on top, type legibility at the bottom */
+/* Bottom scrim for type legibility; the header carries its own top scrim */
 .scrim {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background:
-    linear-gradient(180deg, rgb(11 11 10 / 0.6) 0%, rgb(11 11 10 / 0) 18%),
-    linear-gradient(180deg, rgb(11 11 10 / 0) 45%, rgb(11 11 10 / 0.88) 100%);
-}
-
-.coords {
-  position: absolute;
-  top: calc(var(--header-h) + 20px);
-  left: var(--margin);
-  color: var(--bone-dim);
+  background: linear-gradient(180deg, rgb(11 11 10 / 0) 50%, rgb(11 11 10 / 0.88) 100%);
 }
 
 /* === Content: anchored to the lower edge on a 12-column grid === */
@@ -64,9 +55,13 @@
 }
 
 .logo {
-  grid-column: 1 / 7;
+  grid-column: 1 / 6;
   grid-row: 1;
-  margin-left: -1.5%;
+  justify-self: start;
+  /* Sized against the photo's height so it stays in proportion with the band */
+  width: min(100%, 46vh);
+  width: min(100%, 46svh);
+  margin-left: -1%;
   animation: reveal 1.2s ease-out 0.35s both;
 }
 
@@ -128,7 +123,9 @@
 /* === Tablet === */
 @media (max-width: 980px) {
   .logo {
-    grid-column: 1 / 10;
+    grid-column: 1 / 9;
+    width: min(100%, 38vh);
+    width: min(100%, 38svh);
   }
   .genre {
     grid-column: 1 / 13;
@@ -149,7 +146,6 @@
     object-position: var(--hero-position-mobile, 50% 50%);
   }
 
-  .coords,
   .era,
   .credit {
     display: none;
@@ -170,6 +166,7 @@
 
   .logo {
     grid-row: 1;
+    width: 80%;
   }
   .genre {
     grid-row: 2;

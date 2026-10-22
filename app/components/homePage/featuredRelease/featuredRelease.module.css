@@ -2,6 +2,7 @@
 .release {
   --on-bone: var(--ink);
   --on-bone-dim: rgb(11 11 10 / 0.62);
+  --offset: clamp(8px, 0.9vw, 14px);
 
   position: relative;
   container-type: inline-size;
@@ -10,7 +11,7 @@
   grid-template-rows: auto auto auto;
   column-gap: var(--gap);
   row-gap: clamp(24px, 3vw, 40px);
-  padding: var(--space-l) var(--margin) var(--space-m);
+  padding: var(--space-m) var(--margin) var(--space-s);
   background: var(--ink);
   overflow: hidden;
 }
@@ -20,14 +21,14 @@
   z-index: 1;
 }
 
-/* Bone plane starts at the gutter between columns 8 and 9 and bleeds right */
+/* Bone plane starts at the gutter between columns 7 and 8 and bleeds right */
 .release > .plane {
   position: absolute;
   z-index: 0;
   top: 0;
   bottom: 0;
   right: 0;
-  left: calc(var(--margin) + (100% - 2 * var(--margin) + var(--gap)) * 8 / 12 - var(--gap) / 2);
+  left: calc(var(--margin) + (100% - 2 * var(--margin) + var(--gap)) * 7 / 12 - var(--gap) / 2);
   background: var(--bone);
 }
 
@@ -37,12 +38,19 @@
   color: var(--on-bone-dim);
 }
 
+/*
+ * The cover crosses the seam by roughly a third. Its hard ink offset is
+ * invisible on the ink plane and only prints where the cover sits on bone.
+ */
 .cover {
-  grid-column: 3 / 10;
+  grid-column: 2 / 10;
   grid-row: 2;
   justify-self: end;
-  width: min(100%, 74svh);
+  align-self: start;
+  width: min(100%, 70vh);
+  width: min(100%, 70svh);
   aspect-ratio: 1;
+  box-shadow: var(--offset) var(--offset) 0 0 var(--ink);
 }
 
 .coverImage {
@@ -53,13 +61,14 @@
 }
 
 .title {
-  grid-column: 1 / 9;
+  grid-column: 1 / 8;
   grid-row: 3;
   font-family: var(--font-display);
-  font-size: clamp(3.25rem, 8.2vw, 9.5rem);
+  font-size: clamp(3.5rem, 9vw, 10.5rem);
+  font-stretch: 80%;
   font-weight: 850;
   line-height: 0.86;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
   color: var(--bone);
 }
 
@@ -68,8 +77,7 @@
   grid-row: 2 / 4;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 48px;
+  gap: clamp(36px, 3.6vw, 56px);
   color: var(--on-bone);
 }
 
@@ -162,22 +170,26 @@
 
   .title {
     margin-bottom: 28px;
-    font-size: clamp(3.25rem, 15vw, 6.5rem);
+    font-size: clamp(3.5rem, 17vw, 7.5rem);
+  }
+
+  .release {
+    --cover-w: min(100cqi - 2 * var(--margin) - var(--offset), 560px);
   }
 
   .cover {
-    width: 100%;
+    width: var(--cover-w);
     z-index: 2;
   }
 
   /* Bone sheet slides under the lower 40% of the cover */
   .sheet {
-    --overlap: calc((100cqi - 2 * var(--margin)) * 0.4);
+    --overlap: calc(var(--cover-w) * 0.4);
 
     margin: calc(-1 * var(--overlap)) calc(-1 * var(--margin)) 0;
-    padding: calc(var(--overlap) + 32px) var(--margin) 48px;
+    padding: calc(var(--overlap) + var(--offset) + 28px) var(--margin) 40px;
     background: var(--bone);
-    gap: 32px;
+    gap: 28px;
   }
 
   .credit {

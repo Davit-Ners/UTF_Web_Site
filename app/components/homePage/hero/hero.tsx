@@ -46,8 +46,6 @@ export default function Hero() {
       </div>
       <div className={styles.scrim} aria-hidden="true" />
 
-      <p className={`meta ${styles.coords}`}>50.85°N 4.35°E</p>
-
       <div className={styles.content}>
         <h1 id="hero-title" className="srOnly">Until They Fall</h1>
         <div className={styles.logo} aria-hidden="true">
