@@ -58,6 +58,8 @@ export default function OrderPanel({
   const [faxNumber, setFaxNumber] = useState("");
   const id = useId();
   const hasItems = items.length > 0;
+  /* Units, matching the order request trigger */
+  const units = items.reduce((sum, item) => sum + item.quantity, 0);
   const shippingEstimate = calculateShipping(subtotal);
   const total = subtotal + shippingEstimate;
   const isLoading = orderStatus.type === "loading";
@@ -81,7 +83,7 @@ export default function OrderPanel({
           Your order request
         </h2>
         <p className={styles.count}>
-          {String(items.length).padStart(2, "0")} {items.length === 1 ? "item" : "items"}
+          {String(units).padStart(2, "0")} {units === 1 ? "item" : "items"}
         </p>
       </header>
 

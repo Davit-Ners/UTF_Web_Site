@@ -11,6 +11,7 @@ export type Product = {
     badge?: ProductBadge;
     shortDesc?: string;
     stock?: number;
+    featured?: boolean;
 };
 
 export type CartItem = {

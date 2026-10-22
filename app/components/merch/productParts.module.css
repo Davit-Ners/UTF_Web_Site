@@ -1,0 +1,59 @@
+.add {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  color: inherit;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.add:hover {
+  color: var(--ember-text);
+}
+
+.added {
+  color: var(--ember-text);
+}
+
+.addMark {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.compact {
+  min-height: 44px;
+  border-top: 0;
+}
+
+.soldOut {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ember-text);
+}
+
+/* On bone the darker ember keeps contrast */
+.onBone:hover,
+.onBone.added,
+.soldOut.onBone {
+  color: var(--ember);
+}

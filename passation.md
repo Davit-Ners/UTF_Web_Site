@@ -21,7 +21,8 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 11 | `/concerts/[slug]` show page ("Show Dossier") | Done |
 | 12 | `/gallery` ("Photo Book"), photo catalogue cleanup, shared `PhotoViewer`, `/gallery/concert-photos` redirect | Done |
 | 13 | `/about` ("Band Profile") | Done |
-| 14 | `/merch` ("Band Catalogue") | Done, **not committed** |
+| 14 | `/merch` ("Band Catalogue") | Done; superseded in structure by 14.1 |
+| 14.1 | `/merch` Hybrid: Featured + All items + order-request drawer | Done, **not committed** |
 | Next | `/booking`, `/concerts/[slug]/gallery` (still `GalleryFull`) in the old style; album line-up consistency pass; merch size/variant system; asset replacement | Not started; wait for go-ahead |
 
 ## Visual foundation (Phase 3)
@@ -720,6 +721,61 @@ No product has `ProductVariant` rows or extra `ProductImage` rows.
 - `stickers.png` is a flat 1024px digital mockup on black, unlike the photographed products. **A real sticker photo is needed.**
 - The Album Artwork Tee has no photo.
 - The wooden-surface photos are consistent but casually lit phone-quality shots; a matched product shoot would lift the catalogue.
+
+## Phase 14.1: `/merch` Hybrid (scalability pass)
+
+Goal: keep the Band Catalogue identity as the top of the page, add a practical layer that scales to 15–30+ products, and stop the order request from taking a permanent column.
+
+**Structure:** MERCH masthead (unchanged) → **Featured** (bone) → **All items** (ink) → order-request **drawer**.
+
+**Featured** (`catalogue/catalogue.tsx`, the same plate language as Phase 14)
+- At most 3 products with `featured = true` (now exposed: `featured` added to `getActiveMerchProducts()` and `Product`).
+- Live: Gerard T-Shirt (plate A), Patch (old) + CD with the "Open case" view (plate B).
+- Plates now span all 12 columns: A = image on columns 1–6, label on 8–11; B = columns 1–5 and 8–11.
+- The section is hidden when no product is featured.
+
+**All items** (new `allItems/*`): the complete list, featured products included.
+- One aligned row per product: a natural-ratio thumbnail (112px, contained, never cropped) | mono catalogue number | name (condensed) + short description + the size note when needed | price (mono) + availability | "Add to order +".
+- Products without an image become text rows: an empty thumb cell with a hairline rule, so the alignment is kept.
+- **Mobile:** thumbnail (72px) on the left; name, description and size note; then price and Add on one line. The number is hidden on mobile.
+- **Category-ready:** rows render through `groupItems()`, which today returns one unlabeled group. When the catalogue reaches about 10+ products with at least 2 categories of 3+, return one group per category and add an anchor line of group labels above the list. Rows and page structure stay the same. **No categories now** (6 products; patches are also mis-filed as "apparel", so fix the data first).
+- **Same catalogue number** for a product in Featured and All items (its index in the full list).
+
+**Shared parts** (new `merch/productParts.tsx` / `.module.css`): `formatPrice`, `isSoldOut`, `availability` (Sold out / Pre-order only), `catalogueNumber`, and `AddButton`.
+- **In-place feedback:** "Added ✓" for 2s after a click, then "Add to order" with the current quantity ("2 +").
+- **Sold out** replaces the button.
+- **`tone="bone"`** uses the darker ember for contrast on bone.
+
+**Order request** (`merchStoreClient.tsx`; the order logic is verbatim from Phase 14)
+- The permanent sticky column and the mobile jump bar are **removed**.
+- **Persistent trigger:**
+  - desktop: fixed top-right under the header;
+  - ≤900px: a fixed full-width bottom bar (the page gets a 56px bottom padding so the bar never covers content);
+  - **always visible**, quiet as "Order request (0)"; once items are added it shows the count (units) and the subtotal, with an ember rule.
+- **Adding never opens the drawer.** It shows in-place feedback, updates the count and total, and announces it in a polite live region ("Added Gerard T-Shirt. 2 items in your order request.", or "maximum quantity reached").
+- **Drawer:** a native `<dialog>` opened with `showModal()`.
+  - Desktop: slides in from the right, `min(480px, 100vw)` wide, full height, scrolls internally.
+  - ≤900px: a full-screen sheet.
+  - Focus moves to "Close" on open; Escape and backdrop click (desktop) close it; **focus returns to the trigger**; the page behind is inert.
+  - It contains the unchanged `OrderPanel` (its item count now counts units, matching the trigger).
+- **Preserved:** add, quantity limits (stock, max 20), − / + / typed quantity, remove, the form fields, spam trap, the subtotal/shipping/total from `app/lib/shipping.ts`, loading/success/error, and the `/api/merch/order` payload.
+
+**Verification (Phase 14.1)**
+- The live 6-product catalogue at 1920, 1440×900, 820 and 375: no horizontal overflow, no page errors.
+- Featured = the 3 featured products; All items = all 6, with the Album Artwork Tee as a text row.
+- **Flows** at 1440 and 375:
+  - the empty request ("Order request (0)", submit disabled);
+  - add, then a repeated add (feedback, announcement, quantity shown on the button in both sections);
+  - three units → trigger "(3) 65 €", the drawer not auto-opened;
+  - keyboard open → focus on Close; + quantity, remove → totals update (30 € + 7 € = 37 €);
+  - Escape → closed, focus back on the trigger;
+  - backdrop click closes on desktop.
+- The submission flow is unchanged from Phase 14 (tested there with a mocked API).
+- `tsc` passes; eslint passes on the changed files.
+
+**Remaining weaknesses (Phase 14.1)**
+- The desktop trigger is a fixed element at the top right. It can sit over the right edge of a Featured image while scrolling; it is small and opaque, but placing it inside the site header would be cleaner (a Header change, so out of scope).
+- Featured products appear twice (Featured plus All items). This is intentional, so the list is complete.
 
 ## Unresolved: mobile Hero visual is temporary
 

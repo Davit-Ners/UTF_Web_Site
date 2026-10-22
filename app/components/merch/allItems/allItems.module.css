@@ -1,0 +1,175 @@
+/* All items: the practical layer, aligned rows on ink for fast scanning */
+.section {
+  padding: var(--space-m) var(--margin);
+  background: var(--ink);
+  color: var(--bone);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--bone);
+}
+
+.title {
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.groupLabel {
+  padding: 24px 0 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* thumb | number | name + description | price | action */
+.row {
+  display: grid;
+  grid-template-columns: 112px 5ch minmax(0, 1fr) 11ch minmax(180px, 220px);
+  column-gap: clamp(16px, 2vw, 32px);
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Natural ratio, capped so rows stay compact */
+.thumbImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 112px;
+  object-fit: contain;
+}
+
+.textRow .thumb {
+  align-self: stretch;
+  border-left: 1px solid var(--rule);
+}
+
+.number {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--bone-dim);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.name {
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.8vw, 1.75rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.desc {
+  color: var(--bone-dim);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.sizeNote {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 3px 0;
+  border-top: 1px solid var(--ember-text);
+  border-bottom: 1px solid var(--ember-text);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.price {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--bone);
+}
+
+.state {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ember-text);
+}
+
+.action {
+  color: var(--bone);
+}
+
+/* === Mobile: thumbnail left, text, then price + action on one line === */
+@media (max-width: 720px) {
+  .row {
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "thumb main main"
+      "thumb price action";
+    column-gap: 14px;
+    row-gap: 10px;
+    align-items: start;
+  }
+
+  .thumb {
+    grid-area: thumb;
+    align-items: flex-start;
+  }
+
+  .thumbImage {
+    max-height: 72px;
+  }
+
+  .number {
+    display: none;
+  }
+
+  .main {
+    grid-area: main;
+  }
+
+  .price {
+    grid-area: price;
+    align-self: center;
+  }
+
+  .action {
+    grid-area: action;
+    min-width: 132px;
+  }
+}

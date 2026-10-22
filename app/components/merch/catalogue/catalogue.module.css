@@ -9,7 +9,7 @@
 .plateA,
 .plateB {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);
   align-items: start;
 }
@@ -23,28 +23,28 @@
 }
 
 .plateA .media {
-  grid-column: 1 / 6;
+  grid-column: 1 / 7;
 }
 
 .plateA .label {
-  grid-column: 6 / 9;
+  grid-column: 8 / 12;
 }
 
 .plateA .small .media {
-  grid-column: 2 / 5;
+  grid-column: 2 / 6;
 }
 
 .plateA .textOnly .label {
-  grid-column: 1 / 7;
+  grid-column: 1 / 9;
 }
 
 /* Pair: two objects at different scales, the second dropped lower */
 .plateB .product:first-child {
-  grid-column: 1 / 5;
+  grid-column: 1 / 6;
 }
 
 .plateB .product:nth-child(2) {
-  grid-column: 6 / 9;
+  grid-column: 8 / 12;
   margin-top: clamp(48px, 8vw, 140px);
 }
 
@@ -167,35 +167,9 @@
   color: var(--ink);
 }
 
-.add {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  min-height: 48px;
+.action {
   margin-top: 6px;
-  padding: 0;
-  border: 0;
-  border-top: 1px solid var(--rule-ink);
-  border-bottom: 1px solid var(--rule-ink);
-  background: none;
   color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.add:hover {
-  color: var(--ember);
-}
-
-.add span[aria-hidden] {
-  font-family: var(--font-mono);
-  font-size: 1.125rem;
-  font-weight: 400;
 }
 
 /* Text-only plate: larger type on a ruled panel, no image */

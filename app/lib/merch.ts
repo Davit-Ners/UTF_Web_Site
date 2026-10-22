@@ -31,6 +31,7 @@ export async function getActiveMerchProducts(limit?: number): Promise<Product[]>
             badge: true,
             shortDesc: true,
             stock: true,
+            featured: true,
         },
     });
 
@@ -44,5 +45,6 @@ export async function getActiveMerchProducts(limit?: number): Promise<Product[]>
         badge: mapBadge(product.badge),
         shortDesc: product.shortDesc ?? undefined,
         stock: product.stock ?? undefined,
+        featured: product.featured,
     }));
 }
