@@ -15,7 +15,8 @@ import { latestRelease } from "./lib/music";
 export const revalidate = 60;
 
 export default async function Home() {
-  let products: Awaited<ReturnType<typeof getActiveMerchProducts>> = [];
+  // null means loading failed; [] means the catalogue is genuinely empty.
+  let products: Awaited<ReturnType<typeof getActiveMerchProducts>> | null = null;
   try {
     products = await getActiveMerchProducts(2);
   } catch (error) {

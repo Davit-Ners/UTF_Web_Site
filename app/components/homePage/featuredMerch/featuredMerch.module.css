@@ -17,6 +17,28 @@
   color: rgb(11 11 10 / 0.62);
 }
 
+.unavailableTitle {
+  grid-column: 1 / 7;
+}
+
+.unavailable {
+  grid-column: 8 / 13;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule-ink);
+}
+
+.unavailableMessage {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 /* === Product object === */
 .object {
   display: flex;

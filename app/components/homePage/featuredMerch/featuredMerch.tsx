@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/app/lib/products";
+import { CONTACT_EMAIL } from "@/app/lib/contact";
 import { IMAGE_BLUR_DATA_URL, getOptimizedImagePath } from "@/app/lib/imageOptimization";
 import styles from "./featuredMerch.module.css";
 
 type Props = {
-  items: Product[];
+  items: Product[] | null;
 };
 
 function formatPrice(price: number) {
@@ -51,6 +52,21 @@ function MerchObject({ product, primary }: { product: Product; primary: boolean 
 }
 
 export default function FeaturedMerch({ items }: Props) {
+  if (items === null) {
+    return (
+      <section className={styles.merch} aria-labelledby="merch-title">
+        <p className={`meta ${styles.index}`}>06 — Merch</p>
+        <h2 id="merch-title" className={`${styles.title} ${styles.unavailableTitle}`}>Merch</h2>
+        <div className={styles.unavailable}>
+          <p className={styles.unavailableMessage}>Merch unavailable right now</p>
+          <a href={`mailto:${CONTACT_EMAIL}`} className="action-link on-bone">{CONTACT_EMAIL}</a>
+          <Link href="/merch" className="action-link on-bone">
+            View merch <span className="arrow" aria-hidden="true">→</span>
+          </Link>
+        </div>
+      </section>
+    );
+  }
   if (!items.length) return null;
 
   const [primary, secondary] = items;
