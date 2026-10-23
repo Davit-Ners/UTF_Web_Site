@@ -8,6 +8,7 @@ import { formatPrice } from "../components/merch/productParts";
 import { needsSize } from "../lib/merchPresentation";
 import type { CartItem, Product } from "../lib/products";
 import styles from "./merch.module.css";
+import { getSavedMerchOrderStatus, type MerchOrderStatus } from "@/lib/merch-order-result";
 
 type Props = {
     products: Product[];
@@ -34,9 +35,7 @@ function clampQty(product: Product, quantity: number) {
 
 export default function MerchStoreClient({ products, masthead }: Props) {
     const [cart, setCart] = useState<CartItem[]>([]);
-    const [orderStatus, setOrderStatus] = useState<
-        { type: "idle" } | { type: "loading" } | { type: "success"; message: string } | { type: "error"; message: string }
-    >({ type: "idle" });
+    const [orderStatus, setOrderStatus] = useState<MerchOrderStatus>({ type: "idle" });
     const dialogRef = useRef<HTMLDialogElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -119,23 +118,18 @@ export default function MerchStoreClient({ products, masthead }: Props) {
 
             const result = await res.json().catch(() => null);
 
-            if (!res.ok) {
-                throw new Error(
-                    typeof result?.error === "string"
-                        ? result.error
-                        : "Order request failed. Please try again."
-                );
+            const saved = getSavedMerchOrderStatus(result);
+            if (saved) {
+                setCart([]);
+                setOrderStatus(saved);
+                return true;
             }
 
-            setCart([]);
-            setOrderStatus({
-                type: "success",
-                message:
-                    typeof result?.orderNumber === "string"
-                        ? `Request sent. Order ${result.orderNumber} is waiting for confirmation.`
-                        : "Request sent. We will confirm availability and shipping by email.",
-            });
-            return true;
+            throw new Error(
+                !res.ok && typeof result?.error === "string"
+                    ? result.error
+                    : "Order request failed. Please try again."
+            );
         } catch (error) {
             setOrderStatus({
                 type: "error",

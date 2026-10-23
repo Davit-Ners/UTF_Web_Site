@@ -791,6 +791,15 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
 - **End spacing:** All items bottom padding is now `clamp(32px, 4vw, 56px)` (was `--space-m`, up to 160px) and the questions line has no top padding (was `--space-s`). The last row → "Questions about sizes or shipping?" gap is 56px at 1440/1920, about 33px on mobile (was about 250px).
 - The drawer and all order behaviour are unchanged. `tsc` passes; eslint passes on the changed files.
 
+### Phase 14.3: saved merch requests with incomplete email delivery
+
+- **Root cause fixed:** an order could be stored successfully, then receive HTTP 502 because an email failed. The client treated the request as failed and retained its cart, encouraging another submission.
+- `/api/merch/order` now returns HTTP 200 with `success: true`, `stored: true`, `orderId`, `orderNumber`, existing per-email flags (`emailed` = band notification; `confirmationEmailed` = customer confirmation), and `notificationStatus: "complete" | "incomplete"` for every confirmed saved order. Either or both failed emails produce incomplete notification delivery, not an order failure. Synchronous email/template errors are isolated too. Storage failures return `success: false`, `stored: false` with a safe public message; provider/database diagnostics remain server-side. Stock, price, shipping, schema and email content are unchanged.
+- The client prioritises confirmed persistence, including legacy saved/502 responses, and uses a distinct `success-with-warning` state. It displays the saved reference, explains that not all order emails were delivered, says not to submit again and to keep the reference, and offers the shared public contact email. Normal success retains its existing message.
+- **Cart choice:** reuse the existing normal-success behaviour as soon as the server confirms storage: clear the cart and reset customer fields. The request can no longer be resubmitted from that cart; the saved reference/warning remains visible in the drawer, including after closing/reopening it. Genuine storage failure retains the cart and fields. No layout/CSS or pre-submission quantity-control changes.
+- **Verified:** 10 automated API/response-state checks covering both emails sent, each individual failure, both failures, synchronous email failure, storage failure, reference retention and safe public responses. The actual client/drawer passed 12 isolated browser scenarios at 1440px and 375px, covering those delivery combinations, retained cart on storage failure, and legacy saved/502 responses. Database/email calls were mocked; browser submissions were intercepted. Type-check and full-repository lint pass.
+- **Still outstanding:** idempotency / duplicate-order protection was deliberately not implemented. A lost response after persistence, a refresh/rebuilt cart, another tab or a repeated direct API request can still create duplicates. This pass removes the misleading retry prompt after an acknowledged saved order; it does not guarantee exactly-once submission.
+
 ## Phase 15: `/booking` ("Booking Sheet")
 
 **Contact centralised** (new `app/lib/contact.ts`)

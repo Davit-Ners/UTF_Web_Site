@@ -11,6 +11,10 @@ import prisma from "@/lib/prisma";
 import { calculateShipping } from "@/app/lib/shipping";
 import { Resend } from "resend";
 import { CONTACT_EMAIL } from "@/app/lib/contact";
+import type { StoredMerchOrderResponse } from "@/lib/merch-order-result";
+
+/* Only these business-validation messages are safe to return to a customer. */
+class MerchAvailabilityError extends Error {}
 
 const MAX_QTY_PER_ITEM = 20;
 const resend = process.env.RESEND_API_KEY
@@ -74,7 +78,7 @@ async function buildOrderSummary(
     const product = productsById.get(item.productId);
 
     if (!product) {
-      throw new Error("One or more products are no longer available.");
+      throw new MerchAvailabilityError("One or more products are no longer available.");
     }
 
     const maxQty =
@@ -83,7 +87,7 @@ async function buildOrderSummary(
         : MAX_QTY_PER_ITEM;
 
     if (maxQty <= 0) {
-      throw new Error(`${product.name} is sold out.`);
+      throw new MerchAvailabilityError(`${product.name} is sold out.`);
     }
 
     const quantity = Math.min(item.quantity, maxQty);
@@ -125,14 +129,14 @@ async function sendMerchEmails(order: MerchOrderSummary) {
 
   const [orderEmailResult, confirmationEmailResult] =
     await Promise.allSettled([
-      resend.emails.send({
+      Promise.resolve().then(() => resend.emails.send({
         from: merchFromEmail,
         to: [merchToEmail],
         replyTo: order.email,
         subject: `New merch order request ${order.orderNumber}`,
         react: MerchOrderTemplate({ order }),
-      }),
-      resend.emails.send({
+      })),
+      Promise.resolve().then(() => resend.emails.send({
         from: merchFromEmail,
         to: [order.email],
         replyTo: merchToEmail,
@@ -141,7 +145,7 @@ async function sendMerchEmails(order: MerchOrderSummary) {
           merchEmail: merchToEmail,
           order,
         }),
-      }),
+      })),
     ]);
 
   let emailed = false;
@@ -236,22 +240,13 @@ export async function POST(req: Request) {
       orderNumber,
     };
 
-    const { emailed, confirmationEmailed } = await sendMerchEmails(order);
-
-    if (!emailed || !confirmationEmailed) {
-      return Response.json(
-        {
-          success: false,
-          stored: true,
-          emailed,
-          confirmationEmailed,
-          orderId: order.orderId,
-          orderNumber: order.orderNumber,
-          error:
-            "Order request was saved, but email delivery failed. Please contact the band directly with this order number.",
-        },
-        { status: 502 }
-      );
+    let emailed = false;
+    let confirmationEmailed = false;
+    try {
+      ({ emailed, confirmationEmailed } = await sendMerchEmails(order));
+    } catch (error) {
+      // Once persisted, even an unexpected notification error cannot fail the order.
+      console.error("MERCH NOTIFICATION ERROR:", error);
     }
 
     return Response.json({
@@ -261,16 +256,19 @@ export async function POST(req: Request) {
       confirmationEmailed,
       orderId: order.orderId,
       orderNumber: order.orderNumber,
-    });
+      notificationStatus: emailed && confirmationEmailed ? "complete" : "incomplete",
+    } satisfies StoredMerchOrderResponse);
   } catch (error) {
     console.error("MERCH ORDER ERROR:", error);
 
     return Response.json(
       {
+        success: false,
+        stored: false,
         error:
-          error instanceof Error
+          error instanceof MerchAvailabilityError
             ? error.message
-            : "Server error. Please try again.",
+            : "Order request could not be saved. Please try again.",
       },
       { status: 500 }
     );

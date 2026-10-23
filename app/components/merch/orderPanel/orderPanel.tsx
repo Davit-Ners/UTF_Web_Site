@@ -3,6 +3,8 @@
 import { useId, useState } from "react";
 import type { CartItem } from "@/app/lib/products";
 import { calculateShipping } from "@/app/lib/shipping";
+import { CONTACT_EMAIL } from "@/app/lib/contact";
+import type { MerchOrderStatus } from "@/lib/merch-order-result";
 import styles from "./orderPanel.module.css";
 
 type Props = {
@@ -17,11 +19,7 @@ type Props = {
     notes: string;
     faxNumber: string;
   }) => Promise<boolean>;
-  orderStatus:
-    | { type: "idle" }
-    | { type: "loading" }
-    | { type: "success"; message: string }
-    | { type: "error"; message: string };
+  orderStatus: MerchOrderStatus;
   hasSizedItem: boolean;
 };
 
@@ -229,6 +227,12 @@ export default function OrderPanel({
 
         <p className={styles.status} role="status" aria-live="polite">
           {orderStatus.type === "success" ? <span className={styles.ok}>{orderStatus.message}</span> : null}
+          {orderStatus.type === "success-with-warning" ? (
+            <span className={styles.ok}>
+              {orderStatus.message}{" "}
+              Contact <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> if needed.
+            </span>
+          ) : null}
           {orderStatus.type === "error" ? <span className={styles.err}>{orderStatus.message}</span> : null}
         </p>
 
