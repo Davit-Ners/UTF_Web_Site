@@ -1,9 +1,18 @@
-import { BOOKING_TURNSTILE_ACTION } from "@/lib/turnstile.shared";
+import {
+  BOOKING_TURNSTILE_ACTION,
+  BOOKING_UNAVAILABLE_MESSAGE,
+  resolveBookingTurnstileConfig,
+} from "@/lib/turnstile.shared";
 
 const TURNSTILE_VERIFY_URL =
   "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
-const turnstileSecretKey = process.env.TURNSTILE_SECRET_KEY;
+export function getBookingTurnstileConfig() {
+  return resolveBookingTurnstileConfig(
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+    process.env.TURNSTILE_SECRET_KEY
+  );
+}
 
 type TurnstileValidationSuccess = {
   success: true;
@@ -28,7 +37,7 @@ type ValidateTurnstileTokenParams = {
 
 type ValidateTurnstileTokenResult =
   | { ok: true; skipped: boolean }
-  | { ok: false; error: string };
+  | { ok: false; error: string; unavailable?: boolean };
 
 function getRequestIp(headers: Headers) {
   const cfConnectingIp = headers.get("cf-connecting-ip");
@@ -90,21 +99,13 @@ export async function validateTurnstileToken({
   request,
   token,
 }: ValidateTurnstileTokenParams): Promise<ValidateTurnstileTokenResult> {
-  if (!turnstileSecretKey) {
-    if (token) {
-      console.error(
-        "TURNSTILE SECRET KEY IS MISSING WHILE A CLIENT TOKEN WAS SUBMITTED."
-      );
-
-      return {
-        ok: false,
-        error: "Verification is misconfigured. Please try again later.",
-      };
-    }
-
-    console.warn(
-      "TURNSTILE_SECRET_KEY is missing. Booking requests are accepted without Turnstile verification."
-    );
+  const config = getBookingTurnstileConfig();
+  if (config.state === "unavailable") {
+    return { ok: false, unavailable: true, error: BOOKING_UNAVAILABLE_MESSAGE };
+  }
+  if (config.state === "disabled") {
+    /* A stale enabled client must refresh rather than silently lose verification. */
+    if (token) return { ok: false, unavailable: true, error: BOOKING_UNAVAILABLE_MESSAGE };
     return { ok: true, skipped: true };
   }
 
@@ -123,7 +124,7 @@ export async function validateTurnstileToken({
   }
 
   const formData = new FormData();
-  formData.append("secret", turnstileSecretKey);
+  formData.append("secret", process.env.TURNSTILE_SECRET_KEY!.trim());
   formData.append("response", token);
 
   const remoteIp = getRequestIp(request.headers);
@@ -150,6 +151,10 @@ export async function validateTurnstileToken({
         "error-codes" in validation ? validation["error-codes"] ?? [] : [];
 
       console.error("TURNSTILE VALIDATION FAILED:", errorCodes);
+
+      if (errorCodes.some((code) => code === "invalid-input-secret" || code === "missing-input-secret")) {
+        return { ok: false, unavailable: true, error: BOOKING_UNAVAILABLE_MESSAGE };
+      }
 
       return {
         ok: false,

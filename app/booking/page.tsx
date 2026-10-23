@@ -7,6 +7,7 @@ import { BAND_PROFILES } from "@/app/lib/links";
 import { latestRelease } from "@/app/lib/music";
 import { getSiteUrl } from "@/lib/site";
 import BookingClient from "./bookingClient";
+import { getBookingTurnstileConfig } from "@/lib/turnstile";
 import styles from "./booking.module.css";
 
 export const revalidate = 60;
@@ -173,7 +174,7 @@ export default async function BookingPage() {
       </section>
 
       {/* III — Booking request (existing form and submission logic) */}
-      <BookingClient />
+      <BookingClient turnstileConfig={getBookingTurnstileConfig()} />
     </main>
   );
 }

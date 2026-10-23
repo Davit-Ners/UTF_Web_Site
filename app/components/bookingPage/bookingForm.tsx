@@ -10,6 +10,7 @@ type BookingFormProps = {
   loading: boolean;
   ok: null | boolean;
   onTurnstileTokenChange: (token: string) => void;
+  onTurnstileUnavailable: () => void;
   submitDisabled: boolean;
   turnstileResetCounter: number;
   turnstileSiteKey: string;
@@ -30,6 +31,7 @@ export default function BookingForm({
   loading,
   ok,
   onTurnstileTokenChange,
+  onTurnstileUnavailable,
   submitDisabled,
   turnstileResetCounter,
   turnstileSiteKey,
@@ -128,6 +130,7 @@ export default function BookingForm({
             siteKey={turnstileSiteKey}
             resetCounter={turnstileResetCounter}
             onTokenChange={onTurnstileTokenChange}
+            onUnavailable={onTurnstileUnavailable}
           />
         ) : null}
 

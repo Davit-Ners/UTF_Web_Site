@@ -33,12 +33,14 @@ declare global {
 
 type BookingTurnstileProps = {
   onTokenChange: (token: string) => void;
+  onUnavailable: () => void;
   resetCounter: number;
   siteKey: string;
 };
 
 export default function BookingTurnstile({
   onTokenChange,
+  onUnavailable,
   resetCounter,
   siteKey,
 }: BookingTurnstileProps) {
@@ -47,25 +49,41 @@ export default function BookingTurnstile({
   const [scriptReady, setScriptReady] = useState(false);
 
   useEffect(() => {
+    if (scriptReady) return;
+    const timeout = setTimeout(onUnavailable, 15_000);
+    return () => clearTimeout(timeout);
+  }, [onUnavailable, scriptReady]);
+
+  useEffect(() => {
     if (
       !scriptReady ||
       !containerRef.current ||
-      widgetIdRef.current ||
-      !window.turnstile
+      widgetIdRef.current
     ) {
       return;
     }
+    if (!window.turnstile) {
+      onUnavailable();
+      return;
+    }
 
-    widgetIdRef.current = window.turnstile.render(containerRef.current, {
-      sitekey: siteKey,
-      action: BOOKING_TURNSTILE_ACTION,
-      theme: "auto",
-      size: "flexible",
-      callback: (token) => onTokenChange(token),
-      "error-callback": () => onTokenChange(""),
-      "expired-callback": () => onTokenChange(""),
-      "timeout-callback": () => onTokenChange(""),
-    });
+    try {
+      widgetIdRef.current = window.turnstile.render(containerRef.current, {
+        sitekey: siteKey,
+        action: BOOKING_TURNSTILE_ACTION,
+        theme: "auto",
+        size: "flexible",
+        callback: (token) => onTokenChange(token),
+        "error-callback": () => {
+          onTokenChange("");
+          onUnavailable();
+        },
+        "expired-callback": () => onTokenChange(""),
+        "timeout-callback": () => onTokenChange(""),
+      });
+    } catch {
+      onUnavailable();
+    }
 
     return () => {
       if (widgetIdRef.current && window.turnstile) {
@@ -73,7 +91,7 @@ export default function BookingTurnstile({
         widgetIdRef.current = null;
       }
     };
-  }, [onTokenChange, scriptReady, siteKey]);
+  }, [onTokenChange, onUnavailable, scriptReady, siteKey]);
 
   useEffect(() => {
     if (!resetCounter || !widgetIdRef.current || !window.turnstile) {
@@ -90,6 +108,7 @@ export default function BookingTurnstile({
         src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
         strategy="afterInteractive"
         onReady={() => setScriptReady(true)}
+        onError={onUnavailable}
       />
 
       <div className={styles.turnstileBlock}>

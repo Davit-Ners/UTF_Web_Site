@@ -1,37 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { buildBookingPayload, validateBookingPayload } from "@/lib/booking";
 import BookingForm from "../components/bookingPage/bookingForm";
+import { BOOKING_UNAVAILABLE_MESSAGE, type BookingTurnstileConfig } from "@/lib/turnstile.shared";
+import { CONTACT_EMAIL } from "@/app/lib/contact";
+import styles from "./booking.module.css";
 
-const rawTurnstileSiteKey = (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "").trim();
-
-/* Turnstile site keys look like "0x4AAA…" (or "1x…"/"2x…"/"3x…" test keys) */
-const TURNSTILE_KEY_SHAPE = /^[0-3]x[A-Za-z0-9_-]+$/;
-const turnstileKeyValid = TURNSTILE_KEY_SHAPE.test(rawTurnstileSiteKey);
-
-/* A malformed key would make the Cloudflare widget throw; skip it and say why */
-if (rawTurnstileSiteKey && !turnstileKeyValid) {
-  console.error(
-    "[booking] NEXT_PUBLIC_TURNSTILE_SITE_KEY is set but is not a Turnstile site key " +
-      '(expected something like "0x4AAA…"). The verification widget is disabled. ' +
-      "Check .env.local, then restart the dev server."
-  );
-}
-
-const turnstileSiteKey = turnstileKeyValid ? rawTurnstileSiteKey : "";
-
-export default function BookingClient() {
+export default function BookingClient({ turnstileConfig }: { turnstileConfig: BookingTurnstileConfig }) {
   const [loading, setLoading] = useState(false);
   const [ok, setOk] = useState<null | boolean>(null);
   const [error, setError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState("");
   const [turnstileResetCounter, setTurnstileResetCounter] = useState(0);
+  const [verificationUnavailable, setVerificationUnavailable] = useState(false);
+  const handleTurnstileUnavailable = useCallback(() => setVerificationUnavailable(true), []);
 
-  const turnstileEnabled = Boolean(turnstileSiteKey);
+  const turnstileEnabled = turnstileConfig.state === "enabled";
+  const unavailable = turnstileConfig.state === "unavailable" || verificationUnavailable;
+  const turnstileSiteKey = turnstileConfig.state === "enabled" ? turnstileConfig.siteKey : "";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (unavailable) return;
     setLoading(true);
     setOk(null);
     setError(null);
@@ -73,6 +64,11 @@ export default function BookingClient() {
 
       const result = await res.json().catch(() => null);
 
+      if (result?.code === "BOOKING_UNAVAILABLE") {
+        setVerificationUnavailable(true);
+        return;
+      }
+
       if (!res.ok) {
         throw new Error(
           typeof result?.error === "string"
@@ -104,6 +100,21 @@ export default function BookingClient() {
   }
 
   /* The request section only; the page around it is server-rendered */
+  if (unavailable) {
+    return (
+      <section id="booking-request" className={styles.request} aria-labelledby="booking-request-title">
+        <header className={styles.requestHead}>
+          <h2 id="booking-request-title" className={styles.requestTitle}>Booking request</h2>
+        </header>
+        <div className={styles.form} role="status">
+          <p>{BOOKING_UNAVAILABLE_MESSAGE}</p>
+          <p className={styles.altContact}>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="action-link">{CONTACT_EMAIL}</a>
+          </p>
+        </div>
+      </section>
+    );
+  }
   return (
       <BookingForm
         handleSubmit={handleSubmit}
@@ -111,6 +122,7 @@ export default function BookingClient() {
         loading={loading}
         ok={ok}
         onTurnstileTokenChange={setTurnstileToken}
+        onTurnstileUnavailable={handleTurnstileUnavailable}
         submitDisabled={loading || (turnstileEnabled && !turnstileToken)}
         turnstileResetCounter={turnstileResetCounter}
         turnstileSiteKey={turnstileSiteKey}

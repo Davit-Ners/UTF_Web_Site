@@ -133,8 +133,11 @@ export async function POST(req: Request) {
 
     if (!turnstileValidation.ok) {
       return Response.json(
-        { error: turnstileValidation.error },
-        { status: 400 }
+        {
+          error: turnstileValidation.error,
+          ...(turnstileValidation.unavailable ? { code: "BOOKING_UNAVAILABLE" } : {}),
+        },
+        { status: turnstileValidation.unavailable ? 503 : 400 }
       );
     }
 
