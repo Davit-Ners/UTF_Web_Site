@@ -12,6 +12,9 @@ import { validateTurnstileToken } from "@/lib/turnstile";
 import { BOOKING_TURNSTILE_ACTION } from "@/lib/turnstile.shared";
 import { Resend } from "resend";
 import { CONTACT_EMAIL } from "@/app/lib/contact";
+import { createHash } from "node:crypto";
+import { isBookingAttemptKey } from "@/lib/booking-attempt";
+import { readSavedBookingResult } from "@/lib/booking-result";
 
 export type EmailContent = ValidBookingRequestPayload;
 
@@ -107,6 +110,36 @@ function buildBookingRecord(payload: ValidBookingRequestPayload) {
   };
 }
 
+const replaySelect = {
+  id: true,
+  idempotencyRequestHash: true,
+  bookingNotificationResult: true,
+} as const;
+
+function replayBooking(saved: {
+  id: string;
+  idempotencyRequestHash: string | null;
+  bookingNotificationResult: unknown;
+}, requestHash: string) {
+  if (saved.idempotencyRequestHash !== requestHash) {
+    return Response.json({
+      error: "This booking attempt has different details. Please restore the original details or email us directly to confirm your request.",
+    }, { status: 409 });
+  }
+  // NULL means notification processing is still running, was interrupted, or
+  // could not be recorded. Never resend or claim unconfirmed email delivery.
+  const delivery = readSavedBookingResult(saved.bookingNotificationResult);
+  return Response.json({
+    success: true,
+    stored: true,
+    bookingRequestId: saved.id,
+    emailed: delivery?.emailed ?? false,
+    confirmationEmailed: delivery?.confirmationEmailed ?? false,
+    notificationStatus: delivery?.notificationStatus ?? "incomplete",
+    alreadyProcessed: true,
+  });
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -126,6 +159,18 @@ export async function POST(req: Request) {
       );
     }
 
+    const idempotencyKey = req.headers.get("Idempotency-Key")?.trim().toLowerCase() ?? null;
+    if (!isBookingAttemptKey(idempotencyKey)) {
+      return Response.json({ error: "Invalid booking attempt. Please reload the page and try again." }, { status: 400 });
+    }
+    // Validation constructs a stable, normalized object; the challenge token is
+    // intentionally excluded so a retry can use a refreshed Turnstile token.
+    const requestHash = createHash("sha256").update(JSON.stringify(validation.data)).digest("hex");
+    const existing = await prisma.bookingRequest.findUnique({
+      where: { idempotencyKey }, select: replaySelect,
+    });
+    if (existing) return replayBooking(existing, requestHash);
+
     const turnstileValidation = await validateTurnstileToken({
       token: turnstileToken,
       request: req,
@@ -142,12 +187,22 @@ export async function POST(req: Request) {
       );
     }
 
-    const savedRequest = await prisma.bookingRequest.create({
-      data: buildBookingRecord(validation.data),
-      select: {
-        id: true,
-      },
-    });
+    let savedRequest: { id: string };
+    try {
+      savedRequest = await prisma.bookingRequest.create({
+        data: { ...buildBookingRecord(validation.data), idempotencyKey, idempotencyRequestHash: requestHash },
+        select: { id: true },
+      });
+    } catch (error) {
+      if (typeof error === "object" && error !== null && "code" in error && error.code === "P2002") {
+        // A concurrent insert won the database's unique-key race.
+        const winner = await prisma.bookingRequest.findUnique({
+          where: { idempotencyKey }, select: replaySelect,
+        });
+        if (winner) return replayBooking(winner, requestHash);
+      }
+      throw error;
+    }
 
     const { emailed, confirmationEmailed } = await sendBookingEmails(
       validation.data
@@ -161,6 +216,16 @@ export async function POST(req: Request) {
       notificationStatus: emailed && confirmationEmailed ? "complete" : "incomplete",
       bookingRequestId: savedRequest.id,
     };
+    try {
+      await prisma.bookingRequest.update({
+        where: { id: savedRequest.id },
+        data: { bookingNotificationResult: result },
+        select: { id: true },
+      });
+    } catch (error) {
+      // The request is already stored, even if delivery-state recording fails.
+      console.error("BOOKING NOTIFICATION STATE ERROR:", error);
+    }
     return Response.json(result);
   } catch (error) {
     console.error("SERVER ERROR:", error);

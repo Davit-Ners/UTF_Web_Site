@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { randomUUID } from "node:crypto";
 import { readSavedBookingResult } from "./booking-result";
 
 test("Booking separates saved requests from email delivery", async (t) => {
@@ -14,6 +15,10 @@ test("Booking separates saved requests from email delivery", async (t) => {
     const { Resend } = await import("resend");
     const { POST } = await import("../app/api/booking/route");
     const originalCreate = prisma.bookingRequest.create;
+    const originalFind = prisma.bookingRequest.findUnique;
+    const originalUpdate = prisma.bookingRequest.update;
+    prisma.bookingRequest.findUnique = t.mock.fn(async () => null) as unknown as typeof prisma.bookingRequest.findUnique;
+    prisma.bookingRequest.update = t.mock.fn(async () => ({ id: "cmbookingrequestreference" })) as unknown as typeof prisma.bookingRequest.update;
     const reference = "cmbookingrequestreference";
     const privateError = "PRIVATE_PROVIDER_DATABASE_STACK";
     let storageFails = false;
@@ -29,7 +34,11 @@ test("Booking separates saved requests from email delivery", async (t) => {
     });
     prisma.bookingRequest.create = create as unknown as typeof prisma.bookingRequest.create;
     assert.equal(prisma.bookingRequest.create, create);
-    t.after(() => { prisma.bookingRequest.create = originalCreate; });
+    t.after(() => {
+      prisma.bookingRequest.create = originalCreate;
+      prisma.bookingRequest.findUnique = originalFind;
+      prisma.bookingRequest.update = originalUpdate;
+    });
     t.mock.method(console, "error", () => {});
     t.mock.method(Object.getPrototypeOf(new Resend("re_test_key").emails), "send", (input: { to: string[] }) => {
       sends++;
@@ -39,7 +48,7 @@ test("Booking separates saved requests from email delivery", async (t) => {
       return Promise.resolve(fails ? { error: { message: privateError } } : { data: { id: "email" }, error: null });
     });
     const request = (token = "") => new Request("https://booking.example/api/booking", {
-      method: "POST", headers: { "Content-Type": "application/json", host: "booking.example" },
+      method: "POST", headers: { "Content-Type": "application/json", host: "booking.example", "Idempotency-Key": randomUUID() },
       body: JSON.stringify({ name: "Promoter", email: "promoter@example.com", date: "2027-05-02", message: "Festival booking enquiry", turnstileToken: token }),
     });
     for (const [label, band, promoter, sync] of [

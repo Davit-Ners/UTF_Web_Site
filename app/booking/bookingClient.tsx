@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { completeBookingAttempt, getBookingAttempt } from "@/lib/booking-attempt";
 import { buildBookingPayload, validateBookingPayload } from "@/lib/booking";
 import { readSavedBookingResult, type SavedBookingResult } from "@/lib/booking-result";
 import BookingForm from "../components/bookingPage/bookingForm";
@@ -10,6 +11,7 @@ import styles from "./booking.module.css";
 
 export default function BookingClient({ turnstileConfig }: { turnstileConfig: BookingTurnstileConfig }) {
   const [loading, setLoading] = useState(false);
+  const submitting = useRef(false);
   const [savedResult, setSavedResult] = useState<SavedBookingResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState("");
@@ -23,7 +25,7 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (unavailable) return;
+    if (unavailable || submitting.current) return;
     setLoading(true);
     setSavedResult(null);
     setError(null);
@@ -54,13 +56,15 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
     }
 
     try {
+      submitting.current = true;
+      const attemptKey = getBookingAttempt(window.sessionStorage);
       const res = await fetch("/api/booking", {
         method: "POST",
         body: JSON.stringify({
           ...payload,
           turnstileToken,
         }),
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Idempotency-Key": attemptKey },
       });
 
       const result = await res.json().catch(() => null);
@@ -83,6 +87,12 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
       setTurnstileToken("");
       setTurnstileResetCounter((current) => current + 1);
       form.reset();
+      // Storage cleanup must never turn a confirmed save into a failed request.
+      try {
+        completeBookingAttempt(window.sessionStorage, attemptKey);
+      } catch {
+        // Retaining the key is safer than losing the saved-request confirmation.
+      }
     } catch (error) {
       setTurnstileToken("");
 
@@ -96,6 +106,7 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
           : "Something went wrong. Please try again or email us directly."
       );
     } finally {
+      submitting.current = false;
       setLoading(false);
     }
   }

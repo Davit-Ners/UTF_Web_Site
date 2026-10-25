@@ -308,6 +308,9 @@ model ConcertImage {
 
 model BookingRequest {
   id            String               @id @default(cuid())
+  idempotencyKey String?              @unique
+  idempotencyRequestHash String?
+  bookingNotificationResult Json?
   status        BookingRequestStatus @default(NEW)
   source        BookingRequestSource @default(PUBLIC_SITE)
   name          String
