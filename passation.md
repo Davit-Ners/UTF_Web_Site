@@ -318,7 +318,7 @@ Nothing else imported it.
 - **Mix/master credit:** still only in `recordingNotes`, used by `/music/[slug]`.
 - **Artwork credit:** not published anywhere on `/music`. The old page's "Artwork: Until They Fall" is removed until confirmed.
 - **Bandcamp:** hidden until the link is confirmed.
-- **Line-up for the album:** the colophon shows the *current* line-up from `about.ts`. Confirm it matches who played on Sent To Die (2023), or label it differently later.
+- **Line-up for the album:** the misleading current-member colophon was removed in the album personnel correction below. Subsequently confirmed historical performers are now rendered separately as Recording personnel (see below).
 
 ## Phase 9: `/music/[slug]` ("Booklet")
 
@@ -635,13 +635,20 @@ Hierarchy: homepage Live = teaser; `/concerts` = tour poster / archive; `/concer
 - Member order and dividers verified.
 - `tsc` passes; eslint passes on the changed files.
 
-## Confirmed consistency issue: album line-up (to fix in a later pass)
+## Album personnel correction (resolved)
 
-The current line-up includes **Valentin Coutant (joined 2024)** and **Krys Bader (joined 2025)**. *Sent To Die* was released on 01.12.2023, so they **must not be presented as personnel on that album** unless separate historical recording credits are confirmed. The album was recorded with an earlier bassist and singer, whose names are not in the site sources (the singer in the official video is that earlier vocalist).
-- **Affected:** `/music` (`releaseSleeve.tsx`), whose liner-notes colophon lists the current `members` under "Line-up" next to the 2023 album.
-- **Not affected:** `/music/[slug]`, which already omits Personnel.
-- **To do in the consistency pass:** remove the current line-up from the album colophon, or relabel it so it is clearly not album personnel, and add historical album personnel only if it is confirmed.
-- No "Former members" section is planned until names are confirmed.
+The current member data includes **Valentin Coutant (joined 2024)** and **Krys Bader (joined 2025)**, after the 01.12.2023 album release. Current membership is not evidence of recording personnel.
+- Removed the complete "Line-up" definition list and `members` import from `app/components/music/releaseSleeve/releaseSleeve.tsx`. `/music` now omits album personnel instead of importing the current band into its album colophon. No replacement heading, disclaimer or guessed former members were added. The existing flex stack closes the removed block's space without CSS/layout changes.
+- At the removal stage, `/music/sent-to-die` already omitted Personnel and needed no code changes. No verified performer list was available then; the subsequent confirmed recording-personnel addition is documented below. Confirmed Recorded — Project Zero Studio and Produced — Yarne Heylen credits, airplay, tracklist/runtime and all other release data remained unchanged.
+- `/about`, `app/lib/about.ts`, current-member listings, homepage/current-band identity and Booking's five-member facts were not edited. Historical performers were left omitted until the release-specific confirmation below.
+- Verification: browser checks at 1440, 820 and 375px confirm both Music pages contain no current-member personnel or empty personnel heading, retain the exact recording/production credits, eight songs and 41:25, and have no horizontal overflow. `/music` has only the remaining credit list and Live dates link in its colophon, separated by the existing CSS gap, with no empty personnel spacer. `/about` still displays Valentin and Krys at all three widths. No existing tests target this presentation; no test files were added for the block removal. Type-check (`tsc --noEmit --incremental false`), full ESLint and `git diff --check` pass. No commits or pushes.
+
+### Confirmed Sent To Die (2023) recording personnel
+
+- Added optional release-level `recordingPersonnel: { name: string; role: string }[]` to `Release` in `app/lib/music.ts`. The shared Sent To Die record contains exactly the user-confirmed 2023 recording credits: Remy Vanbruaene — Vocals; Davit Nersesyan — Guitars, Bass; Kevin Estrada — Guitar; Sabari Diakite — Drums.
+- `/music` renders the list as **Recording personnel** inside the existing liner-note colophon; `/music/sent-to-die` renders it as another metadata list inside the existing Credits area. Both use the existing typography/classes and render only when this release-specific array is nonempty. Their enclosing notes/credits conditions also support personnel-only release data. No current `members` import or generic Line-up heading is reintroduced, and no historical performer is inferred from current membership.
+- Existing production credits, release story, tracks/runtime, video/airplay associations and all other release values are unchanged. `/about`, member data/join years, current-band surfaces, Booking's five-member fact, Merch, CSS/layout and accessibility were not changed.
+- Verification: browser checks pass for both Music pages at 1440, 820 and 375px: one Recording personnel block, the four exact names/roles, no Valentin/Krys or conflicting Line-up heading, unchanged production credits/eight songs/41:25, no empty rows or overlapping personnel rows, and no horizontal overflow. Temporary rendering checks against the actual sleeve/booklet components verify absent/empty personnel produces no heading/block. A data comparison confirms all prior release values are unchanged except the new personnel array. No existing Music-specific tests were present. Type-check, full ESLint and `git diff --check` pass. No commits or pushes.
 
 ## Phase 14: `/merch` ("Band Catalogue")
 

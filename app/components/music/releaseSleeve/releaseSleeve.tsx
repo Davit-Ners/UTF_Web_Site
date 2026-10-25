@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { members } from "@/app/lib/about";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import type { Release } from "@/app/lib/music";
 import { formatReleaseDate, getListenLinks, getRuntime } from "@/app/lib/release";
@@ -24,7 +23,7 @@ export default function ReleaseSleeve({ release, mirrored = false }: Props) {
     runtime,
   ].filter(Boolean);
 
-  const hasNotes = Boolean(release.story || release.credits?.length || release.airplay?.length);
+  const hasNotes = Boolean(release.story || release.credits?.length || release.airplay?.length || release.recordingPersonnel?.length);
   const titleId = `${release.id}-title`;
 
   return (
@@ -119,17 +118,19 @@ export default function ReleaseSleeve({ release, mirrored = false }: Props) {
               </dl>
             ) : null}
 
-            <dl className={styles.facts}>
-              <div className={styles.factHead}>
-                <dt>Line-up</dt>
-              </div>
-              {members.map((member) => (
-                <div key={member.name} className={styles.fact}>
-                  <dt>{member.role}</dt>
-                  <dd>{member.name}</dd>
+            {release.recordingPersonnel?.length ? (
+              <dl className={styles.facts}>
+                <div className={styles.factHead}>
+                  <dt>Recording personnel</dt>
                 </div>
-              ))}
-            </dl>
+                {release.recordingPersonnel.map((person) => (
+                  <div key={person.name} className={styles.fact}>
+                    <dt>{person.role}</dt>
+                    <dd>{person.name}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
 
             <Link href="/concerts" className={`action-link on-bone ${styles.live}`}>
               Live dates <span className="arrow" aria-hidden="true">→</span>

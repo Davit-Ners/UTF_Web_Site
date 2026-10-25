@@ -30,6 +30,8 @@ export type Release = {
   recordingNotes?: string[];
   /* Confirmed credits only; omit any role that is not confirmed */
   credits?: { role: string; name: string }[];
+  /* Confirmed performers on this release's recording, separate from current members */
+  recordingPersonnel?: { name: string; role: string }[];
   airplay?: { track: string; station: string }[];
 };
 
@@ -60,6 +62,12 @@ export const latestRelease: Release = {
   credits: [
     { role: "Recorded", name: "Project Zero Studio" },
     { role: "Produced", name: "Yarne Heylen" },
+  ],
+  recordingPersonnel: [
+    { name: "Remy Vanbruaene", role: "Vocals" },
+    { name: "Davit Nersesyan", role: "Guitars, Bass" },
+    { name: "Kevin Estrada", role: "Guitar" },
+    { name: "Sabari Diakite", role: "Drums" },
   ],
   airplay: [
     { track: "Uprising", station: "Classic 21" },

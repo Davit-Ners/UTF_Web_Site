@@ -61,7 +61,8 @@ export default async function ReleasePage({ params }: Props) {
 
   const recording = release.credits ?? [];
   const broadcast = release.airplay ?? [];
-  const hasCredits = recording.length > 0 || broadcast.length > 0;
+  const personnel = release.recordingPersonnel ?? [];
+  const hasCredits = recording.length > 0 || broadcast.length > 0 || personnel.length > 0;
 
   /* Section markers follow only the parts that render */
   const parts = ["cover", tracks.length ? "songs" : null, release.story ? "story" : null, hasCredits ? "credits" : null, "archive"].filter(Boolean);
@@ -196,6 +197,19 @@ export default async function ReleasePage({ params }: Props) {
                   <div key={`${item.track}-${item.station}`} className={styles.creditRow}>
                     <dt>{item.station}</dt>
                     <dd>{item.track}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
+            {personnel.length ? (
+              <dl className={styles.creditList}>
+                <div className={styles.creditHead}>
+                  <dt>Recording personnel</dt>
+                </div>
+                {personnel.map((person) => (
+                  <div key={person.name} className={styles.creditRow}>
+                    <dt>{person.role}</dt>
+                    <dd>{person.name}</dd>
                   </div>
                 ))}
               </dl>
