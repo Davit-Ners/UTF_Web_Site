@@ -103,8 +103,9 @@ export default async function RootLayout({
         className="antialiased"
         style={{ backgroundColor: "var(--color-bg)" }}
       >
+        <a href="#main-content" className="skip-link">Skip to content</a>
         <Header tickets={tickets} />
-        {children}
+        <main id="main-content" tabIndex={-1}>{children}</main>
         <Footer />
       </body>
     </html>

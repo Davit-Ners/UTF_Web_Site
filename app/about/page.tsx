@@ -46,7 +46,7 @@ export default function AboutPage() {
   let position = 0;
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       {/* I — Cover */}
       <header className={styles.cover}>
         <div className={styles.coverFrame}>
@@ -202,6 +202,6 @@ export default function AboutPage() {
           Booking <span aria-hidden="true">→</span>
         </Link>
       </nav>
-    </main>
+    </div>
   );
 }

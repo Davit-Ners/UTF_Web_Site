@@ -50,7 +50,7 @@ export default function ShowDossier({ show, isPast, previous, next }: Props) {
   const shownPhotos = photos.slice(0, MAX_PHOTOS);
 
   return (
-    <main className={`${styles.page} ${show.posterUrl ? styles.withPoster : ""}`}>
+    <div className={`${styles.page} ${show.posterUrl ? styles.withPoster : ""}`}>
       <nav className={styles.crumbs} aria-label="Breadcrumb">
         <Link href="/concerts">Live</Link>
         <span aria-hidden="true">/</span>
@@ -199,13 +199,13 @@ export default function ShowDossier({ show, isPast, previous, next }: Props) {
           All shows <span aria-hidden="true">→</span>
         </Link>
       </nav>
-    </main>
+    </div>
   );
 }
 
 export function ShowUnavailable() {
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <nav className={styles.crumbs} aria-label="Breadcrumb">
         <Link href="/concerts">Live</Link>
       </nav>
@@ -219,6 +219,6 @@ export function ShowUnavailable() {
           All shows <span aria-hidden="true">→</span>
         </Link>
       </nav>
-    </main>
+    </div>
   );
 }

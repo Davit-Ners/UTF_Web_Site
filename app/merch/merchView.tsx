@@ -24,7 +24,7 @@ export default function MerchView({ products }: { products: Product[] | null }) 
   const hasStore = products !== null && products.length > 0;
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       {/* With a catalogue, the client store renders the masthead so it can hold the order action */}
       {hasStore ? null : <header className={styles.masthead}>{mastheadContent}</header>}
 
@@ -54,6 +54,6 @@ export default function MerchView({ products }: { products: Product[] | null }) 
           </a>
         </p>
       </footer>
-    </main>
+    </div>
   );
 }

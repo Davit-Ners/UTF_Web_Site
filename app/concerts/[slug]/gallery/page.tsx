@@ -29,12 +29,12 @@ export default async function ConcertGalleryPage({ params }: Props) {
   }));
 
   return (
-    <main>
+    <div>
       <GalleryFull
         title={`Gallery - ${title}`}
         subtitle={`Live photos from the show on ${concert.date}.`}
         photos={photos}
       />
-    </main>
+    </div>
   );
 }

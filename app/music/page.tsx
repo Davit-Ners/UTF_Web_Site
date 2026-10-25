@@ -40,7 +40,7 @@ export default function MusicPage() {
   const count = String(releases.length).padStart(2, "0");
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <header className={styles.masthead}>
         <h1 className={styles.title}>Music</h1>
         <p className={`meta ${styles.count}`}>
@@ -71,6 +71,6 @@ export default function MusicPage() {
       {releases.map((release, i) => (
         <ReleaseSleeve key={release.id} release={release} mirrored={i % 2 === 1} />
       ))}
-    </main>
+    </div>
   );
 }

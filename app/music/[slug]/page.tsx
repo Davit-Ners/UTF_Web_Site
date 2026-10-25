@@ -69,7 +69,7 @@ export default async function ReleasePage({ params }: Props) {
   const marker = (part: string) => ["I", "II", "III", "IV", "V", "VI"][parts.indexOf(part)];
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <nav className={styles.crumbs} aria-label="Breadcrumb">
         <Link href="/music">Music</Link>
         <span aria-hidden="true">/</span>
@@ -251,6 +251,6 @@ export default async function ReleasePage({ params }: Props) {
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

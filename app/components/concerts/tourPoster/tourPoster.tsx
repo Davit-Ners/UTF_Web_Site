@@ -49,7 +49,7 @@ export default function TourPoster({ data }: Props) {
     : [];
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <header className={styles.masthead}>
         <h1 className={styles.live}>Live</h1>
         {counts.length ? <p className={`meta ${styles.counts}`}>{counts.join(" — ")}</p> : null}
@@ -82,7 +82,7 @@ export default function TourPoster({ data }: Props) {
           Booking <span aria-hidden="true">→</span>
         </Link>
       </nav>
-    </main>
+    </div>
   );
 }
 

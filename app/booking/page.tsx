@@ -88,7 +88,7 @@ export default async function BookingPage() {
   const jsonLd = JSON.stringify(structuredData()).replace(/</g, "\\u003c");
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
 
       {/* I — Contact */}
@@ -175,6 +175,6 @@ export default async function BookingPage() {
 
       {/* III — Booking request (existing form and submission logic) */}
       <BookingClient turnstileConfig={getBookingTurnstileConfig()} />
-    </main>
+    </div>
   );
 }

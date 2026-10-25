@@ -103,7 +103,7 @@ export default function PhotoBook() {
 
   return (
     <PhotoViewer photos={viewerPhotos}>
-      <main className={styles.page}>
+      <div className={styles.page}>
         <header className={styles.masthead}>
           <h1 className={styles.word}>Gallery</h1>
           <p className={`meta ${styles.counts}`}>{counts.join(" — ")}</p>
@@ -175,7 +175,7 @@ export default function PhotoBook() {
             Live archive <span aria-hidden="true">→</span>
           </Link>
         </nav>
-      </main>
+      </div>
     </PhotoViewer>
   );
 }
