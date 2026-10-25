@@ -55,7 +55,7 @@ export const latestRelease: Release = {
   recordingNotes: [
     "Recorded at Project Zero Studio.",
     "Produced, mixed and mastered by Yarne Heylen.",
-    "Uprising aired several times on Classic 21; Wrath Of Gaia aired on Radio Panik.",
+    "Uprising aired several times on Classic 21; Wrath Of Gaïa aired on Radio Panik.",
   ],
   credits: [
     { role: "Recorded", name: "Project Zero Studio" },
@@ -63,16 +63,17 @@ export const latestRelease: Release = {
   ],
   airplay: [
     { track: "Uprising", station: "Classic 21" },
-    { track: "Wrath Of Gaia", station: "Radio Panik" },
+    { track: "Wrath Of Gaïa", station: "Radio Panik" },
   ],
   tracks: [
-    { id: "t1", title: "Sent To Die", length: "4:32", isSingle: true, videoId: "9Wvpovk_Tg4" },
-    { id: "t2", title: "Doppelganger", length: "3:58" },
-    { id: "t3", title: "Uprising", length: "4:05" },
-    { id: "t4", title: "Wrath Of Gaia", length: "5:01" },
-    { id: "t5", title: "Free", length: "3:47" },
-    { id: "t6", title: "Armenia", length: "4:11" },
-    { id: "t7", title: "One Final Ode", length: "4:11" },
+    { id: "t0", title: "27-09-2020", length: "1:08" },
+    { id: "t1", title: "Sent To Die", length: "5:08", isSingle: true, videoId: "9Wvpovk_Tg4" },
+    { id: "t2", title: "Doppelgänger", length: "3:40" },
+    { id: "t3", title: "Uprising", length: "5:19" },
+    { id: "t4", title: "Wrath Of Gaïa", length: "6:01" },
+    { id: "t5", title: "Free", length: "7:41" },
+    { id: "t6", title: "Armenia", length: "6:14" },
+    { id: "t7", title: "One Final Ode", length: "6:14" },
   ],
 };
 

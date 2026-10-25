@@ -314,7 +314,7 @@ Nothing else imported it.
 - Links checked 22.10.2026: Spotify and Apple Music resolve to the album. The YouTube Music link resolves (HTTP 200) to the first track of the "Sent To Die" album playlist on the "Until They Fall - Topic" channel, so it works; normalization can wait.
 
 **Unverified data (do not treat as confirmed)**
-- **Track durations:** all seven, and therefore the 29:45 total. Two tracks share 4:11. Verify against the master or Spotify. Now displayed prominently on `/music/[slug]` as chapter durations too.
+- **Tracklist/durations:** corrected to the supplied audited eight-track edition and derived 41:25 runtime in Phase 9.1 below; supersedes the previous seven-track/29:45 data.
 - **Mix/master credit:** still only in `recordingNotes`, used by `/music/[slug]`.
 - **Artwork credit:** not published anywhere on `/music`. The old page's "Artwork: Until They Fall" is removed until confirmed.
 - **Bandcamp:** hidden until the link is confirmed.
@@ -376,6 +376,13 @@ Hierarchy: homepage = teaser, `/music` = record sleeve, `/music/[slug]` = full b
   - correct title, description, canonical and `og:image`;
   - song notes render only for tracks 01, 03 and 04.
 - `/music` and `/` still render with the same release facts.
+
+### Phase 9.1: Sent To Die tracklist and runtime correction
+
+- Only the authoritative release record in `app/lib/music.ts` changed: `27-09-2020` (1:08), `Sent To Die` (5:08), `Doppelgänger` (3:40), `Uprising` (5:19), `Wrath Of Gaïa` (6:01), `Free` (7:41), `Armenia` (6:14), `One Final Ode` (6:14), in that order. The existing `getRuntime` in `app/lib/release.ts` already sums track durations, so all three surfaces inherit **41:25** without a second stored total or helper/component changes.
+- Existing track IDs `t1`–`t7` remain attached to their original songs; the intro uses the unique ID `t0` and has no single/video/airplay metadata. Release slug `sent-to-die` is unchanged. The single flag and official video `9Wvpovk_Tg4` remain on `Sent To Die`, now track 02. `Uprising` / Classic 21 remains track 04; `Wrath Of Gaïa` / Radio Panik remains track 05. The latter title is corrected in the airplay entry and existing recording-note sentence so exact-title association still works. Streaming destinations, artwork, release date, story and confirmed credits are unchanged. No album personnel/current-line-up work was done.
+- Verification: assertions against the supplied audited edition pass for exact order, Unicode, all eight durations, unique track/release IDs, derived runtime, no invented intro metadata, and preservation of existing IDs/video/single flags and other release metadata. No existing release-specific test suite was present and no test files were added for this data-only correction. Browser checks on the running site pass at 1440, 820 and 375px: homepage Latest Release shows 08 tracks / 41:25; `/music` and `/music/sent-to-die` render all eight songs with correct lengths and 41:25; the official video and both airplay associations stay on the correct songs. No horizontal overflow or overlapping track rows. Type-check (`tsc --noEmit --incremental false`), full ESLint and `git diff --check` pass.
+- Facts follow the edition supplied in the audit request; no additional release facts were inferred or independently researched. Existing personnel and unconfirmed-credit questions remain deferred. No layout, motion, accessibility, Booking or Merch changes; no commits or pushes.
 
 ## Phase 10: `/concerts` ("Tour Poster")
 
