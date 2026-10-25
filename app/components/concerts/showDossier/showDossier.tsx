@@ -1,3 +1,4 @@
+import NewTabLink from "@/app/components/newTabLink";
 import ConcertPoster from "../concertPoster";
 import Link from "next/link";
 import type { Concert } from "@/app/lib/concerts";
@@ -104,13 +105,13 @@ export default function ShowDossier({ show, isPast, previous, next }: Props) {
       {/* II — Ticket action, upcoming only, real URL only */}
       {ticket ? (
         <div className={styles.action}>
-          <a href={ticket} target="_blank" rel="noopener noreferrer" className={styles.ticket}>
+          <NewTabLink href={ticket} className={styles.ticket}>
             <span>
-              Tickets <span className="srOnly">for {context} (opens in a new tab)</span>
+              Tickets <span className="srOnly">for {context}</span>
             </span>
             {show.price ? <span className={styles.ticketPrice}>{show.price}</span> : null}
             <span aria-hidden="true">↗</span>
-          </a>
+          </NewTabLink>
         </div>
       ) : null}
 
@@ -147,12 +148,12 @@ export default function ShowDossier({ show, isPast, previous, next }: Props) {
           {programmeNote ? <p className={styles.note}>{programmeNote}</p> : null}
 
           {show.facebookEventUrl ? (
-            <a href={show.facebookEventUrl} target="_blank" rel="noopener noreferrer" className={styles.source}>
+            <NewTabLink href={show.facebookEventUrl} className={styles.source}>
               <span>
-                Event page <span className="srOnly">for {context} (opens in a new tab)</span>
+                Event page <span className="srOnly">for {context}</span>
               </span>
               <span aria-hidden="true">↗</span>
-            </a>
+            </NewTabLink>
           ) : null}
         </section>
       ) : null}

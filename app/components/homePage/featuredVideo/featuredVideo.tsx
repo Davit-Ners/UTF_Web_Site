@@ -1,5 +1,6 @@
 "use client";
 
+import NewTabLink from "@/app/components/newTabLink";
 import Image from "next/image";
 import { useState } from "react";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
@@ -58,14 +59,12 @@ export default function FeaturedVideo({ videoId, title, label = "Official video"
         <h2 id="video-title" className={styles.title}>
           {title}
         </h2>
-        <a
+        <NewTabLink
           href={`https://www.youtube.com/watch?v=${videoId}`}
-          target="_blank"
-          rel="noreferrer"
           className={`action-link ${styles.external}`}
         >
           YouTube <span className="arrow" aria-hidden="true">↗</span>
-        </a>
+        </NewTabLink>
       </div>
     </section>
   );

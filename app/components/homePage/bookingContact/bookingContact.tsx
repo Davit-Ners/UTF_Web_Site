@@ -1,3 +1,4 @@
+import NewTabLink from "@/app/components/newTabLink";
 import Link from "next/link";
 import { CONTACT_EMAIL, TECH_RIDER } from "@/app/lib/contact";
 import styles from "./bookingContact.module.css";
@@ -19,15 +20,13 @@ export default function BookingContact() {
         <Link href="/booking" className={`action-link on-bone ${styles.action}`}>
           Book the band <span className="arrow" aria-hidden="true">→</span>
         </Link>
-        <a
+        <NewTabLink
           href={TECH_RIDER.href}
-          target="_blank"
-          rel="noreferrer"
           className={`action-link on-bone ${styles.action}`}
         >
           Tech rider <span className={styles.format}>PDF</span>
           <span className="arrow" aria-hidden="true">↗</span>
-        </a>
+        </NewTabLink>
       </div>
     </section>
   );

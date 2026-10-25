@@ -78,6 +78,15 @@
   text-transform: uppercase;
 }
 
+.title a {
+  color: inherit;
+}
+
+.title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 .tracks {
   margin: 0;
   padding: 0;

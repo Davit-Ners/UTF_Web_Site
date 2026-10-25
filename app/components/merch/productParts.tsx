@@ -1,13 +1,7 @@
 import type { Product } from "@/app/lib/products";
 import styles from "./productParts.module.css";
 
-export function formatPrice(price: number) {
-  return new Intl.NumberFormat("fr-BE", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: price % 1 === 0 ? 0 : 2,
-  }).format(price);
-}
+export { formatPrice } from "@/app/lib/formatPrice";
 
 export function isSoldOut(product: Product) {
   return product.stock !== undefined && product.stock <= 0;

@@ -30,6 +30,8 @@
 /* Shared section label: roman marker + name */
 .sectionHead {
   display: flex;
+  line-height: 1.55;
+  text-transform: none;
   gap: 16px;
   margin-bottom: clamp(24px, 3vw, 48px);
 }

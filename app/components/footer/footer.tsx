@@ -1,3 +1,4 @@
+import NewTabLink from "@/app/components/newTabLink";
 import Link from "next/link";
 import { CONTACT_EMAIL } from "@/app/lib/contact";
 import { BAND_PROFILES } from "@/app/lib/links";
@@ -46,9 +47,9 @@ export default function Footer() {
       <ul className={`${styles.list} ${styles.externals}`} aria-label="Listen and follow">
         {FOOTER_EXTERNALS.map((item) => (
           <li key={item.href}>
-            <a href={item.href} target="_blank" rel="noreferrer" className={styles.link}>
+            <NewTabLink href={item.href} className={styles.link}>
               {item.label} <span className={styles.arrow} aria-hidden="true">↗</span>
-            </a>
+            </NewTabLink>
           </li>
         ))}
       </ul>

@@ -3,19 +3,13 @@ import Link from "next/link";
 import type { Product } from "@/app/lib/products";
 import { CONTACT_EMAIL } from "@/app/lib/contact";
 import { IMAGE_BLUR_DATA_URL, getOptimizedImagePath } from "@/app/lib/imageOptimization";
+import { formatPrice } from "@/app/lib/formatPrice";
+import { merchImage } from "@/app/lib/merchPresentation";
 import styles from "./featuredMerch.module.css";
 
 type Props = {
   items: Product[] | null;
 };
-
-function formatPrice(price: number) {
-  return new Intl.NumberFormat("fr-BE", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 0,
-  }).format(price);
-}
 
 /* Only states a buyer needs; marketing badges (New, Limited) are dropped */
 function availability(product: Product) {
@@ -26,20 +20,23 @@ function availability(product: Product) {
 
 function MerchObject({ product, primary }: { product: Product; primary: boolean }) {
   const status = availability(product);
+  const image = merchImage(product.image);
 
   return (
     <Link href="/merch" className={`${styles.object} ${primary ? styles.primary : styles.secondary}`}>
-      <span className={styles.frame}>
-        <Image
-          src={getOptimizedImagePath(product.image) || "/logo.jpg"}
-          alt=""
-          fill
-          sizes={primary ? "(max-width: 900px) 100vw, 56vw" : "(max-width: 900px) 60vw, 26vw"}
-          className={styles.image}
-          placeholder="blur"
-          blurDataURL={IMAGE_BLUR_DATA_URL}
-        />
-      </span>
+      {image ? (
+        <span className={styles.frame}>
+          <Image
+            src={getOptimizedImagePath(image.src) ?? image.src}
+            alt=""
+            fill
+            sizes={primary ? "(max-width: 900px) 100vw, 56vw" : "(max-width: 900px) 60vw, 26vw"}
+            className={styles.image}
+            placeholder="blur"
+            blurDataURL={IMAGE_BLUR_DATA_URL}
+          />
+        </span>
+      ) : null}
       <span className={styles.caption}>
         <span className={styles.name}>{product.name}</span>
         <span className={styles.price}>

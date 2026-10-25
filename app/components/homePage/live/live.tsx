@@ -1,3 +1,4 @@
+import NewTabLink from "@/app/components/newTabLink";
 import Link from "next/link";
 import ConcertPoster from "@/app/components/concerts/concertPoster";
 import { reliableTimes } from "@/app/lib/concertFormat";
@@ -123,9 +124,9 @@ function FeaturedShow({ show }: { show: Concert }) {
 
           <div className={styles.actions}>
             {show.ticketUrl ? (
-              <a href={show.ticketUrl} target="_blank" rel="noreferrer" className="action-link">
+              <NewTabLink href={show.ticketUrl} className="action-link">
                 Tickets <span className="arrow" aria-hidden="true">↗</span>
-              </a>
+              </NewTabLink>
             ) : null}
             <Link href={`/concerts/${show.id}`} className="action-link">
               Details <span className="arrow" aria-hidden="true">→</span>
@@ -169,10 +170,10 @@ function TourList({ shows }: { shows: Concert[] }) {
               <p className={styles.venue}>{show.venue}</p>
               <div className={styles.rowAction}>
                 {show.ticketUrl ? (
-                  <a href={show.ticketUrl} target="_blank" rel="noreferrer" className="action-link">
+                  <NewTabLink href={show.ticketUrl} className="action-link">
                     Tickets <span className="srOnly">for {label}</span>
                     <span className="arrow" aria-hidden="true">↗</span>
-                  </a>
+                  </NewTabLink>
                 ) : (
                   <Link href={`/concerts/${show.id}`} className="action-link">
                     Details <span className="srOnly">for {label}</span>

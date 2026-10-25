@@ -1,3 +1,4 @@
+import NewTabLink from "@/app/components/newTabLink";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -103,10 +104,10 @@ export default async function ReleasePage({ params }: Props) {
           <ul className={styles.listen} aria-label={`Listen to ${release.title}`}>
             {listen.map((link) => (
               <li key={link.label}>
-                <a href={link.href} target="_blank" rel="noreferrer" className={styles.listenLink}>
+                <NewTabLink href={link.href} className={styles.listenLink}>
                   {link.label}
                   <span className={styles.arrow} aria-hidden="true">↗</span>
-                </a>
+                </NewTabLink>
               </li>
             ))}
           </ul>
@@ -116,10 +117,10 @@ export default async function ReleasePage({ params }: Props) {
       {/* Songs as chapters */}
       {tracks.length ? (
         <section className={styles.songs} aria-labelledby="songs-title">
-          <p className={`meta ${styles.sectionHead}`}>
+          <h2 className={`meta ${styles.sectionHead}`}>
             <span>{marker("songs")}</span>
             <span id="songs-title">Songs</span>
-          </p>
+          </h2>
 
           <ol className={styles.songList}>
             {tracks.map((track, index) => {
@@ -128,23 +129,21 @@ export default async function ReleasePage({ params }: Props) {
                 track.isSingle ? <span key="single" className={styles.single}>Single</span> : null,
                 ...airplay.map((item) => <span key={item.station}>Airplay — {item.station}</span>),
                 track.videoId ? (
-                  <a
+                  <NewTabLink
                     key="video"
                     href={`https://www.youtube.com/watch?v=${track.videoId}`}
-                    target="_blank"
-                    rel="noreferrer"
                     className={styles.video}
                   >
                     Video <span className="srOnly">for {track.title}</span>
                     <span aria-hidden="true">↗</span>
-                  </a>
+                  </NewTabLink>
                 ) : null,
               ].filter(Boolean);
 
               return (
                 <li key={track.id} className={styles.song}>
                   <span className={styles.songNo}>{String(index + 1).padStart(2, "0")}</span>
-                  <h2 className={styles.songTitle}>{track.title}</h2>
+                  <h3 className={styles.songTitle}>{track.title}</h3>
                   <span className={styles.songLength}>{track.length}</span>
                   {notes.length ? <p className={styles.songNotes}>{notes}</p> : null}
                 </li>
@@ -157,10 +156,10 @@ export default async function ReleasePage({ params }: Props) {
       {/* Story: only real copy, never a fallback */}
       {release.story ? (
         <section className={styles.story} aria-labelledby="story-title">
-          <p className={`meta ${styles.sectionHead}`}>
+          <h2 className={`meta ${styles.sectionHead}`}>
             <span>{marker("story")}</span>
             <span id="story-title">Story</span>
-          </p>
+          </h2>
           <p className={styles.storyText}>{release.story}</p>
         </section>
       ) : null}
@@ -168,10 +167,10 @@ export default async function ReleasePage({ params }: Props) {
       {/* Confirmed credits only */}
       {hasCredits ? (
         <section className={styles.credits} aria-labelledby="credits-title">
-          <p className={`meta ${styles.sectionHead}`}>
+          <h2 className={`meta ${styles.sectionHead}`}>
             <span>{marker("credits")}</span>
             <span id="credits-title">Credits</span>
-          </p>
+          </h2>
 
           <div className={styles.creditColumns}>
             {recording.length ? (
@@ -220,10 +219,10 @@ export default async function ReleasePage({ params }: Props) {
 
       {/* Archive */}
       <section className={styles.archive} aria-label="More from the archive">
-        <p className={`meta ${styles.sectionHead}`}>
+        <h2 className={`meta ${styles.sectionHead}`}>
           <span>{marker("archive")}</span>
           <span>Archive</span>
-        </p>
+        </h2>
 
         {others.length ? (
           <ol className={styles.others} aria-label="Other releases">

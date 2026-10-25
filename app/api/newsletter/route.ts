@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       create: {
         email,
         status: "ACTIVE",
-        source: "homepage-action-hub",
+        source: "homepage-mailing-list",
       },
     });
 

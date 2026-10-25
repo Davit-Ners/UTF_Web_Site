@@ -1,5 +1,6 @@
 "use client";
 
+import NewTabLink from "@/app/components/newTabLink";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -141,10 +142,10 @@ export default function Header({ tickets }: Props) {
 
         <div className={styles.end}>
           {tickets ? (
-            <a href={tickets.href} target="_blank" rel="noreferrer" className={styles.tickets}>
+            <NewTabLink href={tickets.href} className={styles.tickets}>
               Tickets <span className={styles.ticketDate}>{tickets.date}</span>
               <span className={styles.arrow} aria-hidden="true">↗</span>
-            </a>
+            </NewTabLink>
           ) : null}
           <button
             type="button"
@@ -185,18 +186,18 @@ export default function Header({ tickets }: Props) {
 
         <div className={styles.panelFoot}>
           {tickets ? (
-            <a href={tickets.href} target="_blank" rel="noreferrer" className="action-link">
+            <NewTabLink href={tickets.href} className="action-link">
               Tickets {tickets.date} <span className="arrow" aria-hidden="true">↗</span>
-            </a>
+            </NewTabLink>
           ) : null}
           <a href={`mailto:${CONTACT_EMAIL}`} className={styles.panelMeta}>
             {CONTACT_EMAIL}
           </a>
           <div className={styles.panelExternals}>
             {EXTERNALS.map((item) => (
-              <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className={styles.panelMeta}>
+              <NewTabLink key={item.href} href={item.href} className={styles.panelMeta}>
                 {item.label}
-              </a>
+              </NewTabLink>
             ))}
           </div>
         </div>

@@ -1,3 +1,4 @@
+import NewTabLink from "@/app/components/newTabLink";
 import Image from "next/image";
 import Link from "next/link";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
@@ -51,7 +52,7 @@ export default function ReleaseSleeve({ release, mirrored = false }: Props) {
         <div className={styles.back}>
           <p className={`meta ${styles.meta}`}>{meta.join(" — ")}</p>
           <h2 id={titleId} className={styles.title}>
-            {release.title}
+            <Link href={`/music/${release.id}`}>{release.title}</Link>
           </h2>
 
           {tracks.length ? (
@@ -80,10 +81,10 @@ export default function ReleaseSleeve({ release, mirrored = false }: Props) {
             <ul className={styles.listen} aria-label={`Listen to ${release.title}`}>
               {listen.map((item) => (
                 <li key={item.label}>
-                  <a href={item.href} target="_blank" rel="noreferrer" className={styles.listenLink}>
+                  <NewTabLink href={item.href} className={styles.listenLink}>
                     {item.label}
                     <span className={styles.arrow} aria-hidden="true">↗</span>
-                  </a>
+                  </NewTabLink>
                 </li>
               ))}
             </ul>

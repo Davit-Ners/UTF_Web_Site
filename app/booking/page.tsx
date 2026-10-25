@@ -1,3 +1,4 @@
+import NewTabLink from "@/app/components/newTabLink";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { festivals, sharedBills } from "@/app/lib/about";
@@ -105,15 +106,15 @@ export default async function BookingPage() {
             <span>Booking request</span>
             <span aria-hidden="true">↓</span>
           </a>
-          <a href={TECH_RIDER.href} target="_blank" rel="noopener noreferrer" className={styles.action}>
+          <NewTabLink href={TECH_RIDER.href} className={styles.action}>
             <span>
-              Tech rider PDF <span className="srOnly">(opens in a new tab)</span>
+              Tech rider PDF
             </span>
             <span className={styles.riderMeta}>
               v. {TECH_RIDER.version} — {TECH_RIDER.pages} pages — {TECH_RIDER.sizeLabel}
             </span>
             <span aria-hidden="true">↗</span>
-          </a>
+          </NewTabLink>
         </div>
       </header>
 
@@ -136,10 +137,10 @@ export default async function BookingPage() {
             ))}
           </dl>
 
-          <a href={TECH_RIDER.href} target="_blank" rel="noopener noreferrer" className={`action-link on-bone ${styles.riderLink}`}>
-            Full rider: input list and stage plot <span className="srOnly">(PDF, opens in a new tab)</span>
+          <NewTabLink href={TECH_RIDER.href} className={`action-link on-bone ${styles.riderLink}`}>
+            Full rider: input list and stage plot <span className="srOnly">(PDF)</span>
             <span className="arrow" aria-hidden="true">↗</span>
-          </a>
+          </NewTabLink>
         </div>
 
         <aside className={styles.history} aria-labelledby="history-title">

@@ -1,3 +1,4 @@
+import NewTabLink from "@/app/components/newTabLink";
 import Image from "next/image";
 import Link from "next/link";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
@@ -69,9 +70,9 @@ export default function FeaturedRelease({ release }: Props) {
 
           <div className={styles.actions}>
             {release.spotifyUrl ? (
-              <a href={release.spotifyUrl} target="_blank" rel="noreferrer" className="action-link on-bone">
+              <NewTabLink href={release.spotifyUrl} className="action-link on-bone">
                 Listen <span className="arrow" aria-hidden="true">↗</span>
-              </a>
+              </NewTabLink>
             ) : null}
             <Link href={`/music/${release.id}`} className="action-link on-bone">
               Release <span className="arrow" aria-hidden="true">→</span>
@@ -81,9 +82,9 @@ export default function FeaturedRelease({ release }: Props) {
           {platforms.length ? (
             <div className={styles.platforms}>
               {platforms.map((platform) => (
-                <a key={platform.href} href={platform.href} target="_blank" rel="noreferrer">
+                <NewTabLink key={platform.href} href={platform.href}>
                   {platform.label} <span aria-hidden="true">↗</span>
-                </a>
+                </NewTabLink>
               ))}
             </div>
           ) : null}

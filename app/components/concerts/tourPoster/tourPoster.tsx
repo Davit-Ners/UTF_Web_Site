@@ -1,3 +1,4 @@
+import NewTabLink from "@/app/components/newTabLink";
 import ConcertPoster from "../concertPoster";
 import Link from "next/link";
 import type { Concert } from "@/app/lib/concerts";
@@ -97,10 +98,10 @@ function StateLine({ main, sub }: { main: string; sub?: string }) {
 function TicketOrDetails({ show }: { show: Concert }) {
   const label = `${splitCity(show.city).name}, ${longDate(show.date)}`;
   return show.ticketUrl ? (
-    <a href={show.ticketUrl} target="_blank" rel="noopener noreferrer" className="action-link">
-      Tickets <span className="srOnly">for {label} (opens in a new tab)</span>
+    <NewTabLink href={show.ticketUrl} className="action-link">
+      Tickets <span className="srOnly">for {label}</span>
       <span className="arrow" aria-hidden="true">↗</span>
-    </a>
+    </NewTabLink>
   ) : (
     <Link href={`/concerts/${show.id}`} className="action-link">
       Details <span className="srOnly">for {label}</span>

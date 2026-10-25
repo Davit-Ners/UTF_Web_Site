@@ -4,6 +4,37 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 
 ## Status
 
+The summaries below describe the current state. Phase implementation and verification notes are historical: they preserve what was true at each stage, not additional active blockers. Deployment/environment requirements remain separate from completed code fixes.
+
+### Resolved audit findings
+
+- Booking Turnstile partial-configuration resilience (Phase 15.2); saved/email outcome separation (15.3); server-enforced idempotency (15.4); field errors/native required semantics/focus (15.5).
+- Merch saved/email outcome separation (14.3) and server-enforced idempotency (14.4). Same-key retries are protected; different keys deliberately represent separate submissions.
+- Sent To Die: eight tracks and derived 41:25 runtime (9.1); current-member personnel implication removed and four confirmed historical recording personnel added. Production-credit uncertainties remain separate.
+- Header mobile-menu desktop-resize cleanup, shared focus contrast, one root main landmark and global native skip link.
+- Concert dossier links/time consistency/poster dimensions, gallery outage handling and resilient canonical sitemap (follow-up below).
+- Final cleanup: release booklet heading hierarchy, linked sleeve title, shared new-tab announcement, homepage Merch price/photo policy and verified obsolete code/labels (details below).
+
+### Still unresolved / deployment requirements
+
+- **Database deployment:** confirm application of both additive migrations (`20261023120000_merch_order_idempotency`, `20261025120000_booking_idempotency`), client generation and rebuild/restart. Last recorded implementation runs did not migrate the configured database. Follow `prisma/migrations/README.md`; the repository lacks an original baseline. No migration/schema/database changes were made in this cleanup.
+- **Turnstile environment:** code resilience is resolved. The last recorded local configuration had an unusable public key; manual correction to a matched site/secret pair and restart/rebuild still needs confirmation. No environment values were inspected or changed in this cleanup.
+- **Contact:** confirm that `contact@untiltheyfall.com` and the configured band notification inbox are monitored; resolve the differing Gmail address in `presskit.md`.
+- **Factual content:** retain the documented concert time/line-up/note/city/photo-association questions, product name/category questions, and unconfirmed mix/master/artwork/Bandcamp details. Do not infer replacements.
+- **Assets:** dedicated mobile Hero, high-resolution video still/logo, clean credited gallery/member images and product photography remain pending; photo permission/credit wording remains unconfirmed. Detailed limitations are retained at the end.
+- **Merch variants/sizes:** still a separate functional phase; order notes remain the current size mechanism.
+- **Rider/press:** decide whether public rider phone numbers should remain; no public press-kit PDF/press-photo pack exists yet.
+- **Deferred phases:** Legal/RGPD/privacy/terms, the broader SEO review, asset replacement and motion have not been implemented or assessed by this cleanup. Existing motion is unchanged.
+
+### Final small cleanup (2026-10-25)
+
+- Booklet: Songs, Story, Credits and Archive are `h2` section headings; tracks are `h3`, under the existing sole album `h1`. Existing classes remain; section-label line-height/case are explicitly retained to neutralize global heading defaults. The sleeve title is the single new internal release-details link, with inherited colour and a restrained hover underline. No facts, credits/personnel, metadata strategy or layout changed.
+- Every intentional public new-tab anchor uses `NewTabLink`, which preserves its children/href/classes, sets `target="_blank"` and `rel="noopener noreferrer"`, and appends one screen-reader-only “(opens in a new tab)”. Existing contextual song/show/PDF descriptions remain without duplicate announcements. Internal links, Header behaviour and Booking/Concert reliability logic are unchanged.
+- Homepage Merch shares the existing catalogue currency policy through pure `app/lib/formatPrice.ts` (re-exported from `productParts` for existing consumers): integer prices stay compact, fractional euros retain cents. `merchImage()` decides whether a real product photo exists on both surfaces; missing/unrecognized photos become text-only, without a logo or empty photo frame. Existing photographed-product composition/CSS is unchanged.
+- Verified cleanup: removed unused `.bg-accent`, `.concertsSection`, `.concertsGrid`; removed unconsumed `recordingNotes` type/data duplication while preserving all structured confirmed credits/airplay/personnel; changed newsletter create-source to `homepage-mailing-list`, matching its current sole form consumer. No existing subscriber records are rewritten.
+- Intentionally retained: `.text-muted` (Turnstile consumer), legacy `.container`/other utilities with consumers, dormant `GalleryFull` (eligible concert galleries), `highlightTrack` metadata, and separate two-decimal order/email amount formatters. No broad component/token cleanup.
+- Verification: nine automated checks pass (`lib/public-presentation.test.ts` and the existing Concerts resilience tests), including real shared-link markup, fractional/whole-euro prices, the newsletter's mocked normalized upsert and unchanged concert policies. Forty-four isolated browser cases at 1920, 1440 × 900, 820 and 375 cover Music headings, preserved credits/personnel/runtime, exactly one sleeve-details link, external/internal link behaviour and matching homepage/catalogue photo/price policies. Twenty-four before/after comparisons of the actual source and CSS against HEAD retain identical geometry and computed typography/colours (existing animations settled in the test only); 188 visible new-tab link names are verified in the accessibility tree. The fixture uses controlled products/shows, native anchor/image substitutes for Next wrappers and consistent fallback fonts; no database writes or emails. A pre-existing Booking overflow with those fixture fonts is unchanged in the baseline comparison, not fixed here. Repository-wide consumer searches confirm the removed selectors/field/label are unused, and the newsletter form remains the endpoint's sole public consumer. Type-check, full lint and diff whitespace checks pass. No commit or push.
+
 ### Concerts / resilience audit follow-up (2026-10-25)
 
 - **Scope:** only dossier navigation, consistent time presentation, poster intrinsic sizing, concert-gallery outage handling and sitemap resilience. No concert facts, photo associations, assets, redirects, Booking, Merch or Music behaviour changed.
@@ -25,7 +56,7 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 5 | Featured Video + Gallery teaser | Done and approved |
 | 5.1 | Video side-column and gallery tablet refinements | Done |
 | 6 | About + Merch (homepage) | Done and approved |
-| 7 | ActionHub removal, Mailing list, Booking / Contact, Footer refinement, page rhythm review | Done, **not committed**. The homepage structure is now complete |
+| 7 | ActionHub removal, Mailing list, Booking / Contact, Footer refinement, page rhythm review | Done. The homepage structure is complete |
 | 8 | `/music` page ("Sleeve") | Done |
 | 9 | `/music/[slug]` release page ("Booklet") | Done |
 | 10 | `/concerts` ("Tour Poster") + `/concerts/past` redirect | Done |
@@ -34,8 +65,8 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 | 13 | `/about` ("Band Profile") | Done |
 | 14 | `/merch` ("Band Catalogue") | Done; superseded in structure by 14.1 |
 | 14.1 | `/merch` Hybrid: Featured + All items + order-request drawer | Done (14.2 included) |
-| 15 | `/booking` ("Booking Sheet") + shared contact constant | Done, **not committed** |
-| Next | `/concerts/[slug]/gallery` (still `GalleryFull`) in the old style; album line-up consistency pass; merch size/variant system; asset replacement | Not started; wait for go-ahead |
+| 15 | `/booking` ("Booking Sheet") + shared contact constant | Done |
+| Next | Remaining deployment/environment confirmations; Legal/RGPD/SEO; merch sizes/variants; press pack; assets; motion | Deferred; see current unresolved summary above. Album personnel and concert resilience are resolved |
 
 ## Visual foundation (Phase 3)
 
@@ -112,14 +143,11 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 - **Verification:** isolated browser tests of the actual Header and CSS, with SSR hydration and stubbed Next navigation, pass open/lock, normal close, navigation close, Escape, unmount, previous inline overflow restoration, and repeated 375→981→375, 820→1440→820, 980→981→980 and 375→1200→375 cycles. The menu stays open/locked at exactly 980px, closes above it, desktop wheel scrolling works, and all tracked open-menu keyboard/media listeners are removed. Desktop primary navigation remains visible and the toggle hidden. No hydration/resize warnings. The running Next dev page was slow to attach client handlers, so these interaction checks used the isolated hydrated Header fixture. No existing Header-specific automated tests were present. Type-check (`tsc --noEmit --incremental false`), full ESLint and `git diff --check` pass.
 - Only the Header state/cleanup code and this handoff note changed. No Booking, Merch, Music, layout, unrelated accessibility/styles or other audit work. No commits or pushes.
 
-## Temporary code to revisit
+## Resilience retained (resolved)
 
-- `app/page.tsx`: try/catch around `getActiveMerchProducts`. The empty list is shown when the database is down.
-- `app/concerts/page.tsx`: try/catch around `getConcertBuckets` (Phase 10). It passes `null` to `TourPoster`, which shows "Dates unavailable right now" and "Archive unavailable right now". Real resilience: keep it.
-- `app/page.tsx`: try/catch around `getConcertBuckets`. On failure it passes `null` to Live, which shows the neutral unavailable state, not "No public dates". This is worth keeping as real resilience.
-- ~~`actionHub.tsx`: `getNextConcert().catch(() => null)`~~. Gone with ActionHub (Phase 7).
-- These were added because the local Postgres was not running. Decide whether to keep them as real resilience, which is recommended for the homepage, or remove them once the database setup is sorted.
-- `/merch` and `/concerts` still crash without the database.
+- Homepage Merch, `/merch`, homepage Live and `/concerts` retain their fetch guards and distinct unavailable states. Homepage Merch receives `null` on a failure, not an empty list, so its email/catalogue fallback remains visible.
+- Dossier/gallery and sitemap outage handling are resolved in the Concerts follow-up. These guards are intentional production resilience, not temporary local-DB workarounds to remove.
+- ActionHub and its duplicate next-show block were removed in Phase 7.
 
 ## Phase 4: Live + visual break
 
@@ -330,7 +358,7 @@ Nothing else imported it.
 - Each sleeve:
   - **Front (ink):** the 1875px `coverMaster`, square, uncropped, `min(cols 1–7, 74svh)`, bleeding off the page edge. No card, blur backdrop or offset.
   - **Back (ink):** mono meta line (type — DD.MM.YYYY — NN tracks — runtime, all computed), condensed title, tracklist as the main typography (mono index, condensed title, mono duration, ember "Single" text instead of a pill), "Total" rule, then streaming links as plain ruled rows (Spotify, Apple Music, YouTube Music; Bandcamp only if filled, currently empty so hidden).
-  - **Liner notes (bone):** `story` in serif italic, and a colophon of confirmed `credits`, `airplay`, the line-up from `about.ts` (`members`), and "Live dates →".
+  - **Liner notes (bone):** `story` in serif italic, and a colophon of confirmed `credits`, `airplay`, release-specific Recording personnel, and "Live dates →". The original Phase 8 current-member block was replaced by the confirmed historical personnel correction below.
 - No iframe, cards, radii, glow, pills, "For fans of", "Sound" or "Inside the record".
 - At 900px and below: full-bleed artwork, then meta, title, **streaming links before the tracklist** (listening is the main mobile action), tracklist, total, and stacked liner notes. Colophon rows stack label over value at ≤480px.
 - SEO metadata is unchanged.
@@ -339,8 +367,8 @@ Nothing else imported it.
 - `Release.coverMaster?`: the high-resolution artwork path (`/album-cover.jpg`, 1875px) for large presentations; `cover` stays the 1000px optimized file used elsewhere.
 - `Release.airplay?: { track, station }[]`: structured airplay data (Uprising — Classic 21; Wrath Of Gaia — Radio Panik), replacing the sentence form on `/music`.
 - `credits` is documented as confirmed-only. Unchanged values: Recorded — Project Zero Studio; Produced — Yarne Heylen.
-- The line-up is read from `about.ts`. The hard-coded `bandCredits` / `productionCredits` / `fanRefs` in the old page are gone.
-- `recordingNotes` is **not** rendered on `/music`. It contains "Produced, mixed and mastered by Yarne Heylen", and mix/master is unconfirmed. It stays in the data because `/music/[slug]` (not modified) still uses it.
+- Current state: recording personnel comes only from the shared release record, never `about.ts`. The old hard-coded `bandCredits` / `productionCredits` / `fanRefs` remain removed.
+- Historical `recordingNotes` was superseded by structured credits/airplay in Phase 9 and its unused type/data was removed in the final cleanup. Unconfirmed mix/master claims are not rendered.
 
 **Not changed in Phase 8:** `/music/[slug]` (rebuilt in Phase 9).
 
@@ -352,7 +380,7 @@ Nothing else imported it.
 
 **Unverified data (do not treat as confirmed)**
 - **Tracklist/durations:** corrected to the supplied audited eight-track edition and derived 41:25 runtime in Phase 9.1 below; supersedes the previous seven-track/29:45 data.
-- **Mix/master credit:** still only in `recordingNotes`, used by `/music/[slug]`.
+- **Mix/master credit:** unconfirmed and not rendered; deleting unused `recordingNotes` does not establish those roles as facts.
 - **Artwork credit:** not published anywhere on `/music`. The old page's "Artwork: Until They Fall" is removed until confirmed.
 - **Bandcamp:** hidden until the link is confirmed.
 - **Line-up for the album:** the misleading current-member colophon was removed in the album personnel correction below. Subsequently confirmed historical performers are now rendered separately as Recording personnel (see below).
@@ -367,9 +395,9 @@ Hierarchy: homepage = teaser, `/music` = record sleeve, `/music/[slug]` = full b
   - the `coverMaster` artwork as a centred, uncropped plate (`object-fit: contain`, `min(100%, 86svh)`);
   - a caption with a roman marker, a mono line (type — date — tracks — runtime) and the **only** `h1` (the release title);
   - a listen row directly under it: plain ruled links side by side on desktop, stacked 48px rows on mobile.
-- **II. Songs (bone):** each track as an oversized numbered chapter: mono number, title as an `h2` in large condensed type, mono duration. A note line appears **only with real data**: "Single" (ember), "Airplay — station" (matched from `airplay`), "Video ↗" (from the new `videoId`).
+- **II. Songs (bone):** each track as an oversized numbered chapter: mono number, title as an `h3` beneath the Songs `h2` in large condensed type (semantic cleanup; appearance unchanged), mono duration. A note line appears **only with real data**: "Single" (ember), "Airplay — station" (matched from `airplay`), "Video ↗" (from the new `videoId`).
 - **III. Story (bone):** `release.story` in large serif italic, columns 4–10. It is not rendered without a story; there is no fallback copy.
-- **IV. Credits (ink):** only confirmed data, in columns: Recording (`credits`) and Broadcast (`airplay`). **Personnel is omitted** until the 2023 recording line-up is confirmed. Mix/master, artwork, label and catalogue are omitted.
+- **IV. Credits (ink):** only confirmed data, in columns: Recording (`credits`) and Broadcast (`airplay`). Personnel was initially omitted; the four subsequently confirmed 2023 performers now render as release-specific Recording personnel (see correction below). Mix/master, artwork, label and catalogue are omitted.
 - **V. Archive (ink):** other releases as a typographic index (only when there are any), plus "Discography →" and "Merch →".
 - Roman markers are computed from the parts that actually render, so they never skip a number.
 - At 900px and below: the plate goes full-bleed, the listen links stack, and each song shows its number and duration on one line with the title below; the credit columns stack.
@@ -393,7 +421,7 @@ Hierarchy: homepage = teaser, `/music` = record sleeve, `/music/[slug]` = full b
 
 **Data model** (`app/lib/music.ts`)
 - `Track.videoId?`: the YouTube id of the track's official video. Set `9Wvpovk_Tg4` on "Sent To Die" (the official video, also featured on the homepage).
-- `recordingNotes` and `highlightTrack` are now **not rendered anywhere**. `recordingNotes` contains the unconfirmed "Produced, mixed and mastered by Yarne Heylen". It is kept in the data for now; delete it, or split it into confirmed `credits`, once mix/master is confirmed.
+- `recordingNotes` was not rendered after Phase 9 and its unused type/data was removed in the final cleanup. Structured confirmed credits, airplay and historical personnel remain authoritative. `highlightTrack` remains non-rendered metadata, intentionally untouched.
 
 **Deleted dead components** (no remaining imports, verified by grep before deletion)
 - `app/components/music/musicFeaturedRelease/`
@@ -493,7 +521,8 @@ Hierarchy: homepage Live = teaser; `/concerts` = tour poster / archive; `/concer
 - `reliableTimes(show)`: only `doorsTime` / `showTime`, never the seeded 12:00 start time. **If doors and show are identical, both are omitted** (not corrected). Currently this affects Braine (18:00 / 18:00).
 - `formatLongDate`.
 
-**Confirmed photos** (new `app/lib/concertPhotos.ts`)
+**Confirmed photos** (historical Phase 11 implementation; superseded by Phase 12 and the Concerts follow-up)
+- Current rule: only catalogue photos with an explicit `event` equal to the show slug qualify. No current photos have that confirmed association. The city-based behaviour recorded below is historical, not a current eligibility rule.
 - A concert gallery path is shown only when its entry in the photo catalogue (`app/lib/gallery.ts`) has `meta` naming the show's city. Uncatalogued paths, or paths catalogued elsewhere, are hidden.
 - **Arlon:** only `band2` ("Arlon, BE") shows. `band1` (catalogued "Brussels, BE") and `bandall` ("Festival stage") are excluded.
 - **Consequence:** future concert photos must be added to the catalogue with the city in `meta`, or a dedicated confirmation/credit field must be added to the data, before they appear.
@@ -530,7 +559,7 @@ Hierarchy: homepage Live = teaser; `/concerts` = tour poster / archive; `/concer
 - `app/components/concerts/concertGallery/`;
 - `app/concerts/[slug]/concertDetail.module.css`.
 
-**Kept:** `GalleryFull` (used by `/concerts/[slug]/gallery` and `/gallery/concert-photos`) and `/concerts/[slug]/gallery` itself, unchanged.
+**Kept at Phase 11:** `GalleryFull` and the concert gallery route. Current state: only eligible `/concerts/[slug]/gallery` uses the viewer; `/gallery/concert-photos` is a redirect, and outage/eligibility handling is resolved.
 
 **Tested (Phase 11)**
 - Real data (the local database was reachable):
@@ -675,7 +704,7 @@ Hierarchy: homepage Live = teaser; `/concerts` = tour poster / archive; `/concer
 ## Album personnel correction (resolved)
 
 The current member data includes **Valentin Coutant (joined 2024)** and **Krys Bader (joined 2025)**, after the 01.12.2023 album release. Current membership is not evidence of recording personnel.
-- Removed the complete "Line-up" definition list and `members` import from `app/components/music/releaseSleeve/releaseSleeve.tsx`. `/music` now omits album personnel instead of importing the current band into its album colophon. No replacement heading, disclaimer or guessed former members were added. The existing flex stack closes the removed block's space without CSS/layout changes.
+- Removed the complete "Line-up" definition list and `members` import from `app/components/music/releaseSleeve/releaseSleeve.tsx`. At that removal stage `/music` omitted album personnel instead of importing the current band; the confirmed historical list was subsequently added below. No replacement heading, disclaimer or guessed former members were added. The existing flex stack closes the removed block's space without CSS/layout changes.
 - At the removal stage, `/music/sent-to-die` already omitted Personnel and needed no code changes. No verified performer list was available then; the subsequent confirmed recording-personnel addition is documented below. Confirmed Recorded — Project Zero Studio and Produced — Yarne Heylen credits, airplay, tracklist/runtime and all other release data remained unchanged.
 - `/about`, `app/lib/about.ts`, current-member listings, homepage/current-band identity and Booking's five-member facts were not edited. Historical performers were left omitted until the release-specific confirmation below.
 - Verification: browser checks at 1440, 820 and 375px confirm both Music pages contain no current-member personnel or empty personnel heading, retain the exact recording/production credits, eight songs and 41:25, and have no horizontal overflow. `/music` has only the remaining credit list and Live dates link in its colophon, separated by the existing CSS gap, with no empty personnel spacer. `/about` still displays Valentin and Krys at all three widths. No existing tests target this presentation; no test files were added for the block removal. Type-check (`tsc --noEmit --incremental false`), full ESLint and `git diff --check` pass. No commits or pushes.
@@ -917,7 +946,7 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
 - **Promoter downloads:** no press-kit PDF or press-photo pack exists yet.
 - The rider is v. 18.02.2026, with the current line-up. When it changes, update `TECH_RIDER` (version and size) together with the file.
 
-### Phase 15.1: Turnstile site-key guard
+### Phase 15.1: Turnstile site-key guard (historical; superseded by 15.2)
 
 - `bookingClient.tsx` checks the shape of `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (`/^[0-3]x[A-Za-z0-9_-]+$/`, i.e. `0x…` live keys or `1x…`/`2x…`/`3x…` Cloudflare test keys).
 - **A malformed key no longer crashes the widget** ("Invalid input for parameter sitekey"). The widget is skipped and a clear `console.error` explains what to fix.
@@ -940,7 +969,7 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
 - **Client/form:** only explicit saved confirmation resets the form. Complete delivery preserves the existing success message and adds the reference. Incomplete delivery uses the existing result area/styles to say the request was saved, email delivery was incomplete, do not submit again, keep the reference, and contact `contact@untiltheyfall.com` via a mailto link if needed. The reset form retains the result/reference until another submission starts. Storage failure preserves entered data for retry. No fields, validation, CSS/layout, email content, or Turnstile behaviour/configuration changed.
 - **Reference:** reuse the existing opaque CUID returned as `bookingRequestId`, labelled “Booking reference”. It identifies the saved row directly for support; it is already exposed by this endpoint and grants no access to request data. No additional public lookup endpoint, schema change, migration, or environment correction is needed for this fix.
 - **Verification:** `node --import tsx --test lib/booking-api.test.ts lib/turnstile.test.ts` passes (18 tests), covering all four email outcomes, synchronous email failure, storage failure/no email attempts, safe responses, explicit persistence parsing, and existing Turnstile checks. An isolated browser fixture using the real client/form/widget with mocked network/provider runs all five outcomes with Turnstile enabled and disabled (10 passing flows): correct reference/warning/mailto, unchanged fields, no retry message for saved requests, reset after storage and preserved data after storage failure, token submission and widget reset. No real booking/email was sent. Type-check (`tsc --noEmit --incremental false`) and full ESLint pass.
-- **Still outstanding:** Booking has no duplicate-submission protection. A lost response or another submission can create a second stored request; this pass adds no idempotency. No commits or pushes.
+- **Historical Phase 15.3 limitation, resolved by Phase 15.4:** duplicate protection was deliberately absent in that pass. Same-key retries are now protected server-side; different keys remain distinct attempts.
 
 ### Phase 15.4: Booking duplicate-submission protection
 
@@ -972,7 +1001,9 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
 - Do not try to solve this further with aggressive `object-position` or cropping.
 - The Hero must stay ready to take a dedicated mobile asset. `HERO_IMAGE` in `hero.tsx` is the single place to add it, e.g. a `srcMobile` rendered through `<picture>` / art direction at ≤720px. The layout does not depend on the asset.
 
-## Known weaknesses / open items
+## Remaining asset/content limitations and deferred design observations
+
+These notes preserve genuine content/asset questions and accepted composition observations. Resolved code findings are listed in the current summary, not active blockers here.
 
 - **About imagery (Phase 13):**
   - The member images are a mixed set: three landscape stage crops from the Henoumont session (baked border plus signature) and two vertical Vangelder portraits with large baked watermarks.
@@ -992,7 +1023,6 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
   - 2048px maximum, so the full-bleed opener is slightly soft at 1920.
 - **Gallery rhythm (Phase 12):** chapters II and III hold one photo each, so the lower half of the page is two single images with a lot of ink around them. It will improve as more sets are added.
 
-- ~~`/concerts` detail pages~~: resolved (Phase 11).
 - **Show pages without data (Phase 11):** 10 of 12 shows have only date, city and venue. Their pages are the masthead plus neighbours: a single ink plane with no bone section. This is intentional, but sparse.
 - **`/concerts/[slug]/gallery` (not redesigned):** still uses legacy `GalleryFull`, but now accepts only explicit `confirmedPhotos()` associations (no generic DB gallery paths); unknown/ineligible shows return 404 and database failures render the restrained unavailable state. It is linked from the dossier only when more than five confirmed photos exist. Viewer redesign remains outside this batch.
 - **Concert data to verify (Phase 11):**
@@ -1000,7 +1030,7 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
   - Arlon's line-up omits Until They Fall while Braine's includes it;
   - Namur's note "Tremplin Durbuy Rock Fest" is the same label as Arlon's (correct?);
   - the Arlon gallery association (`band1`, `bandall`) is unconfirmed;
-  - photo credits have no data field yet.
+  - photo credits now have catalogue fields; permissions, wording and show associations still require confirmation.
 - **`/concerts` zero state (Phase 10):** with no dates, the giant "LIVE" sits above a single ruled line and the bone archive becomes the real content. This is intentional, but the top half is sparse.
 - **`/concerts` archive poster anchoring (Phase 11.1):**
   - Archive year posters now hang from the year rule: poster top = rule = top of the first show row, left edge on the column 9 grid line (measured at 1920 and 1440).
@@ -1014,7 +1044,6 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
 
 - **`/music` artwork (Phase 8):** as the dominant object, the saturated, AI-looking digital cover is even more prominent than on the homepage. The physical CD engraving would suit the direction better once a clean scan and credit exist.
 - **`/music` desktop (Phase 8):** at 1920 there is a wide ink gap between the artwork and the tracklist column, and the bone liner notes have empty space under the story. Both read as deliberate, but could be tightened.
-- ~~`/music` → `/music/sent-to-die`~~: resolved, the release page is rebuilt (Phase 9).
 - **Release page cover spread (Phase 9):** at 1920×1080 the plate fills the viewport height, so the title and listen row sit just below the fold. That is intentional (the artwork as the object), but the main listen action needs one scroll on large screens.
 - **Release page archive (Phase 9):** with one release, the archive part is only two links on a full ink band. It will fill out when more releases exist.
 - **Contact email conflict (open, see Phase 15):** the public site address is `contact@untiltheyfall.com` (now one constant). `presskit.md` still lists `untiltheyfallband@gmail.com`. **The band must confirm whether the Gmail address is old or still monitored.**
@@ -1027,9 +1056,8 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
 - **Video side column (Phase 5.1):** at 1920 a gap remains between the large title and "YouTube ↗". It now reads as heading/action spacing rather than an accident.
 - **About line-up:** taken from `about.ts`. Make sure it matches the people in the `band-test` photo and the current line-up.
 
-- ~~Duplicate next-show block~~: resolved, ActionHub removed (Phase 7).
 - **Live list at 1920 (Phase 4):** a wide empty band between the city and venue columns. It is acceptable as poster air, but could be tightened.
-- **Featured Live state (Phase 4):** tested only with the Braine 1:1 poster. A wide poster (e.g. Arlon, 1400×733) will render shorter next to the giant date; check it once real data exists.
+- **Featured Live state:** both square Braine and wide Arlon poster ratios were checked in the Concerts follow-up, including reserved sizes before loading. The shorter natural wide-artwork height is intentional.
 - **TEMPORARY: visual break asset.** `band1.jpg` stays until a confirmed, credited, clean high-resolution master is available (see Phase 4).
 
 - **Hero photo:** 1920px source, scaled 1.1× to crop out a baked-in border and signature. It is slightly soft on large screens. A clean high-resolution master is needed; swap it via `HERO_IMAGE` in `hero.tsx`, and set `bleed: 1` if it has no border.
@@ -1037,8 +1065,6 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
 - **Header mark:** Gerard at 28px is still a smudge. It needs the four-eye SVG; don't invent a new symbol in the meantime.
 - **Bone column at 1920:** below the platforms, the bone column runs empty next to the lower cover and the title. It now reads as an open plane rather than a gap, but it could be revisited when the next section is designed.
 - **Cover artwork:** its saturated, AI-looking style dominates the section. This is a content issue, not a layout one.
-- ~~Homepage style clash~~: resolved; every homepage section is now redesigned. The **internal pages** still use the old rounded/card styling (with the ember remap) and now clash with the new header and footer.
-- ~~Header mobile menu links~~: resolved in Phase 7.1. The header and footer share `BAND_PROFILES`.
-- **Local merch section:** while the local database is down, Merch renders nothing, so About is followed directly by the Mailing list (both ink). In production, with products, the bone Merch plane sits between them.
-- **Tickets link:** untested with real data, because the database is unavailable locally.
+- **Homepage Merch state (resolved):** database failure now retains the bone unavailable section with contact/catalogue links; only a genuinely empty product list omits the section.
+- **Ticket verification:** rendering, separate dossier navigation and past-ticket suppression are covered by controlled browser fixtures. External ticket checkout itself has not been exercised.
 - **Dev only:** the Next.js dev badge overlaps the lower-left corner on mobile.

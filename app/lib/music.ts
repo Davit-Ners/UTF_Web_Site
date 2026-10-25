@@ -27,7 +27,6 @@ export type Release = {
   bandcampUrl?: string;
   tracks?: Track[];
   story?: string;
-  recordingNotes?: string[];
   /* Confirmed credits only; omit any role that is not confirmed */
   credits?: { role: string; name: string }[];
   /* Confirmed performers on this release's recording, separate from current members */
@@ -54,11 +53,6 @@ export const latestRelease: Release = {
   bandcampUrl: "",
   story:
     "Released on December 1, 2023, Sent To Die is the band’s first full-length record. Aggressive riffs, melodic leads and atmospheric weight run through songs shaped by pressure, collapse and release.",
-  recordingNotes: [
-    "Recorded at Project Zero Studio.",
-    "Produced, mixed and mastered by Yarne Heylen.",
-    "Uprising aired several times on Classic 21; Wrath Of Gaïa aired on Radio Panik.",
-  ],
   credits: [
     { role: "Recorded", name: "Project Zero Studio" },
     { role: "Produced", name: "Yarne Heylen" },

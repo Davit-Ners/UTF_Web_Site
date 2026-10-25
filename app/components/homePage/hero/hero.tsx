@@ -1,3 +1,4 @@
+import NewTabLink from "@/app/components/newTabLink";
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
@@ -70,9 +71,9 @@ export default function Hero() {
 
         <div className={styles.actions}>
           {latestRelease.spotifyUrl ? (
-            <a href={latestRelease.spotifyUrl} target="_blank" rel="noreferrer" className="action-link">
+            <NewTabLink href={latestRelease.spotifyUrl} className="action-link">
               Listen <span className="arrow" aria-hidden="true">↗</span>
-            </a>
+            </NewTabLink>
           ) : null}
           <a href="#live" className="action-link">
             Live <span className="arrow" aria-hidden="true">→</span>
