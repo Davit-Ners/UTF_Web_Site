@@ -8,8 +8,8 @@ import styles from "./merch.module.css";
 export default function MerchView({ products }: { products: Product[] | null }) {
   const facts = [
     products ? `${String(products.length).padStart(2, "0")} items` : null,
-    "Ordered by email",
-    `Shipping ${SHIPPING_FLAT_EUR} € — free from ${FREE_SHIPPING_FROM_EUR} €`,
+    "Requested by email",
+    `Shipping estimate ${SHIPPING_FLAT_EUR} € — free from ${FREE_SHIPPING_FROM_EUR} €`,
   ].filter(Boolean);
 
   const mastheadContent = (
@@ -17,7 +17,8 @@ export default function MerchView({ products }: { products: Product[] | null }) 
       <h1 className={styles.word}>Merch</h1>
       <p className={`meta ${styles.facts}`}>{facts.join(" — ")}</p>
       <p className={styles.notice}>
-        No payment on the site. We confirm stock, shipping and payment details by email.
+        Add items to a request and send it. We confirm availability, shipping and payment by
+        email. No payment is taken on the site.
       </p>
     </>
   );

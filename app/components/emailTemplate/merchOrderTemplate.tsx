@@ -144,13 +144,13 @@ export function MerchOrderConfirmationTemplate({
           Hi {order.customerName},
           <br />
           <br />
-          We received your merch order request for <strong>Until They Fall</strong>.
-          No payment has been taken yet. We will confirm availability, shipping and
-          payment details by email.
+          We received your merch request for <strong>Until They Fall</strong>.
+          This is a request, not a completed purchase: no payment has been taken.
+          We will confirm availability, shipping and payment with you by email.
         </p>
 
         <Section>
-          <Detail label="Order" value={order.orderNumber} />
+          <Detail label="Request reference" value={order.orderNumber} />
           <Detail label="Country" value={order.country} />
           <Detail label="Estimated total" value={formatPrice(order.total)} />
         </Section>
@@ -182,7 +182,7 @@ export function MerchOrderConfirmationTemplate({
         </p>
 
         <p style={footerStyle}>
-          Merch order system - Until They Fall {new Date().getFullYear()}
+          Merch requests - Until They Fall {new Date().getFullYear()}
         </p>
       </div>
     </div>

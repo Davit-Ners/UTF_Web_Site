@@ -87,7 +87,7 @@ export default function OrderPanel({
       </header>
 
       <p className={styles.notice}>
-        No payment is taken on the site. We confirm stock, shipping and payment details by email.
+        No payment is taken on the site. We confirm availability, shipping and payment by email.
       </p>
 
       {hasItems ? (
@@ -221,7 +221,7 @@ export default function OrderPanel({
             <dd>{shippingEstimate === 0 ? "Free" : formatPrice(shippingEstimate)}</dd>
           </div>
           <div className={styles.total}>
-            <dt>Total</dt>
+            <dt>Estimated total</dt>
             <dd>{formatPrice(total)}</dd>
           </div>
         </dl>
@@ -237,6 +237,11 @@ export default function OrderPanel({
           {orderStatus.type === "error" ? <span className={styles.err}>{orderStatus.message}</span> : null}
         </p>
 
+        <p className={styles.nextStep}>
+          Sending this request does not complete a purchase. We&apos;ll confirm availability,
+          shipping and payment with you by email.
+        </p>
+
         {/* Information only; a new tab keeps the order request open */}
         <p className={styles.privacyNote}>
           We use your details to handle your merch request and to contact you about availability,
@@ -244,7 +249,7 @@ export default function OrderPanel({
         </p>
 
         <button type="submit" className={styles.submit} disabled={!hasItems || isLoading}>
-          <span>{isLoading ? "Sending…" : "Request order"}</span>
+          <span>{isLoading ? "Sending…" : "Send request"}</span>
           <span aria-hidden="true">→</span>
         </button>
       </form>

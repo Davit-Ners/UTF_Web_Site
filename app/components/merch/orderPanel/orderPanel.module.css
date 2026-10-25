@@ -255,6 +255,15 @@
   color: var(--bone);
 }
 
+/* What happens next: the request is not a purchase */
+.nextStep {
+  color: var(--bone);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
 .privacyNote {
   font-family: var(--font-mono);
   font-size: 0.6875rem;

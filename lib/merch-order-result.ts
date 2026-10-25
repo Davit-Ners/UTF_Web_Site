@@ -42,8 +42,8 @@ export function getSavedMerchOrderStatus(result: unknown): SavedMerchOrderStatus
       type: "success",
       orderNumber,
       message: response.alreadyProcessed === true
-        ? `Request already received. Order ${orderNumber} is waiting for confirmation.`
-        : `Request sent. Order ${orderNumber} is waiting for confirmation.`,
+        ? `Request already received. Reference ${orderNumber}. We'll follow up by email. No payment has been taken.`
+        : `Request saved. Reference ${orderNumber}. We'll follow up by email. No payment has been taken.`,
     };
   }
   return {

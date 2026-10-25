@@ -36,7 +36,7 @@ function Label({ product, n, ...add }: AddProps & { product: Product; n: number 
         {state ? <span className={styles.state}>{state}</span> : null}
       </p>
       {needsSize(product.slug) && state !== "Sold out" ? (
-        <p className={styles.sizeNote}>Size: add it in your order notes</p>
+        <p className={styles.sizeNote}>Size: add it in your request notes</p>
       ) : null}
       <div className={styles.action}>
         <AddButton product={product} tone="bone" {...add} />

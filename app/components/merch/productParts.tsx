@@ -48,7 +48,7 @@ export function AddButton({
       onClick={() => onAdd(product)}
     >
       <span>
-        {added ? "Added ✓" : "Add to order"}
+        {added ? "Added ✓" : "Add to request"}
         <span className="srOnly">: {product.name}</span>
       </span>
       <span className={styles.addMark} aria-hidden="true">

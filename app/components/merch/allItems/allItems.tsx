@@ -38,7 +38,7 @@ function Row({ product, n, ...add }: AddProps & NumberedProduct) {
         <span className={styles.name}>{product.name}</span>
         {product.shortDesc ? <span className={styles.desc}>{product.shortDesc}</span> : null}
         {needsSize(product.slug) && state !== "Sold out" ? (
-          <span className={styles.sizeNote}>Size: add it in your order notes</span>
+          <span className={styles.sizeNote}>Size: add it in your request notes</span>
         ) : null}
       </span>
       <span className={styles.price}>
