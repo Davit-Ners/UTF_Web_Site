@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ConcertPoster from "../concertPoster";
 import Link from "next/link";
 import type { Concert } from "@/app/lib/concerts";
 import {
@@ -7,6 +7,7 @@ import {
   splitCity,
   supportingActs,
   usefulTitle,
+  reliableTimes,
 } from "@/app/lib/concertFormat";
 import styles from "./tourPoster.module.css";
 
@@ -24,15 +25,13 @@ function longDate(date: string) {
   return `${day}.${month}.${year}`;
 }
 
-/* Posters keep their own ratio: width/height only seed the box until the file loads */
+/* Reserve the served artwork's real intrinsic ratio before it loads. */
 function Poster({ show, sizes }: { show: Concert; sizes: string }) {
   if (!show.posterUrl) return null;
   return (
-    <Image
-      src={show.posterUrl}
+    <ConcertPoster
+      show={show}
       alt={`${usefulTitle(show) ?? show.venue} poster, ${longDate(show.date)}`}
-      width={1200}
-      height={1200}
       sizes={sizes}
       className={styles.poster}
     />
@@ -138,8 +137,10 @@ function UpcomingList({ shows }: { shows: Concert[] }) {
               </time>
               <div className={styles.where}>
                 <p className={styles.city}>
-                  {city.name}
-                  {city.country ? <span className={styles.country}>{city.country}</span> : null}
+                  <Link href={`/concerts/${show.id}`}>
+                    {city.name}
+                    {city.country ? <span className={styles.country}>{city.country}</span> : null}
+                  </Link>
                 </p>
                 <p className={styles.venue}>{show.venue}</p>
                 {support ? <p className={styles.support}>{support}</p> : null}
@@ -169,11 +170,12 @@ function FeaturedShow({ show }: { show: Concert }) {
   const city = splitCity(show.city);
   const title = usefulTitle(show);
   const support = withLine(show);
+  const times = reliableTimes(show);
   const facts = [
     { label: "Venue", value: show.venue },
     { label: "City", value: city.country ? `${city.name}, ${city.country}` : city.name },
-    show.doorsTime ? { label: "Doors", value: show.doorsTime } : null,
-    show.showTime ? { label: "Show", value: show.showTime } : null,
+    times.doors ? { label: "Doors", value: times.doors } : null,
+    times.show ? { label: "Show", value: times.show } : null,
     show.price ? { label: "Price", value: show.price } : null,
   ].filter(Boolean) as { label: string; value: string }[];
 

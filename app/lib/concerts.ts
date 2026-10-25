@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { getOptimizedImagePath } from "@/app/lib/imageOptimization";
+import { concertPosterDimensions } from "./concertPosters";
 
 const DEFAULT_TIMEZONE = "Europe/Brussels";
 
@@ -12,6 +13,7 @@ export type Concert = {
   ticketUrl?: string;
   title?: string;
   posterUrl?: string;
+  posterDimensions?: { width: number; height: number };
   lineup?: string[];
   doorsTime?: string;
   showTime?: string;
@@ -98,6 +100,7 @@ function mapConcert(row: ConcertRow): Concert {
   const galleryImages = row.images
     .filter((image) => image.kind === "GALLERY")
     .map((image) => getOptimizedImagePath(image.url) ?? image.url);
+  const posterUrl = getOptimizedImagePath(posterImage) ?? undefined;
 
   return {
     id: row.slug,
@@ -107,7 +110,8 @@ function mapConcert(row: ConcertRow): Concert {
     note: row.note ?? undefined,
     ticketUrl: sanitizeLink(row.ticketUrl),
     title: row.title ?? undefined,
-    posterUrl: getOptimizedImagePath(posterImage) ?? undefined,
+    posterUrl,
+    posterDimensions: concertPosterDimensions(posterUrl),
     lineup: row.lineupEntries.map((entry) => entry.name),
     doorsTime: formatTime(row.doorsAt, timeZone),
     showTime: formatTime(row.showAt, timeZone),

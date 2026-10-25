@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ConcertPoster from "../concertPoster";
 import Link from "next/link";
 import type { Concert } from "@/app/lib/concerts";
 import {
@@ -90,12 +90,9 @@ export default function ShowDossier({ show, isPast, previous, next }: Props) {
 
         {show.posterUrl ? (
           <div className={styles.poster}>
-            {/* Intrinsic ratio: width/height only seed the box */}
-            <Image
-              src={show.posterUrl}
+            <ConcertPoster
+              show={show}
               alt={`${title ?? show.venue} poster, ${formatLongDate(show.date)}`}
-              width={1200}
-              height={1200}
               priority
               sizes="(max-width: 900px) 100vw, 40vw"
               className={styles.posterImage}
@@ -203,7 +200,7 @@ export default function ShowDossier({ show, isPast, previous, next }: Props) {
   );
 }
 
-export function ShowUnavailable() {
+export function ShowUnavailable({ gallerySlug }: { gallerySlug?: string } = {}) {
   return (
     <div className={styles.page}>
       <nav className={styles.crumbs} aria-label="Breadcrumb">
@@ -211,11 +208,16 @@ export function ShowUnavailable() {
       </nav>
       <header className={`${styles.masthead} ${styles.unavailable}`}>
         <div className={styles.mastText}>
-          <h1 className={styles.city}>Show unavailable right now</h1>
+          <h1 className={styles.city}>{gallerySlug ? "Photos temporarily unavailable" : "Show unavailable right now"}</h1>
         </div>
       </header>
       <nav className={styles.neighbours} aria-label="Other shows">
-        <Link href="/concerts" className={styles.allShows}>
+        {gallerySlug ? (
+          <Link href={`/concerts/${encodeURIComponent(gallerySlug)}`} className={styles.allShows}>
+            Back to show <span aria-hidden="true">→</span>
+          </Link>
+        ) : null}
+        <Link href={gallerySlug ? "/concerts#archive" : "/concerts"} className={styles.allShows}>
           All shows <span aria-hidden="true">→</span>
         </Link>
       </nav>

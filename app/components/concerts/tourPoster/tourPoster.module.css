@@ -129,6 +129,15 @@
   vertical-align: 0.9em;
 }
 
+.city a {
+  color: inherit;
+}
+
+.city a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 .venue,
 .support {
   margin-top: 6px;
@@ -445,6 +454,11 @@
 
 /* === Stacked === */
 @media (max-width: 900px) {
+  /* Keep the archive flex item at its final width while posters are pending. */
+  .yearPosters {
+    width: 100%;
+  }
+
   .listWrap,
   .feature,
   .chapter {

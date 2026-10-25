@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import GalleryFull, { type GalleryFullPhoto } from "@/app/components/gallery/galleryFull/galleryFull";
 import { confirmedPhotos } from "@/app/lib/concertPhotos";
 import { getConcertById } from "@/app/lib/concerts";
+import { ShowUnavailable } from "@/app/components/concerts/showDossier/showDossier";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -11,7 +12,13 @@ export const revalidate = 60;
 
 export default async function ConcertGalleryPage({ params }: Props) {
   const { slug } = await params;
-  const concert = await getConcertById(slug);
+  let concert;
+  try {
+    concert = await getConcertById(slug);
+  } catch (error) {
+    console.error("Concert photos unavailable:", error);
+    return <ShowUnavailable gallerySlug={slug} />;
+  }
 
   /* Only catalogue photos explicitly linked to this show */
   const confirmed = concert ? confirmedPhotos(concert) : [];

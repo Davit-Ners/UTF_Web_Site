@@ -108,6 +108,15 @@
   min-width: 0;
 }
 
+.city a {
+  color: inherit;
+}
+
+.city a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 .country {
   margin-left: 0.6em;
   font-family: var(--font-mono);

@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
-import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
+import ConcertPoster from "@/app/components/concerts/concertPoster";
+import { reliableTimes } from "@/app/lib/concertFormat";
 import type { Concert } from "@/app/lib/concerts";
 import styles from "./live.module.css";
 
@@ -71,11 +71,12 @@ function NoDates() {
 function FeaturedShow({ show }: { show: Concert }) {
   const { year, day, monthName } = dateParts(show.date);
   const city = splitCity(show.city);
+  const times = reliableTimes(show);
   const facts = [
     { label: "Venue", value: show.venue },
     { label: "City", value: city.country ? `${city.name}, ${city.country}` : city.name },
-    show.doorsTime ? { label: "Doors", value: show.doorsTime } : null,
-    show.showTime ? { label: "Show", value: show.showTime } : null,
+    times.doors ? { label: "Doors", value: times.doors } : null,
+    times.show ? { label: "Show", value: times.show } : null,
     show.price ? { label: "Price", value: show.price } : null,
   ].filter(Boolean) as { label: string; value: string }[];
 
@@ -89,15 +90,12 @@ function FeaturedShow({ show }: { show: Concert }) {
       <div className={`${styles.feature} ${show.posterUrl ? "" : styles.noPoster}`}>
         {show.posterUrl ? (
           <div className={styles.poster}>
-            <Image
-              src={show.posterUrl}
+            <ConcertPoster
+              show={show}
               alt={`${show.title ?? show.venue} poster`}
-              width={1200}
-              height={1200}
               className={styles.posterImage}
               sizes="(max-width: 900px) 100vw, 40vw"
-              placeholder="blur"
-              blurDataURL={IMAGE_BLUR_DATA_URL}
+              blur
             />
           </div>
         ) : null}
@@ -163,8 +161,10 @@ function TourList({ shows }: { shows: Concert[] }) {
                 {day}.{month}.{year.slice(2)}
               </time>
               <p className={styles.city}>
-                {city.name}
-                {city.country ? <span className={styles.country}>{city.country}</span> : null}
+                <Link href={`/concerts/${show.id}`}>
+                  {city.name}
+                  {city.country ? <span className={styles.country}>{city.country}</span> : null}
+                </Link>
               </p>
               <p className={styles.venue}>{show.venue}</p>
               <div className={styles.rowAction}>

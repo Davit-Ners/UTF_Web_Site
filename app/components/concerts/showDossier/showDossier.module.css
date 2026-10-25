@@ -426,6 +426,11 @@
 
 /* === Stacked === */
 @media (max-width: 900px) {
+  /* The flex item must reserve its width before the artwork has loaded. */
+  .poster {
+    width: 100%;
+  }
+
   .masthead {
     display: flex;
     flex-direction: column;
