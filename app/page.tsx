@@ -11,8 +11,24 @@ import VisualBreak from "./components/homePage/visualBreak/visualBreak";
 import { getConcertBuckets, type Concert } from "./lib/concerts";
 import { getActiveMerchProducts } from "./lib/merch";
 import { latestRelease } from "./lib/music";
+import { jsonLd, musicGroupJsonLd } from "./lib/structuredData";
+import { getSiteUrl } from "@/lib/site";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
+
+/* Title, description and images come from the root layout defaults */
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Until They Fall",
+    title: "Until They Fall | Melodic Death Metal From Brussels",
+    description: "Concerts, music, gallery, merch and booking for Until They Fall.",
+    images: [{ url: "/bandphoto.jpg", width: 2048, height: 1167, alt: "Until They Fall band photo" }],
+  },
+};
 
 export default async function Home() {
   // null means loading failed; [] means the catalogue is genuinely empty.
@@ -33,6 +49,8 @@ export default async function Home() {
 
   return (
     <>
+      {/* Authoritative band entity; Booking, releases and shows reference its @id */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(musicGroupJsonLd(getSiteUrl())) }} />
       <Hero />
 
       <FeaturedRelease release={latestRelease} />

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
       {
         url: "/gallery/band1.jpg",
         width: 2048,
-        height: 1365,
+        height: 1329,
         alt: "Until They Fall live on stage",
       },
     ],

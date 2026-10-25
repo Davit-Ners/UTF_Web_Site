@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import { discography, getOtherReleases, getReleaseBySlug } from "@/app/lib/music";
 import { formatReleaseDate, getListenLinks, getRuntime } from "@/app/lib/release";
+import { jsonLd, musicAlbumJsonLd } from "@/app/lib/structuredData";
+import { getSiteUrl } from "@/lib/site";
 import styles from "./releasePage.module.css";
 
 type Props = {
@@ -23,22 +25,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = `${release.title} (${release.type}, ${release.year})`;
   const image = release.coverMaster ?? release.cover;
+  /* Built from release data only: what it is, by whom, how many tracks, when */
+  const tracks = release.tracks?.length;
+  const description = [
+    `${release.title}, the ${(release.subtitle ?? release.type).toLowerCase()} by Until They Fall, melodic death metal from Brussels.`,
+    tracks ? `${tracks} tracks, released ${formatReleaseDate(release)}.` : `Released ${formatReleaseDate(release)}.`,
+  ].join(" ");
 
   return {
     title,
-    description: release.blurb,
+    description,
     alternates: { canonical: `/music/${release.id}` },
     openGraph: {
       type: "music.album",
       title: `${title} | Until They Fall`,
-      description: release.blurb,
+      description,
       url: `/music/${release.id}`,
       images: [{ url: image, alt: `${release.title} artwork` }],
     },
     twitter: {
       card: "summary_large_image",
       title: `${title} | Until They Fall`,
-      description: release.blurb,
+      description,
       images: [image],
     },
   };
@@ -71,6 +79,7 @@ export default async function ReleasePage({ params }: Props) {
 
   return (
     <div className={styles.page}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(musicAlbumJsonLd(release, getSiteUrl())) }} />
       <nav className={styles.crumbs} aria-label="Breadcrumb">
         <Link href="/music">Music</Link>
         <span aria-hidden="true">/</span>

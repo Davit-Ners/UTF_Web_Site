@@ -56,12 +56,9 @@ export const metadata: Metadata = {
     "merch",
     "booking",
   ],
-  alternates: {
-    canonical: "/",
-  },
+  /* No canonical or og:url here: each route declares its own, so nothing inherits "/" */
   openGraph: {
     type: "website",
-    url: "/",
     siteName: "Until They Fall",
     title: "Until They Fall | Melodic Death Metal From Brussels",
     description:

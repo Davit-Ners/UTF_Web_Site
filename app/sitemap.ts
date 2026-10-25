@@ -22,6 +22,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/gallery",
     "/merch",
     "/music",
+    "/privacy",
+    "/legal",
   ].map((path) => ({
     url: `${siteUrl}${path}`,
   }));

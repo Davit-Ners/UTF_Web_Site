@@ -61,7 +61,7 @@ function NoDates() {
       <div className={styles.empty}>
         <p className={styles.emptyLine}>No public dates</p>
         <p className="meta">Next announcement soon</p>
-        <Link href="/concerts/past" className={`action-link ${styles.emptyLink}`}>
+        <Link href="/concerts#archive" className={`action-link ${styles.emptyLink}`}>
           Concert archive <span className="arrow" aria-hidden="true">→</span>
         </Link>
       </div>

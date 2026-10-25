@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
+import { socialMetadata } from "@/app/lib/seo";
 import PolicyEn from "./policyEn";
 import PolicyFr from "./policyFr";
 import { PRIVACY_UPDATED } from "./privacyFacts";
 import styles from "./privacy.module.css";
 
+const description =
+  "How the Until They Fall website handles booking and merch requests, browser storage, Cloudflare Turnstile and the YouTube video. In English and French.";
+
 export const metadata: Metadata = {
   title: "Privacy",
-  description:
-    "How the Until They Fall website handles booking and merch requests, browser storage, Cloudflare Turnstile and the YouTube video. In English and French.",
+  description,
   alternates: { canonical: "/privacy" },
+  ...socialMetadata({ title: "Privacy | Until They Fall", description, path: "/privacy" }),
 };
 
 /* One page, two complete policies; each section carries its own lang */

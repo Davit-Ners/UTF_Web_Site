@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
+import { socialMetadata } from "@/app/lib/seo";
 import LegalEn from "./legalEn";
 import LegalFr from "./legalFr";
 import { LEGAL_UPDATED } from "./legalFacts";
 import styles from "../privacy/privacy.module.css";
 
+const description =
+  "Legal notice for the official Until They Fall website: who runs it, how to contact the band, and the use of its content. In English and French.";
+
 export const metadata: Metadata = {
   title: "Legal notice",
-  description:
-    "Legal notice for the official Until They Fall website: who runs it, how to contact the band, and the use of its content. In English and French.",
+  description,
   alternates: { canonical: "/legal" },
+  ...socialMetadata({ title: "Legal notice | Until They Fall", description, path: "/legal" }),
 };
 
 /* Same document pattern as /privacy: one page, two complete language sections */

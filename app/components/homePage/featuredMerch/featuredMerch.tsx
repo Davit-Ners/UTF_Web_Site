@@ -80,7 +80,7 @@ export default function FeaturedMerch({ items }: Props) {
             Merch
           </h2>
           <Link href="/merch" className="action-link on-bone">
-            Shop <span className="arrow" aria-hidden="true">→</span>
+            View merch <span className="arrow" aria-hidden="true">→</span>
           </Link>
         </div>
 

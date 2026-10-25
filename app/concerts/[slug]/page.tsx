@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import ShowDossier, { ShowUnavailable } from "@/app/components/concerts/showDossier/showDossier";
 import { getPublishedConcerts, isPastConcert, type Concert } from "@/app/lib/concerts";
-import { formatLongDate, reliableTimes, splitCity, usefulTitle } from "@/app/lib/concertFormat";
+import { formatLongDate, splitCity, usefulTitle } from "@/app/lib/concertFormat";
+import { socialMetadata } from "@/app/lib/seo";
+import { jsonLd, musicEventJsonLd } from "@/app/lib/structuredData";
 import { getSiteUrl } from "@/lib/site";
 
 type Props = {
@@ -33,8 +35,19 @@ function describe(show: Concert) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const path = `/concerts/${encodeURIComponent(slug)}`;
   const shows = await loadShows();
-  if (!shows) return { title: "Concert" };
+
+  /* Outage: route-specific and truthful, without venue, city or date */
+  if (!shows) {
+    const description = "Concert details from the Until They Fall live archive.";
+    return {
+      title: "Concert",
+      description,
+      alternates: { canonical: path },
+      ...socialMetadata({ title: "Concert | Until They Fall", description, path }),
+    };
+  }
 
   const show = shows.find((s) => s.id === slug);
   if (!show) return {};
@@ -53,7 +66,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${heading} | Until They Fall`,
       description,
       url: `/concerts/${show.id}`,
-      ...(show.posterUrl ? { images: [{ url: show.posterUrl, alt: `${title ?? show.venue} poster` }] } : {}),
+      ...(show.posterUrl
+        ? { images: [{ url: show.posterUrl, ...(show.posterDimensions ?? {}), alt: `${title ?? show.venue} poster` }] }
+        : {}),
     },
     twitter: {
       card: show.posterUrl ? "summary_large_image" : "summary",
@@ -61,45 +76,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       ...(show.posterUrl ? { images: [show.posterUrl] } : {}),
     },
-  };
-}
-
-/* "20 EUR" -> { price: "20", priceCurrency: "EUR" }; anything else is not structured */
-function parsePrice(label?: string) {
-  const match = label?.trim().match(/^(\d+(?:[.,]\d+)?)\s*(?:EUR|€)$/i);
-  return match ? { price: match[1].replace(",", "."), priceCurrency: "EUR" } : null;
-}
-
-/* schema.org MusicEvent from stored fields only; anything unknown is left out */
-function structuredData(show: Concert, isPast: boolean) {
-  const site = getSiteUrl();
-  const city = splitCity(show.city);
-  const times = reliableTimes(show);
-  const price = parsePrice(show.price);
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "MusicEvent",
-    name: usefulTitle(show) ?? `${show.venue}, ${city.name}`,
-    startDate: times.show ? `${show.date}T${times.show}` : show.date,
-    ...(times.doors ? { doorTime: `${show.date}T${times.doors}` } : {}),
-    url: `${site}/concerts/${show.id}`,
-    location: {
-      "@type": "Place",
-      name: show.venue,
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: city.name,
-        ...(city.country ? { addressCountry: city.country } : {}),
-      },
-    },
-    ...(show.lineup?.length
-      ? { performer: show.lineup.map((name) => ({ "@type": "MusicGroup", name })) }
-      : {}),
-    ...(show.posterUrl ? { image: `${site}${show.posterUrl}` } : {}),
-    ...(!isPast && show.ticketUrl
-      ? { offers: { "@type": "Offer", url: show.ticketUrl, ...(price ?? {}) } }
-      : {}),
   };
 }
 
@@ -113,12 +89,11 @@ export default async function ConcertDetailPage({ params }: Props) {
 
   const show = shows[index];
   const isPast = isPastConcert(show);
-  /* "<" escaped so stored text can never close the script tag */
-  const jsonLd = JSON.stringify(structuredData(show, isPast)).replace(/</g, "\\u003c");
+  const structured = jsonLd(musicEventJsonLd(show, isPast, getSiteUrl()));
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structured }} />
       <ShowDossier
         show={show}
         isPast={isPast}

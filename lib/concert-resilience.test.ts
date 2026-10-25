@@ -65,8 +65,10 @@ test("concert data and sitemap tolerate outages without advertising ineligible g
     const log = t.mock.method(console, "error", () => {});
     const entries = await sitemap();
     assert.equal(log.mock.callCount(), 1);
-    assert.equal(entries.length, 7 + discography.length);
+    assert.equal(entries.length, 9 + discography.length);
     assert.ok(entries.some((entry) => entry.url.endsWith("/concerts")));
+    assert.ok(entries.some((entry) => entry.url.endsWith("/privacy")));
+    assert.ok(entries.some((entry) => entry.url.endsWith("/legal")));
     assert.ok(entries.some((entry) => entry.url.endsWith("/music/sent-to-die")));
     assert.ok(!entries.some((entry) => entry.url.includes("test-show")));
     assert.ok(!JSON.stringify(entries).includes("PRIVATE_DATABASE_DETAILS"));

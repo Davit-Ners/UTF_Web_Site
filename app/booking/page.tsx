@@ -4,8 +4,8 @@ import Link from "next/link";
 import { festivals, sharedBills } from "@/app/lib/about";
 import { getConcertBuckets } from "@/app/lib/concerts";
 import { CONTACT_EMAIL, TECH_RIDER } from "@/app/lib/contact";
-import { BAND_PROFILES } from "@/app/lib/links";
 import { latestRelease } from "@/app/lib/music";
+import { jsonLd, musicGroupJsonLd } from "@/app/lib/structuredData";
 import { getSiteUrl } from "@/lib/site";
 import BookingClient from "./bookingClient";
 import { getBookingTurnstileConfig } from "@/lib/turnstile";
@@ -68,29 +68,15 @@ async function showHistory() {
   }
 }
 
-function structuredData() {
-  const site = getSiteUrl();
-  return {
-    "@context": "https://schema.org",
-    "@type": "MusicGroup",
-    name: "Until They Fall",
-    url: site,
-    genre: "Melodic death metal",
-    foundingDate: "2018",
-    foundingLocation: { "@type": "Place", name: "Brussels, Belgium" },
-    email: CONTACT_EMAIL,
-    sameAs: Object.values(BAND_PROFILES).map((profile) => profile.href),
-  };
-}
-
 export default async function BookingPage() {
   const history = await showHistory();
   const airplay = latestRelease.airplay ?? [];
-  const jsonLd = JSON.stringify(structuredData()).replace(/</g, "\\u003c");
+  /* The same band entity as the homepage (shared @id), not a second definition */
+  const structured = jsonLd(musicGroupJsonLd(getSiteUrl()));
 
   return (
     <div className={styles.page}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structured }} />
 
       {/* I — Contact */}
       <header className={styles.contact}>

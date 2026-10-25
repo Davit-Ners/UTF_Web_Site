@@ -18,8 +18,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/album-cover.jpg",
-        width: 1200,
-        height: 1200,
+        width: 1875,
+        height: 1875,
         alt: "Sent To Die album cover",
       },
     ],
