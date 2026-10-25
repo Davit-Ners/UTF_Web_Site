@@ -1,3 +1,4 @@
+import { NEWSLETTER_DISABLED_RESPONSE, NEWSLETTER_SIGNUP_ENABLED } from "@/lib/newsletter";
 import prisma from "@/lib/prisma";
 
 type NewsletterPayload = {
@@ -9,6 +10,11 @@ function isValidEmail(email: string) {
 }
 
 export async function POST(req: Request) {
+  // Launch-disabled: refuse before parsing or any database access.
+  if (!NEWSLETTER_SIGNUP_ENABLED) {
+    return Response.json(NEWSLETTER_DISABLED_RESPONSE, { status: 503 });
+  }
+
   try {
     const body = (await req.json()) as NewsletterPayload;
     const email = body.email?.trim().toLowerCase();

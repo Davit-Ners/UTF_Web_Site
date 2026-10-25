@@ -41,6 +41,22 @@
   line-height: 1.25;
 }
 
+.status {
+  max-width: 48ch;
+  color: var(--bone-dim);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+
+.status a {
+  color: var(--bone);
+  text-decoration: underline;
+  text-decoration-color: var(--ember-text);
+  text-underline-offset: 3px;
+}
+
 @media (max-width: 900px) {
   .mailing {
     display: flex;

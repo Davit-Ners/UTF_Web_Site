@@ -1,31 +1,10 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { register } from "node:module";
 import { test } from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { SESSION_KEYS } from "../app/privacy/privacyFacts";
-
-/*
- * CSS modules resolve to their class names and next/image renders nothing,
- * so the real components render in Node.
- */
-register(
-  "data:text/javascript," +
-    encodeURIComponent(`
-      const image = "data:text/javascript," + encodeURIComponent("export default () => null;");
-      export async function resolve(specifier, context, next) {
-        if (specifier === "next/image") return { url: image, shortCircuit: true };
-        return next(specifier, context);
-      }
-      export async function load(url, context, next) {
-        if (url.endsWith(".css")) {
-          return { format: "module", shortCircuit: true, source: "export default new Proxy({}, { get: (_, key) => String(key) });" };
-        }
-        return next(url, context);
-      }
-    `)
-);
+import "./test-component-loader";
 
 const noop = () => {};
 
@@ -49,6 +28,10 @@ test("privacy page renders complete English and French policies with the contact
     assert.equal((markup.match(new RegExp(key, "g")) ?? []).length, 2);
   }
   assert.doesNotMatch(markup, /type="checkbox"/);
+  /* Mailing-list wording matches the launch-disabled state in both languages */
+  assert.match(markup, /The site does not currently accept sign-ups, and no\s+newsletter is sent\./);
+  assert.match(markup, /Le site n&#x27;accepte actuellement\s+aucune inscription et aucune newsletter n&#x27;est envoyée\./);
+  assert.doesNotMatch(markup, /records the\s+email address you enter|enregistre dans notre base de données l&#x27;adresse/);
 });
 
 test("booking form shows an information-only privacy notice before submitting", async () => {

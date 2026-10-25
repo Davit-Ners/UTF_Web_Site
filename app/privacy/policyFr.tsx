@@ -111,12 +111,11 @@ export default function PolicyFr() {
 
         <h3>Liste de diffusion</h3>
         <p>
-          Nous n&apos;envoyons actuellement aucune newsletter, et aucun service de newsletter avec
-          confirmation ou lien de désinscription n&apos;est encore en place. Le formulaire de liste de
-          diffusion de la page d&apos;accueil enregistre dans notre base de données l&apos;adresse
-          e-mail que vous saisissez, mais rien n&apos;y est envoyé. Si vous avez saisi votre adresse et
-          souhaitez qu&apos;elle soit supprimée, écrivez à {mail} et nous la supprimerons. Nous mettrons
-          cette page à jour avant le lancement de toute newsletter.
+          La liste de diffusion n&apos;est pas encore ouverte. Le site n&apos;accepte actuellement
+          aucune inscription et aucune newsletter n&apos;est envoyée. Avant son ouverture, nous
+          mettrons cette page à jour&nbsp;; l&apos;inscription demandera alors votre consentement
+          explicite et la confirmation de votre adresse, et chaque e-mail contiendra un lien de
+          désinscription.
         </p>
 
         <h3>Les e-mails que vous nous envoyez</h3>
@@ -250,10 +249,9 @@ export default function PolicyFr() {
             <strong>Les e-mails</strong>{" "}liés à une demande suivent les mêmes durées que cette demande.
           </li>
           <li>
-            <strong>Les adresses de la liste de diffusion</strong>{" "}déjà collectées sont conservées
-            jusqu&apos;à ce que vous demandiez leur suppression, et seront supprimées si nous décidons
-            de ne pas lancer de newsletter. Avant tout lancement, cette page indiquera la durée de
-            conservation des inscriptions.
+            <strong>Liste de diffusion&nbsp;:</strong>{" "}aucune inscription n&apos;est actuellement
+            acceptée. Avant l&apos;ouverture de la liste, cette page indiquera la durée de conservation
+            des inscriptions.
           </li>
           <li>
             <strong>Les journaux techniques</strong>{" "}conservés par nos prestataires suivent leurs
@@ -285,9 +283,8 @@ export default function PolicyFr() {
             ou de votre consentement, dans un format structuré et couramment utilisé (portabilité)&nbsp;;
           </li>
           <li>
-            lorsqu&apos;un traitement repose sur votre consentement, comme la conservation d&apos;une
-            adresse de la liste de diffusion, de retirer ce consentement à tout moment, sans remettre en
-            cause ce qui a été fait auparavant.
+            lorsqu&apos;un traitement repose sur votre consentement, de retirer ce consentement à tout
+            moment, sans remettre en cause ce qui a été fait auparavant.
           </li>
         </ul>
         <p>

@@ -101,11 +101,10 @@ export default function PolicyEn() {
 
         <h3>Mailing list</h3>
         <p>
-          We do not currently send a newsletter, and no newsletter service with confirmation or
-          unsubscribe links is in operation yet. The mailing-list form on the homepage records the
-          email address you enter in our database, but nothing is sent to it. If you have entered your
-          address and want it removed, email {mail} and we will delete it. We will update this page
-          before any newsletter starts.
+          The mailing list is not open yet. The site does not currently accept sign-ups, and no
+          newsletter is sent. Before it opens, we will update this page; signing up will then require
+          your explicit consent and a confirmation of your address, and every email will include an
+          unsubscribe link.
         </p>
 
         <h3>Emails you send us</h3>
@@ -227,9 +226,8 @@ export default function PolicyEn() {
             <strong>Emails</strong>{" "}about a request follow the same periods as that request.
           </li>
           <li>
-            <strong>Mailing-list addresses</strong>{" "}collected so far are kept until you ask us to delete
-            them, and will be deleted if we decide not to launch a newsletter. Before any newsletter
-            starts, this page will state how long subscriptions are kept.
+            <strong>Mailing list:</strong>{" "}no sign-ups are currently accepted. Before the mailing list
+            opens, this page will state how long subscriptions are kept.
           </li>
           <li>
             <strong>Technical logs</strong>{" "}kept by our providers follow their own settings, which we
@@ -259,8 +257,8 @@ export default function PolicyEn() {
             structured, commonly used format (portability);
           </li>
           <li>
-            where processing relies on your consent, such as keeping a mailing-list address, to
-            withdraw that consent at any time, without affecting what was done before.
+            where processing relies on your consent, to withdraw that consent at any time, without
+            affecting what was done before.
           </li>
         </ul>
         <p>
