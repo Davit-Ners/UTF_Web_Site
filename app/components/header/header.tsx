@@ -20,6 +20,8 @@ const NAV = [
 const EXTERNALS = [BAND_PROFILES.spotify, BAND_PROFILES.youtube];
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+// Match the mobile navigation media query in header.module.css exactly.
+const MOBILE_NAV_QUERY = "(max-width: 980px)";
 
 export type HeaderTickets = {
   href: string;
@@ -59,6 +61,13 @@ export default function Header({ tickets }: Props) {
   useEffect(() => {
     if (!open) return;
 
+    const mobileNav = window.matchMedia(MOBILE_NAV_QUERY);
+    const closeOnDesktop = () => {
+      if (!mobileNav.matches) setOpenOn(null);
+    };
+    mobileNav.addEventListener("change", closeOnDesktop);
+    closeOnDesktop();
+
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
@@ -89,6 +98,7 @@ export default function Header({ tickets }: Props) {
     return () => {
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", onKeyDown);
+      mobileNav.removeEventListener("change", closeOnDesktop);
     };
   }, [open]);
 

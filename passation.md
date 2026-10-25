@@ -75,6 +75,14 @@ Branch: `redesign/simple-site-v1`. Source of truth for art direction: `utf-desig
 - The only console errors are the logged "database unreachable" messages from the temporary guards below.
 - Screenshots are in the session scratchpad, `shots2/` (temporary).
 
+### Header mobile-menu resize cleanup
+
+- **Cause:** `header.module.css` hides the mobile panel/toggle above 980px, but the React menu state stayed open. Its scroll-lock effect therefore retained `body.style.overflow = "hidden"` and the menu keyboard listener on desktop.
+- **Fix:** `app/components/header/header.tsx` now observes `matchMedia("(max-width: 980px)")` while open, exactly matching the existing Header CSS query (no shared breakpoint source existed). The initial check and media-query change callback close the menu when it no longer matches. There are no new CSS rules or visual/navigation/animation changes.
+- **Cleanup ownership:** the existing `[open]` effect remains the sole owner of the body's inline overflow value. Closing normally, clicking a navigation link, Escape, crossing into desktop, or unmounting restores the captured previous value and removes the keyboard and media-query listeners. Closed state also removes `panelOpen`, restores `inert` and sets `aria-expanded` false through the existing JSX. Returning to mobile starts closed and can open normally.
+- **Verification:** isolated browser tests of the actual Header and CSS, with SSR hydration and stubbed Next navigation, pass open/lock, normal close, navigation close, Escape, unmount, previous inline overflow restoration, and repeated 375→981→375, 820→1440→820, 980→981→980 and 375→1200→375 cycles. The menu stays open/locked at exactly 980px, closes above it, desktop wheel scrolling works, and all tracked open-menu keyboard/media listeners are removed. Desktop primary navigation remains visible and the toggle hidden. No hydration/resize warnings. The running Next dev page was slow to attach client handlers, so these interaction checks used the isolated hydrated Header fixture. No existing Header-specific automated tests were present. Type-check (`tsc --noEmit --incremental false`), full ESLint and `git diff --check` pass.
+- Only the Header state/cleanup code and this handoff note changed. No Booking, Merch, Music, layout, unrelated accessibility/styles or other audit work. No commits or pushes.
+
 ## Temporary code to revisit
 
 - `app/page.tsx`: try/catch around `getActiveMerchProducts`. The empty list is shown when the database is down.
