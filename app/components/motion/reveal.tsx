@@ -66,7 +66,7 @@ function watch(element: HTMLElement) {
 }
 
 type Props = HTMLAttributes<HTMLElement> & {
-  as?: "div" | "ol" | "ul" | "figure";
+  as?: "div" | "ol" | "ul" | "figure" | "p";
   children?: ReactNode;
 };
 

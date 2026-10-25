@@ -1,3 +1,4 @@
+import Reveal from "@/app/components/motion/reveal";
 import NewTabLink from "@/app/components/newTabLink";
 import ConcertPoster from "../concertPoster";
 import Link from "next/link";
@@ -78,9 +79,10 @@ export default function ShowDossier({ show, isPast, previous, next }: Props) {
               <span className={styles.year}>{year}</span>
             </time>
           </p>
-          <p className={`meta ${styles.status}`}>
+          {/* R3 with label step: the rule under the date draws, then its real label prints */}
+          <Reveal as="p" className={`meta ${styles.status} rule-cut rule-cut-load rule-cut-label`}>
             {weekday(show.date)} — {isPast ? "Archive" : "Upcoming"}
-          </p>
+          </Reveal>
           <h1 className={styles.city}>
             {city.name}
             {city.country ? <span className={styles.country}>{city.country}</span> : null}

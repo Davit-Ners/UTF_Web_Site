@@ -16,7 +16,8 @@ const WAYS_BACK = [
 export default function NotFound() {
   return (
     <div className={styles.page}>
-      <h1 className={styles.code}>
+      {/* R2: the page's one signature; the ember copy is decorative and unannounced */}
+      <h1 className={`${styles.code} registration registration-text`} data-registration="404">
         404<span className="srOnly"> — page not found</span>
       </h1>
       <p className={styles.line}>This page doesn&apos;t exist, or it has moved.</p>

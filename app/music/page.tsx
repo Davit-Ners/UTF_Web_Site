@@ -69,7 +69,7 @@ export default function MusicPage() {
       ) : null}
 
       {releases.map((release, i) => (
-        <ReleaseSleeve key={release.id} release={release} mirrored={i % 2 === 1} />
+        <ReleaseSleeve key={release.id} release={release} mirrored={i % 2 === 1} motion={i === 0} />
       ))}
     </div>
   );

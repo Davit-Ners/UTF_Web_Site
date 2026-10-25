@@ -1,3 +1,4 @@
+import Reveal from "@/app/components/motion/reveal";
 import NewTabLink from "@/app/components/newTabLink";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,9 +11,11 @@ type Props = {
   release: Release;
   /* Alternate releases put the artwork on the right */
   mirrored?: boolean;
+  /* Editorial motion (R1 sleeve + R3 tracklist rule): the first sleeve only */
+  motion?: boolean;
 };
 
-export default function ReleaseSleeve({ release, mirrored = false }: Props) {
+export default function ReleaseSleeve({ release, mirrored = false, motion = false }: Props) {
   const tracks = release.tracks ?? [];
   const runtime = getRuntime(release);
   const listen = getListenLinks(release);
@@ -23,6 +26,17 @@ export default function ReleaseSleeve({ release, mirrored = false }: Props) {
     tracks.length ? `${String(tracks.length).padStart(2, "0")} tracks` : null,
     runtime,
   ].filter(Boolean);
+
+  const trackItems = tracks.map((track, index) => (
+    <li key={track.id} className={styles.track}>
+      <span className={styles.trackIndex}>{String(index + 1).padStart(2, "0")}</span>
+      <span className={styles.trackTitle}>
+        {track.title}
+        {track.isSingle ? <span className={styles.singleMark}>Single</span> : null}
+      </span>
+      <span className={styles.trackLength}>{track.length}</span>
+    </li>
+  ));
 
   const hasNotes = Boolean(release.story || release.credits?.length || release.airplay?.length || release.recordingPersonnel?.length);
   const titleId = `${release.id}-title`;
@@ -35,7 +49,7 @@ export default function ReleaseSleeve({ release, mirrored = false }: Props) {
           release.type === "Single" ? styles.single : ""
         }`}
       >
-        <div className={styles.front}>
+        <div className={motion ? `${styles.front} plate plate-load` : styles.front}>
           <Image
             src={release.coverMaster ?? release.cover}
             alt={`${release.title} artwork`}
@@ -55,20 +69,16 @@ export default function ReleaseSleeve({ release, mirrored = false }: Props) {
             <Link href={`/music/${release.id}`}>{release.title}</Link>
           </h2>
 
-          {tracks.length ? (
-            <ol className={styles.tracks}>
-              {tracks.map((track, index) => (
-                <li key={track.id} className={styles.track}>
-                  <span className={styles.trackIndex}>{String(index + 1).padStart(2, "0")}</span>
-                  <span className={styles.trackTitle}>
-                    {track.title}
-                    {track.isSingle ? <span className={styles.singleMark}>Single</span> : null}
-                  </span>
-                  <span className={styles.trackLength}>{track.length}</span>
-                </li>
-              ))}
-            </ol>
-          ) : null}
+          {tracks.length
+            ? motion
+              ? (
+                  /* R3: the tracklist's top rule draws once the sleeve plate has opened */
+                  <Reveal as="ol" className={`${styles.tracks} rule-cut rule-cut-load after-plate`}>
+                    {trackItems}
+                  </Reveal>
+                )
+              : <ol className={styles.tracks}>{trackItems}</ol>
+            : null}
 
           {runtime ? (
             <p className={styles.total}>

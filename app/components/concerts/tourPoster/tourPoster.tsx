@@ -1,3 +1,4 @@
+import Reveal from "@/app/components/motion/reveal";
 import NewTabLink from "@/app/components/newTabLink";
 import ConcertPoster from "../concertPoster";
 import Link from "next/link";
@@ -51,7 +52,8 @@ export default function TourPoster({ data }: Props) {
   return (
     <div className={styles.page}>
       <header className={styles.masthead}>
-        <h1 className={styles.live}>Live</h1>
+        {/* R1: the word is uncovered on load; it never fades or moves */}
+        <h1 className={`${styles.live} plate plate-load`}>Live</h1>
         {counts.length ? <p className={`meta ${styles.counts}`}>{counts.join(" — ")}</p> : null}
       </header>
 
@@ -86,12 +88,15 @@ export default function TourPoster({ data }: Props) {
   );
 }
 
+/* R3 (after the LIVE plate): the top rule of the upcoming block */
+const TOP_RULE = "rule-cut rule-cut-load after-plate";
+
 function StateLine({ main, sub }: { main: string; sub?: string }) {
   return (
-    <div className={styles.state}>
+    <Reveal className={`${styles.state} ${TOP_RULE}`}>
       <p className={styles.stateMain}>{main}</p>
       {sub ? <p className="meta">{sub}</p> : null}
-    </div>
+    </Reveal>
   );
 }
 
@@ -123,7 +128,7 @@ function UpcomingList({ shows }: { shows: Concert[] }) {
 
   return (
     <div className={`${styles.listWrap} ${posters.length ? styles.hasPosters : ""}`}>
-      <ol className={styles.dates}>
+      <Reveal as="ol" className={`${styles.dates} ${TOP_RULE}`}>
         {shows.map((show) => {
           const { day, month, year } = concertDateParts(show.date);
           const city = splitCity(show.city);
@@ -152,7 +157,7 @@ function UpcomingList({ shows }: { shows: Concert[] }) {
             </li>
           );
         })}
-      </ol>
+      </Reveal>
 
       {posters.length ? (
         <div className={styles.posterColumn}>

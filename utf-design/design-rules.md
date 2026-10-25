@@ -276,6 +276,8 @@ Language (approved; status per rule):
 - **Hero sequence** (the homepage signature; CSS only, from the first paint): 0 ms the photo plate starts retracting top → bottom (R1, 480 ms; 360 ms on phones) while the photo itself stays static; ≈240 ms the wordmark registration prints and snaps (≈210 ms); everything is settled in ≈500 ms. Genre line and actions are static and usable at once. It plays on a real page load and not again on client navigation back to Home in the same tab.
 - **R3 Rule cut** (implemented: `.rule-cut` + `<Reveal>`; pilot on the homepage Live top rule): a hairline draws from the left and stops dead; optionally a real label follows (label step not built yet).
 - Editorial reveals (R1/R3) are limited to three per page, play once, and never hide content without JS.
+- Above-the-fold targets play on page load (CSS, sequenced: the rule starts when the plate has opened); targets off screen at hydration reveal on scroll instead. Repeated rows, lists, posters, portraits and body copy never animate.
+- Route usage: `/music` sleeve plate + tracklist rule; release page cover plate + Songs and Credits rules; `/concerts` LIVE plate + upcoming top rule; concert dossier date rule with its real label printing after it; `/about` group cover plate only; 404 registration on "404". Booking, Privacy and Legal stay static.
 - **R5 Four-eye registration** (planned, blocked until the four-eye SVG exists).
 
 Timing tokens live in `app/globals.css` (`--motion-snap`, `--motion-ui`, `--motion-editorial`, `--motion-signature`, `--motion-stagger`, `--ease-press`, `--ease-ui`, `--ease-snap`).

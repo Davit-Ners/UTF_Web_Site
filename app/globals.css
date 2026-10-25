@@ -255,12 +255,15 @@ a:hover {
 .rule-cut {
   --rule-cut-color: var(--rule);
   --rule-cut-duration: 400ms;
+  --rule-cut-delay: 0ms;
 }
-.rule-cut[data-reveal] {
+.rule-cut[data-reveal],
+.rule-cut.rule-cut-load {
   position: relative;
   border-top-color: transparent;
 }
-.rule-cut[data-reveal]::before {
+.rule-cut[data-reveal]::before,
+.rule-cut.rule-cut-load::before {
   content: "";
   position: absolute;
   top: -1px;
@@ -269,6 +272,7 @@ a:hover {
   height: 1px;
   background: var(--rule-cut-color);
   transform-origin: 0 50%;
+  visibility: visible;
   pointer-events: none;
 }
 .rule-cut[data-reveal="pending"]::before {
@@ -276,6 +280,58 @@ a:hover {
 }
 .rule-cut[data-reveal="done"]::before {
   transition: transform var(--rule-cut-duration) var(--ease-press);
+}
+
+/*
+ * Page-load variant: draws from the first paint (after --rule-cut-delay).
+ * Combined with <Reveal>, a rule that is off screen at hydration becomes
+ * pending instead (the load animation is cancelled) and draws on scroll.
+ */
+.rule-cut.rule-cut-load::before {
+  animation: rule-cut-draw var(--rule-cut-duration) var(--ease-press) var(--rule-cut-delay) both;
+}
+.rule-cut.rule-cut-load[data-reveal]::before {
+  animation: none;
+}
+@keyframes rule-cut-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/*
+ * Optional label step: the rule's own real text prints in one hard step once
+ * the rule has drawn. Colour only (the text stays in the accessibility tree).
+ */
+.rule-cut.rule-cut-label.rule-cut-load {
+  animation: rule-cut-label calc(var(--rule-cut-delay) + var(--rule-cut-duration)) steps(1, jump-end) both;
+}
+.rule-cut.rule-cut-label[data-reveal] {
+  animation: none;
+}
+.rule-cut.rule-cut-label[data-reveal="pending"] {
+  color: transparent;
+}
+.rule-cut.rule-cut-label[data-reveal="done"] {
+  transition: color 0s linear var(--rule-cut-duration);
+}
+@keyframes rule-cut-label {
+  from {
+    color: transparent;
+  }
+}
+
+/* Rules on bone planes keep their ink hairline colour */
+.rule-cut.rule-cut-ink {
+  --rule-cut-color: var(--rule-ink);
+}
+
+/* A rule that follows a page-load plate starts once the plate has opened */
+.after-plate {
+  --rule-cut-delay: var(--motion-editorial);
 }
 
 /* Page-load variant (Hero): CSS only, starts with the first paint, no JS */
@@ -289,6 +345,10 @@ a:hover {
   to {
     transform: scaleY(0);
   }
+}
+/* With <Reveal>, a plate off screen at hydration waits for the scroll instead */
+.plate.plate-load[data-reveal]::after {
+  animation: none;
 }
 
 /*
@@ -329,6 +389,19 @@ a:hover {
     transform: none;
   }
 }
+/*
+ * Text variant: the copy is the target's own text (data-registration),
+ * so no image is requested. The empty alternative keeps it out of the
+ * accessibility tree; the owner's text stays the only announced content.
+ */
+.registration.registration-text::before {
+  content: attr(data-registration);
+  content: attr(data-registration) / "";
+  background: none;
+  -webkit-mask: none;
+  mask: none;
+  color: var(--registration-color);
+}
 
 /* A signature already played in this tab: show the settled state at once */
 [data-signature-played] .plate-load::after,
@@ -343,6 +416,9 @@ a:hover {
   .registration {
     --registration-x: 2px;
     --registration-y: -1px;
+  }
+  .after-plate {
+    --rule-cut-delay: 360ms;
   }
 }
 
@@ -442,7 +518,12 @@ a:hover {
     animation: none !important;
     visibility: hidden !important;
   }
-  .rule-cut[data-reveal]::before {
+  .rule-cut[data-reveal]::before,
+  .rule-cut.rule-cut-load::before {
+    animation: none !important;
     transform: none !important;
+  }
+  .rule-cut.rule-cut-label {
+    animation: none !important;
   }
 }

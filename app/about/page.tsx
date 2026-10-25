@@ -49,7 +49,8 @@ export default function AboutPage() {
     <div className={styles.page}>
       {/* I — Cover */}
       <header className={styles.cover}>
-        <div className={styles.coverFrame}>
+        {/* R1: only the group cover is uncovered; portraits and copy stay static */}
+        <div className={`${styles.coverFrame} plate plate-load`}>
           <Image
             src="/gallery/band-test.jpg"
             alt="Until They Fall, the five members posed in an empty room, black and white"

@@ -1,3 +1,4 @@
+import Reveal from "@/app/components/motion/reveal";
 import NewTabLink from "@/app/components/newTabLink";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -52,6 +53,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+function CreditHead({ label, cut }: { label: string; cut: boolean }) {
+  const content = <dt>{label}</dt>;
+  return cut ? (
+    <Reveal className={`${styles.creditHead} rule-cut`}>{content}</Reveal>
+  ) : (
+    <div className={styles.creditHead}>{content}</div>
+  );
+}
+
 export default async function ReleasePage({ params }: Props) {
   const { slug } = await params;
   const release = getReleaseBySlug(slug);
@@ -72,6 +82,8 @@ export default async function ReleasePage({ params }: Props) {
   const broadcast = release.airplay ?? [];
   const personnel = release.recordingPersonnel ?? [];
   const hasCredits = recording.length > 0 || broadcast.length > 0 || personnel.length > 0;
+  /* R3 opens the Credits section on the first list's heading rule only */
+  const firstCredits = recording.length ? "recording" : broadcast.length ? "broadcast" : "personnel";
 
   /* Section markers follow only the parts that render */
   const parts = ["cover", tracks.length ? "songs" : null, release.story ? "story" : null, hasCredits ? "credits" : null, "archive"].filter(Boolean);
@@ -88,7 +100,8 @@ export default async function ReleasePage({ params }: Props) {
 
       {/* I — Cover spread */}
       <section className={styles.cover} aria-labelledby="release-title">
-        <div className={styles.plate}>
+        {/* R1: the cover is uncovered on load, like lifting the sleeve */}
+        <div className={`${styles.plate} plate plate-load`}>
           <Image
             src={release.coverMaster ?? release.cover}
             alt={`${release.title} artwork`}
@@ -131,7 +144,8 @@ export default async function ReleasePage({ params }: Props) {
             <span id="songs-title">Songs</span>
           </h2>
 
-          <ol className={styles.songList}>
+          {/* R3: the Songs rule draws once, on scroll; the rows stay static */}
+          <Reveal as="ol" className={`${styles.songList} rule-cut rule-cut-ink`}>
             {tracks.map((track, index) => {
               const airplay = broadcast.filter((item) => item.track === track.title);
               const notes = [
@@ -158,7 +172,7 @@ export default async function ReleasePage({ params }: Props) {
                 </li>
               );
             })}
-          </ol>
+          </Reveal>
         </section>
       ) : null}
 
@@ -184,9 +198,7 @@ export default async function ReleasePage({ params }: Props) {
           <div className={styles.creditColumns}>
             {recording.length ? (
               <dl className={styles.creditList}>
-                <div className={styles.creditHead}>
-                  <dt>Recording</dt>
-                </div>
+                <CreditHead label="Recording" cut={firstCredits === "recording"} />
                 {recording.map((credit) => (
                   <div key={credit.role} className={styles.creditRow}>
                     <dt>{credit.role}</dt>
@@ -198,9 +210,7 @@ export default async function ReleasePage({ params }: Props) {
 
             {broadcast.length ? (
               <dl className={styles.creditList}>
-                <div className={styles.creditHead}>
-                  <dt>Broadcast</dt>
-                </div>
+                <CreditHead label="Broadcast" cut={firstCredits === "broadcast"} />
                 {broadcast.map((item) => (
                   <div key={`${item.track}-${item.station}`} className={styles.creditRow}>
                     <dt>{item.station}</dt>
@@ -211,9 +221,7 @@ export default async function ReleasePage({ params }: Props) {
             ) : null}
             {personnel.length ? (
               <dl className={styles.creditList}>
-                <div className={styles.creditHead}>
-                  <dt>Recording personnel</dt>
-                </div>
+                <CreditHead label="Recording personnel" cut={firstCredits === "personnel"} />
                 {personnel.map((person) => (
                   <div key={person.name} className={styles.creditRow}>
                     <dt>{person.role}</dt>

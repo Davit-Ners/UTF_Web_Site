@@ -16,6 +16,8 @@
  * members' heads sit in the top third and stay in frame.
  */
 .coverFrame {
+  /* Containing block for the R1 plate; no offset, so no layout change */
+  position: relative;
   height: min(66.55vw, 66vh);
   height: min(66.55vw, 66svh);
   overflow: hidden;

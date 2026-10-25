@@ -60,11 +60,11 @@ test("R1 Plate and R3 Rule cut: transform-only primitives, hidden only while pen
   assert.match(globals, /\.plate::after \{[^}]*position: absolute;[^}]*inset: 0;[^}]*background: var\(--plate-color\);[^}]*transform: scaleY\(0\);[^}]*transform-origin: 50% 100%;[^}]*pointer-events: none;/);
   assert.match(globals, /\.plate\[data-reveal="pending"\]::after \{\n  transform: scaleY\(1\);/);
   assert.match(globals, /\.plate\[data-reveal="done"\]::after \{\n  transition: transform var\(--plate-duration\) var\(--ease-press\);/);
-  assert.match(globals, /\.rule-cut\[data-reveal\]::before \{[^}]*top: -1px;[^}]*height: 1px;[^}]*transform-origin: 0 50%;[^}]*pointer-events: none;/);
+  assert.match(globals, /\.rule-cut\[data-reveal\]::before,\n\.rule-cut\.rule-cut-load::before \{[^}]*top: -1px;[^}]*height: 1px;[^}]*transform-origin: 0 50%;[^}]*pointer-events: none;/);
   assert.match(globals, /\.rule-cut\[data-reveal="pending"\]::before \{\n  transform: scaleX\(0\);/);
   assert.match(globals, /\.rule-cut\[data-reveal="done"\]::before \{\n  transition: transform var\(--rule-cut-duration\) var\(--ease-press\);/);
   assert.match(globals, /@media \(max-width: 720px\) \{\n  \.plate \{\n    --plate-duration: 360ms;/);
-  assert.match(globals, /prefers-reduced-motion: reduce[\s\S]*\.plate::after \{\n    animation: none !important;\n    transform: scaleY\(0\) !important;[\s\S]*\.rule-cut\[data-reveal\]::before \{\n    transform: none !important;/);
+  assert.match(globals, /prefers-reduced-motion: reduce[\s\S]*\.plate::after \{\n    animation: none !important;\n    transform: scaleY\(0\) !important;[\s\S]*\.rule-cut\[data-reveal\]::before,\n  \.rule-cut\.rule-cut-load::before \{\n    animation: none !important;\n    transform: none !important;/);
   /* R1 + R3 only (R2 legitimately translates its ghost and is checked separately) */
   const primitives = globals.slice(globals.indexOf("=== R1 Plate"), globals.indexOf("=== R2 Registration"));
   assert.doesNotMatch(primitives, /opacity|filter|clip-path|box-shadow|translate/);
@@ -113,4 +113,75 @@ test("R2 Registration primitive: one stepped ember copy, hidden when registered,
   assert.match(globals, /prefers-reduced-motion: reduce[\s\S]*\.plate::after \{\n    animation: none !important;\n    transform: scaleY\(0\) !important;[\s\S]*\.registration::before \{\n    animation: none !important;\n    visibility: hidden !important;/);
   const r2 = globals.slice(globals.indexOf("=== R2 Registration"), globals.indexOf("A signature already played"));
   assert.doesNotMatch(r2, /filter|blur|glow|infinite|opacity/);
+});
+
+test("Batch 4 primitive extensions: load/hybrid rule cut, label step, ink rules, text registration, reduced overrides", async () => {
+  const globals = await css("app/globals.css");
+  assert.match(globals, /\.rule-cut\.rule-cut-load::before \{\n  animation: rule-cut-draw var\(--rule-cut-duration\) var\(--ease-press\) var\(--rule-cut-delay\) both;/);
+  assert.match(globals, /\.rule-cut\.rule-cut-load\[data-reveal\]::before \{\n  animation: none;/);
+  assert.match(globals, /\.plate\.plate-load\[data-reveal\]::after \{\n  animation: none;/);
+  assert.match(globals, /\.rule-cut\.rule-cut-label\.rule-cut-load \{\n  animation: rule-cut-label calc\(var\(--rule-cut-delay\) \+ var\(--rule-cut-duration\)\) steps\(1, jump-end\) both;/);
+  assert.match(globals, /\.rule-cut\.rule-cut-label\[data-reveal="pending"\] \{\n  color: transparent;/);
+  assert.match(globals, /\.rule-cut\.rule-cut-label\[data-reveal="done"\] \{\n  transition: color 0s linear var\(--rule-cut-duration\);/);
+  assert.match(globals, /\.rule-cut\.rule-cut-ink \{\n  --rule-cut-color: var\(--rule-ink\);/);
+  assert.match(globals, /\.after-plate \{\n  --rule-cut-delay: var\(--motion-editorial\);/);
+  assert.match(globals, /\.after-plate \{\n    --rule-cut-delay: 360ms;/);
+  assert.match(globals, /\.registration\.registration-text::before \{\n  content: attr\(data-registration\);\n  content: attr\(data-registration\) \/ "";[^}]*mask: none;/);
+  assert.match(globals, /prefers-reduced-motion: reduce[\s\S]*\.rule-cut\.rule-cut-load::before \{\n    animation: none !important;\n    transform: none !important;[\s\S]*\.rule-cut\.rule-cut-label \{\n    animation: none !important;/);
+});
+
+/* Counts elements whose class list contains exactly this class name */
+const classCount = (markup: string, cls: string) =>
+  [...markup.matchAll(/class="([^"]*)"/g)].filter((m) => m[1].split(" ").includes(cls)).length;
+
+test("route markup carries exactly the planned editorial motion, visible as served", async () => {
+  const { latestRelease } = await import("../app/lib/music");
+  const { default: ReleaseSleeve } = await import("../app/components/music/releaseSleeve/releaseSleeve");
+  const first = renderToStaticMarkup(createElement(ReleaseSleeve, { release: latestRelease, motion: true }));
+  assert.equal(classCount(first, "plate-load"), 1);
+  assert.match(first, /<ol class="tracks rule-cut rule-cut-load after-plate">/);
+  const later = renderToStaticMarkup(createElement(ReleaseSleeve, { release: latestRelease }));
+  assert.equal(classCount(later, "plate") + classCount(later, "rule-cut"), 0);
+
+  const { default: ReleasePage } = await import("../app/music/[slug]/page");
+  const release = renderToStaticMarkup(await ReleasePage({ params: Promise.resolve({ slug: "sent-to-die" }) }));
+  assert.equal(classCount(release, "plate"), 1);
+  assert.match(release, /class="plate plate plate-load"/);
+  assert.equal(classCount(release, "rule-cut"), 2);
+  assert.match(release, /<ol class="songList rule-cut rule-cut-ink">/);
+  assert.match(release, /<div class="creditHead rule-cut"><dt>Recording<\/dt><\/div>/);
+  assert.equal(classCount(release, "registration"), 0);
+
+  const { default: TourPoster } = await import("../app/components/concerts/tourPoster/tourPoster");
+  const empty = renderToStaticMarkup(createElement(TourPoster, { data: { upcoming: [], past: [] } }));
+  assert.match(empty, /<h1 class="live plate plate-load">Live<\/h1>/);
+  assert.match(empty, /<div class="state rule-cut rule-cut-load after-plate">/);
+  assert.equal(classCount(empty, "plate") + classCount(empty, "rule-cut"), 2);
+  const show = (id: string, date: string) => ({ id, date, city: "Brussels, BE", venue: "Venue", gallery: [] });
+  const list = renderToStaticMarkup(createElement(TourPoster, { data: { upcoming: [show("a", "2027-01-01"), show("b", "2027-02-01")], past: [show("c", "2024-01-01"), show("d", "2023-01-01")] } }));
+  assert.match(list, /<ol class="dates rule-cut rule-cut-load after-plate">/);
+  assert.equal(classCount(list, "rule-cut"), 1);
+
+  const { default: ShowDossier } = await import("../app/components/concerts/showDossier/showDossier");
+  const dossier = renderToStaticMarkup(createElement(ShowDossier, { show: { ...show("utf-x", "2025-11-01"), posterUrl: undefined }, isPast: true, previous: null, next: null }));
+  assert.match(dossier, /<p class="meta status rule-cut rule-cut-load rule-cut-label">Saturday — Archive<\/p>/);
+  assert.equal(classCount(dossier, "plate") + classCount(dossier, "rule-cut") + classCount(dossier, "registration"), 1);
+
+  const { default: AboutPage } = await import("../app/about/page");
+  const about = renderToStaticMarkup(createElement(AboutPage));
+  assert.match(about, /<div class="coverFrame plate plate-load">/);
+  assert.equal(classCount(about, "plate") + classCount(about, "rule-cut") + classCount(about, "registration"), 1);
+
+  const { default: NotFound } = await import("../app/not-found");
+  const notFound = renderToStaticMarkup(createElement(NotFound));
+  assert.match(notFound, /<h1 class="code registration registration-text" data-registration="404">404<span class="srOnly"> — page not found<\/span><\/h1>/);
+  assert.equal(classCount(notFound, "plate") + classCount(notFound, "rule-cut"), 0);
+
+  for (const page of ["../app/privacy/page", "../app/legal/page"]) {
+    const { default: Page } = await import(page);
+    const markup = renderToStaticMarkup(createElement(Page));
+    assert.equal(classCount(markup, "plate") + classCount(markup, "rule-cut") + classCount(markup, "registration"), 0, page);
+  }
+
+  for (const markup of [first, release, empty, list, dossier, about, notFound]) assert.doesNotMatch(markup, /data-reveal/);
 });

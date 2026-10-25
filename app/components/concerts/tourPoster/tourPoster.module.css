@@ -10,6 +10,8 @@
 }
 
 .live {
+  /* Containing block for the R1 plate; no offset, so no layout change */
+  position: relative;
   margin-left: -0.04em;
   color: var(--bone);
   font-family: var(--font-display);
