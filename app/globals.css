@@ -56,7 +56,19 @@
 
   --radius: 0px;
   --shadow: none;
-  --transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+
+  /* === Motion (design-rules §12): 80% quiet / 20% signature === */
+  --motion-snap: 90ms;       /* hover, focus, press, state changes */
+  --motion-ui: 200ms;        /* menu, drawer, viewer */
+  --motion-editorial: 480ms; /* planned plates and rule cuts */
+  --motion-signature: 560ms; /* planned hero print-in, four-eye */
+  --motion-stagger: 80ms;    /* at most two steps in any sequence */
+  --ease-press: cubic-bezier(0.8, 0, 0.2, 1);
+  --ease-ui: cubic-bezier(0.2, 0, 0, 1);
+  /* State changes land at once (no fade), on a shared duration */
+  --ease-snap: steps(1, jump-start);
+
+  --transition: color var(--motion-snap) var(--ease-snap), background-color var(--motion-snap) var(--ease-snap), border-color var(--motion-snap) var(--ease-snap);
 }
 
 @media (max-width: 720px) {
@@ -111,7 +123,7 @@ p {
 a {
   color: var(--ember-text);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color var(--motion-snap) var(--ease-snap), text-decoration-color var(--motion-snap) var(--ease-snap);
 }
 a:hover {
   color: var(--bone);
@@ -176,9 +188,11 @@ a:hover {
   text-decoration-thickness: 1px;
   text-underline-offset: 6px;
   text-decoration-color: currentColor;
-  transition: text-decoration-color 0.2s ease, color 0.2s ease;
 }
-.action-link:hover {
+/* R4 Cut link: the rule snaps to ember and the arrow steps 3px, on hover, keyboard focus and press */
+.action-link:hover,
+.action-link:focus-visible,
+.action-link:active {
   color: var(--bone);
   text-decoration-color: var(--ember-text);
 }
@@ -187,16 +201,20 @@ a:hover {
   font-weight: 400;
   text-decoration: none;
   display: inline-block;
-  transition: transform 0.2s ease;
+  transition: transform var(--motion-snap) var(--ease-snap);
 }
-.action-link:hover .arrow {
-  transform: translateX(2px);
+.action-link:hover .arrow,
+.action-link:focus-visible .arrow,
+.action-link:active .arrow {
+  transform: translateX(3px);
 }
 .action-link.on-bone {
   --focus-outline: var(--ember);
   color: var(--ink);
 }
-.action-link.on-bone:hover {
+.action-link.on-bone:hover,
+.action-link.on-bone:focus-visible,
+.action-link.on-bone:active {
   color: var(--ink);
   text-decoration-color: var(--ember);
 }
@@ -238,7 +256,8 @@ a:hover {
   font-size: 0.75rem;
 }
 
-.button:hover {
+.button:hover,
+.button:active {
   background: var(--bone);
   border-color: var(--bone);
   color: var(--ink);
@@ -249,7 +268,8 @@ a:hover {
   border-color: var(--bone);
   color: var(--bone);
 }
-.button.outline:hover {
+.button.outline:hover,
+.button.outline:active {
   background: var(--bone);
   color: var(--ink);
 }
@@ -269,11 +289,20 @@ a:hover {
   color: var(--grey);
 }
 
+/*
+ * Reduced motion: animations and transitions end at once (end states apply,
+ * so nothing stays hidden), no smooth scrolling, and no decorative
+ * displacement. Colour and focus states are kept.
+ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .action-link .arrow {
+    transform: none !important;
   }
 }

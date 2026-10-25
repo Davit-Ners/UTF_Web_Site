@@ -5,7 +5,7 @@
   background: transparent;
   border-bottom: 1px solid transparent;
   isolation: isolate;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color var(--motion-ui) var(--ease-ui), border-color var(--motion-ui) var(--ease-ui);
 }
 
 /* Homepage: the header floats over the hero instead of pushing it down */
@@ -31,7 +31,7 @@
     rgb(11 11 10 / 0) 100%
   );
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--motion-ui) var(--ease-ui);
 }
 
 .overlay.solid::before {
@@ -188,13 +188,13 @@
     overflow-y: auto;
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+    transition: opacity var(--motion-ui) var(--ease-ui), visibility 0s linear var(--motion-ui);
   }
 
   .panelOpen {
     visibility: visible;
     opacity: 1;
-    transition: opacity 0.2s ease;
+    transition: opacity var(--motion-ui) var(--ease-ui);
   }
 }
 

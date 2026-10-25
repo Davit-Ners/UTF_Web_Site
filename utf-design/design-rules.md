@@ -259,29 +259,38 @@ The technical layer should support the composition, not become the whole interfa
 
 ## 12. Motion
 
+Principle: **80% quiet / 20% signature.** Motion behaves like print: plates, rules and registration. Hard edges, short travel, decisive ends, nothing floating.
+
 Motion should be:
 
-- slow
-- heavy
 - deliberate
-- atmospheric
+- heavy, but never slow to respond
+- rare outside functional feedback
 
-Good uses:
+Language (approved; status per rule):
 
-- image reveals
-- subtle parallax
-- typography entering from crop
-- grain movement
-- controlled hover distortion
-- slow masks
-- section transitions
+- **R4 Cut link** (implemented): the underline is a rule; on hover, keyboard focus and press it snaps to ember and the arrow steps 3px. No colour fades.
+- **R6 Functional** (existing menu/drawer motion on shared tokens): fast, conventional, predictable.
+- **R1 Plate** (planned): an ink shutter retracts from one edge to reveal a major image or title.
+- **R2 Registration** (planned): an off-register ghost snaps into register in a few hard steps.
+- **R3 Rule cut** (planned): a hairline draws and stops dead; optionally a real label follows.
+- **R5 Four-eye registration** (planned, blocked until the four-eye SVG exists).
+
+Timing tokens live in `app/globals.css` (`--motion-snap`, `--motion-ui`, `--motion-editorial`, `--motion-signature`, `--motion-stagger`, `--ease-press`, `--ease-ui`, `--ease-snap`).
+
+Fixed decisions:
+
+- grain is static, never animated
+- no parallax, including subtle parallax
+- no image distortion, hover zoom or hover dimming; images stay stable and the caption, action text or rule carries the interaction
+- reduced motion removes all displacement and keeps every state and function
 
 Avoid:
 
-- bouncing
-- excessive spring animations
+- fade-up or translate reveals on scroll
+- bouncing and spring animations
 - UI flying from every direction
-- constant glitching
+- glitching, looping or random
 - animation for every element
 
 ---

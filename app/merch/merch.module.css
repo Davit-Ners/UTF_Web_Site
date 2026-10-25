@@ -138,7 +138,7 @@
 }
 
 .drawer[open] {
-  animation: slideIn 0.22s ease-out;
+  animation: slideIn var(--motion-ui) var(--ease-ui);
 }
 
 @keyframes slideIn {

@@ -33,13 +33,9 @@
   cursor: pointer;
 }
 
+/* The still stays stable; the Play rule carries the interaction (R4) */
 .posterImage {
   object-fit: cover;
-  transition: opacity 0.3s ease;
-}
-
-.poster:hover .posterImage {
-  opacity: 0.82;
 }
 
 .play {
@@ -61,12 +57,27 @@
 }
 
 .playMark {
+  display: inline-block;
   font-size: 0.55em;
+  transition: transform var(--motion-snap) var(--ease-snap);
 }
 
 .poster:hover .play,
-.poster:focus-visible .play {
+.poster:focus-visible .play,
+.poster:active .play {
   border-bottom-color: var(--bone);
+}
+
+.poster:hover .playMark,
+.poster:focus-visible .playMark,
+.poster:active .playMark {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playMark {
+    transform: none !important;
+  }
 }
 
 .player {

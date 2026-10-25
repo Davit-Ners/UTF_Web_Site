@@ -84,12 +84,8 @@
 
 .item :global(img) {
   object-fit: cover;
+  /* Static crop only; the legacy hover zoom is removed (no image scale on hover) */
   transform: scale(1.02);
-  transition: transform 0.28s ease;
-}
-
-.item:hover :global(img) {
-  transform: scale(1.06);
 }
 
 .overlay {

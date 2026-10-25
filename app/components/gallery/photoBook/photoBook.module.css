@@ -99,11 +99,6 @@
   display: block;
   width: 100%;
   height: auto;
-  transition: opacity 0.2s ease;
-}
-
-.trigger:hover .image {
-  opacity: 0.9;
 }
 
 /* Files with a thin baked border: scale it out of frame */
@@ -125,6 +120,16 @@
 .number {
   color: var(--bone);
   font-variant-numeric: tabular-nums;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--motion-snap) var(--ease-snap);
+}
+
+/* R4: the photo stays stable; its caption number takes the rule */
+.figure:has(.trigger:hover, .trigger:focus-visible, .trigger:active) .number {
+  text-decoration-color: var(--ember-text);
 }
 
 /* === Spreads (ink) === */

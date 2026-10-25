@@ -319,9 +319,6 @@
   cursor: zoom-in;
 }
 
-.photoButton:hover .photoImage {
-  opacity: 0.9;
-}
 
 /* First photo full-bleed, the rest as an offset editorial sequence */
 .photo0 {
@@ -347,7 +344,6 @@
   display: block;
   width: 100%;
   height: auto;
-  transition: opacity 0.2s ease;
 }
 
 /* Files with a thin baked border: scale it out of frame */
