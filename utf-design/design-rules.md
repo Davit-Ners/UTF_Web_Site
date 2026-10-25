@@ -271,9 +271,10 @@ Language (approved; status per rule):
 
 - **R4 Cut link** (implemented): the underline is a rule; on hover, keyboard focus and press it snaps to ember and the arrow steps 3px. No colour fades.
 - **R6 Functional** (existing menu/drawer motion on shared tokens): fast, conventional, predictable.
-- **R1 Plate** (planned): an ink shutter retracts from one edge to reveal a major image or title.
+- **R1 Plate** (implemented: `.plate` + `<Reveal>`; pilot on the homepage Latest Release cover): an ink shutter retracts from the top edge to uncover a major image or title. The content never moves or fades.
 - **R2 Registration** (planned): an off-register ghost snaps into register in a few hard steps.
-- **R3 Rule cut** (planned): a hairline draws and stops dead; optionally a real label follows.
+- **R3 Rule cut** (implemented: `.rule-cut` + `<Reveal>`; pilot on the homepage Live top rule): a hairline draws from the left and stops dead; optionally a real label follows (label step not built yet).
+- Editorial reveals (R1/R3) are limited to three per page, play once, and never hide content without JS.
 - **R5 Four-eye registration** (planned, blocked until the four-eye SVG exists).
 
 Timing tokens live in `app/globals.css` (`--motion-snap`, `--motion-ui`, `--motion-editorial`, `--motion-signature`, `--motion-stagger`, `--ease-press`, `--ease-ui`, `--ease-snap`).

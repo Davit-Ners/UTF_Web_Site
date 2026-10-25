@@ -219,6 +219,71 @@ a:hover {
   text-decoration-color: var(--ember);
 }
 
+/*
+ * === R1 Plate: an ink shutter retracts from the top edge ===
+ * Used with <Reveal> (app/components/motion/reveal.tsx). The content never
+ * moves or fades; only the overlay scales. Without data-reveal the overlay
+ * is fully retracted, so the content is visible whatever happens to JS.
+ * The owner must establish a containing block (position: relative).
+ */
+.plate {
+  --plate-color: var(--ink);
+  --plate-duration: var(--motion-editorial);
+}
+.plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--plate-color);
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+.plate[data-reveal="pending"]::after {
+  transform: scaleY(1);
+}
+.plate[data-reveal="done"]::after {
+  transition: transform var(--plate-duration) var(--ease-press);
+}
+
+/*
+ * === R3 Rule cut: the element's top rule draws from the left and stops ===
+ * The owner keeps its own 1px top border; while revealing, that border turns
+ * transparent and ::before draws over it, so layout never changes.
+ */
+.rule-cut {
+  --rule-cut-color: var(--rule);
+  --rule-cut-duration: 400ms;
+}
+.rule-cut[data-reveal] {
+  position: relative;
+  border-top-color: transparent;
+}
+.rule-cut[data-reveal]::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--rule-cut-color);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+.rule-cut[data-reveal="pending"]::before {
+  transform: scaleX(0);
+}
+.rule-cut[data-reveal="done"]::before {
+  transition: transform var(--rule-cut-duration) var(--ease-press);
+}
+
+@media (max-width: 720px) {
+  .plate {
+    --plate-duration: 360ms;
+  }
+}
+
 /* === Mono metadata === */
 .meta {
   font-family: var(--font-mono);
@@ -303,6 +368,14 @@ a:hover {
   }
 
   .action-link .arrow {
+    transform: none !important;
+  }
+
+  /* Editorial primitives are static: no shutter, full rule */
+  .plate::after {
+    transform: scaleY(0) !important;
+  }
+  .rule-cut[data-reveal]::before {
     transform: none !important;
   }
 }

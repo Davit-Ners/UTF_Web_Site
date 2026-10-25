@@ -1,3 +1,4 @@
+import Reveal from "@/app/components/motion/reveal";
 import NewTabLink from "@/app/components/newTabLink";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,7 +37,8 @@ export default function FeaturedRelease({ release }: Props) {
         {release.title}
       </h2>
 
-      <div className={styles.cover}>
+      {/* R1 Plate pilot: only the cover is uncovered, top to bottom */}
+      <Reveal className={`${styles.cover} plate`}>
         <Image
           src={release.cover}
           alt={`${release.title} album cover`}
@@ -47,7 +49,7 @@ export default function FeaturedRelease({ release }: Props) {
           placeholder="blur"
           blurDataURL={IMAGE_BLUR_DATA_URL}
         />
-      </div>
+      </Reveal>
 
       <div className={styles.sheet}>
         <dl className={styles.facts}>

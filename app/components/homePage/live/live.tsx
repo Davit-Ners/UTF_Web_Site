@@ -1,3 +1,4 @@
+import Reveal from "@/app/components/motion/reveal";
 import NewTabLink from "@/app/components/newTabLink";
 import Link from "next/link";
 import ConcertPoster from "@/app/components/concerts/concertPoster";
@@ -58,13 +59,14 @@ function NoDates() {
       <h2 id="live-title" className={`${styles.title} ${styles.titleSplit}`}>
         Live
       </h2>
-      <div className={styles.empty}>
+      {/* R3 Rule cut pilot: the rule that opens the Live block */}
+      <Reveal className={`${styles.empty} rule-cut`}>
         <p className={styles.emptyLine}>No public dates</p>
         <p className="meta">Next announcement soon</p>
         <Link href="/concerts#archive" className={`action-link ${styles.emptyLink}`}>
           Concert archive <span className="arrow" aria-hidden="true">→</span>
         </Link>
-      </div>
+      </Reveal>
     </>
   );
 }
@@ -150,7 +152,8 @@ function TourList({ shows }: { shows: Concert[] }) {
         Live
       </h2>
 
-      <ol className={styles.rows}>
+      {/* R3 Rule cut pilot: the top rule of the tour list (rows stay static) */}
+      <Reveal as="ol" className={`${styles.rows} rule-cut`}>
         {shows.slice(0, MAX_ROWS).map((show) => {
           const { year, month, day } = dateParts(show.date);
           const city = splitCity(show.city);
@@ -184,7 +187,7 @@ function TourList({ shows }: { shows: Concert[] }) {
             </li>
           );
         })}
-      </ol>
+      </Reveal>
 
       <div className={styles.foot}>
         <Link href="/concerts" className="action-link">
