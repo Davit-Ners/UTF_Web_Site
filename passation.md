@@ -21,14 +21,90 @@ The summaries below describe the current state. Phase implementation and verific
 - **Turnstile environment:** code resilience is resolved. The last recorded local configuration had an unusable public key; manual correction to a matched site/secret pair and restart/rebuild still needs confirmation. No environment values were inspected or changed in this cleanup.
 - **Contact:** `contact@untiltheyfall.com` is confirmed as actively monitored (2026-10-25). Still confirm the configured notification inboxes (`BOOKING_TO_EMAIL`/`MERCH_TO_EMAIL`) and resolve the differing Gmail address in `presskit.md`.
 - **Factual content:** retain the documented concert time/line-up/note/city/photo-association questions, product name/category questions, and unconfirmed mix/master/artwork/Bandcamp details. Do not infer replacements.
-- **Assets:** dedicated mobile Hero, high-resolution video still/logo, clean credited gallery/member images and product photography remain pending; photo permission/credit wording remains unconfirmed. Detailed limitations are retained at the end.
+- **Assets:** audited 2026-10-25 (see Asset audit below, with P0/P1/P2 ranking and shoot list). Not yet acted on. Photo permission/credit wording remains unconfirmed.
 - **Merch variants/sizes:** still a separate functional phase; order notes remain the current size mechanism.
 - **Rider/press:** the band has decided to keep the personal rider phone numbers public for now (PDF unchanged); no public press-kit PDF/press-photo pack exists yet.
 - **Privacy/GDPR (open items, see Privacy core below):** no legal entity exists, so the controller is described as the band's members; retention periods are policy commitments with no automated deletion; Vercel/Resend processing and retention details and most transfer safeguards are unconfirmed.
 - **Operator identity / legal-commercial setup (unresolved):** the band has no legal entity, enterprise (BCE/KBO) number, VAT number, registered office, public business address or professional phone. `/legal` and `/privacy` publish only the band name, Brussels, Belgium and `contact@untiltheyfall.com`, and say plainly that no separate entity exists. Belgian e-commerce rules (art. XII.6 CDE, as read by FPS Economy) expect a service provider's name, geographic address, contact details and, where registered, enterprise/VAT numbers; consumer distance sales (art. VI.45 CDE) also expect a geographic address and phone. Merch sales terms cannot be completed until the band decides who operates and sells (members, one member, or a new ASBL/company) and which address/phone can be published. Get legal/accounting advice; do not fill these gaps with placeholders.
-- **Newsletter:** disabled for launch (see Newsletter launch-safe state below).
-- **Domain / SEO launch (external steps):** canonical origin is `https://untiltheyfall.com` (hard-coded for production builds; see SEO launch pass below). In Vercel, attach both `untiltheyfall.com` and `www.untiltheyfall.com` to the production project and set `www` to **redirect (308) to `untiltheyfall.com`**; the code-level host redirect is only a safety net. Then follow the post-deployment checklist in the SEO section. No email addresses are collected; reactivation is a dedicated phase with the requirements listed there.
-- **Deferred phases:** Legal notice, Merch consumer-law terms/withdrawal, newsletter rework, the broader SEO review, asset replacement and motion are not implemented. Existing motion is unchanged.
+- **Newsletter:** disabled for launch (see Newsletter launch-safe state below). No email addresses are collected; reactivation is a dedicated phase with the requirements listed there.
+- **Domain / SEO launch (external steps):** canonical origin is `https://untiltheyfall.com` (hard-coded for production builds; see SEO launch pass below). In Vercel, attach both `untiltheyfall.com` and `www.untiltheyfall.com` to the production project and set `www` to **redirect (308) to `untiltheyfall.com`**; the code-level host redirect is only a safety net. Then follow the post-deployment checklist in the SEO section.
+- **Deferred phases:** Merch consumer-law terms/withdrawal (blocked by operator identity), newsletter rework, asset replacement (see Asset audit) and motion are not implemented. Existing motion is unchanged.
+
+### Asset audit (2026-10-25) — to revisit
+
+Audit only; no files changed. Numbers measured from the files and from browser requests on the dev server. Supersedes nothing below; the older per-phase asset notes at the end remain valid detail.
+
+**Summary**
+- Only 11 distinct band photographs exist; 6 are one Laurent Henoumont live session (all with baked border + handwritten signature), shown about 25 times across Home, About, Gallery, Concerts and social metadata. 7 of the 8 Gallery photos already appear on Home or About.
+- Rights are the most urgent issue: publication permission is unconfirmed for every photograph; `band-test.jpg` (main identity image, structured-data image, four OG images, inside the Braine poster) has no known photographer; the only high-res Gerard engraving (`utf-design/assets/PNG-WHITE-STROKE_GERARD.png`, 3508×4961) is a Fiverr preview with a tiled "fiverr" watermark, no vector exists, and the commercial licence is unknown. `public/gerard-logo.png` (2048²) is clean.
+- No four-eye mark file exists anywhere. The Gerard horned mask appears to have two pairs of sockets (possible origin of the motif; unconfirmed).
+- Two different creatures are both filed as "Gerard": the horned mask (header, favicons, CD tray, Patch New, `gerard-logo.png`) and the eclipse creature on the Gerard T-Shirt (`utf-design/assets/Gerard sans police 3.jpg`, 1754²). The band should confirm which is Gerard.
+- Fine as is: `band-test` composition (keep; confirm rights), official album cover 1875² (adequate; do not restyle), desktop hero composition, CD/patch photo set, the two concert posters as documentary items, `logo-typo.png` at current sizes.
+
+**Measured weak points**
+- Mobile hero (375×812, DPR 3): a 24% slice (~460 source px) of the 1920px `/optimized/bandphoto-hero.webp`, ≈2.5× upscaled; singer bent over, no face. Desktop hero 1440×900 DPR 2 ≈1.8× upscaled; 1920 DPR 1 slightly upscaled. The hero uses the re-encoded 1920 webp while the 2048 original exists.
+- Video poster: YouTube `sddefault` 640×480 (16:9 letterboxed); `maxresdefault` is 404; shown at 75vw (≈1440px at 1920) → ≈2.25× upscale.
+- Visual break `band1.jpg`: signature still visible on mobile; no credit shown although Gallery/About credit Henoumont; ≈1.46× upscale at 1440 DPR 2. About cover / Gallery opener ≈1.4× at 1440 DPR 2.
+- Header mark: full lockup at 28px, unreadable. `app/icon0.svg` is 1.8 MB (raster wrapped in SVG); `icon1.png` dark/low contrast; manifest icons declared maskable but artwork runs to the edges.
+- Default OG image `bandphoto.jpg` shows the baked border + signature in link previews; `band1` OG (Concerts/Gallery) is also signed.
+- Double compression: hero, concert posters and the homepage featured-release cover (1000px webp; 1875 master exists) use `/optimized/*.webp` re-encoded by `next/image`. AVIF not enabled.
+- About: mixed sources (3 landscape Henoumont stage crops with border/signature + 2 vertical Vangelder portraits with large watermarks; blue/amber/red casts). Capture dates stripped (EXIF holds only artist/copyright). `val1` shows the 2024 bassist, so the session is 2024+; whether the singer shown is Krys (2025) is unconfirmed.
+- Merch (live DB): Album Artwork Tee active with 25 in stock and no image; `stickers.png` is a 1024² digital mockup (1.7 MB PNG); Gerard T-Shirt single front view; others are real 2048px photos on wood.
+- Concert posters: only 2 of 12 shows. Arlon serves `/optimized/.../poster.webp` 1400×733 while `/concerts/utf-arlon/poster.jpg` 1920×1005 exists (DB data change); Braine only exists as 1440² webp (no original). Both look like social event graphics (Braine includes `band-test` and "\/ Check Description \/").
+- Unused public files still downloadable: `utfnez.png` (356px, older six-person line-up photo), `logo.jpg`, seed merch images (`core-tee.jpg`, `skull-hoodie.png`, `cd-st.png`), default Next/Vercel SVGs. `utf-design/assets/tourAI.webp` is AI-generated (not for final use); `bandUTFimg.jpg` is a lower-res copy of `utf-band-good`.
+
+**Credits / rights**
+
+| Source | Photographer | Baked marking | Credit shown | Permission |
+|---|---|---|---|---|
+| Henoumont session (7 files incl. hero) | Laurent Henoumont (EXIF) | Signature + border | Gallery/About yes; Hero/break/teaser no | Unknown |
+| `utf-band-good`, Sabari, Krys | Peter Vangelder | Large musika.be watermark | About/Gallery yes | Unknown |
+| `band-test` | Unknown | None | No | Unknown |
+| Gerard artwork | Fiverr designer (name unknown) | Fiverr proof watermark on high-res file | n/a | Licence unknown |
+| Album cover | Not recorded | — | — | Unknown (assumed band-owned) |
+| Concert posters | Organisers | Baked text | "Poster" caption | Third-party, documentary use |
+
+**Reuse map**
+
+| Asset | Home | About | Gallery | Music | Concerts | SEO/social |
+|---|---|---|---|---|---|---|
+| `band-test` | About teaser | Cover | Promo | — | Inside Braine poster | About/Booking/Privacy/Legal OG, JSON-LD |
+| `band1` | Visual break | — | Yes | — | — | `/concerts`, `/gallery` OG |
+| `dav1` / `val1` | Teaser | Member | Yes | — | — | — |
+| `band2` | Teaser | — | Yes | — | — | — |
+| `kev1` | — | Member | Yes | — | — | — |
+| `utf-band-good` | — | On-stage | Yes | — | — | — |
+| `bandphoto` | Hero | — | — | — | — | Default OG (Home, 404) |
+| Album cover | Featured release | — | — | `/music`, release | — | Music/release OG, JSON-LD |
+
+**Shoot / replacement list**
+
+| # | Current → use | Ideal replacement | Ratio | Min resolution | Requires |
+|---|---|---|---|---|---|
+| 1 | `bandphoto` crop → mobile hero | Vertical live shot or portrait, faces in upper third, dark lower third for logo/actions (or Gerard artwork only from a larger master) | 2:3 (fits 4:5–9:16) | 1440×2560 (ideal 2160×3840) | New photo / graphic design |
+| 2 | YouTube 640×480 → video poster | Frame with a face from the master video | 16:9 | 1920×1080 | Video frame export |
+| 3 | `bandphoto` → desktop hero, default OG | Clean master of the same frame | Native 1.75:1 | 3000 wide | Existing master (photographer) |
+| 4 | Henoumont `band1`/`bandall`/`band2`/`dav1`/`kev1`/`val1` | Clean masters + written permission | Native | 3000 long edge | Existing master |
+| 5 | About member portraits | One five-member session: 5 portraits, group landscape, group vertical | 4:5, 3:2, 2:3 | 3000 long edge | New photo |
+| 6 | Header Gerard raster, favicons | Four-eye mark: light, dark, single-colour ember, favicon (simplified, padded; 16/32/180/512 PNG + light SVG) | 1:1 | Vector | Vector design |
+| 7 | `logo-typo.png` | Wordmark SVG/PDF, light and dark | Native | Vector | Vector (likely with designer) |
+| 8 | Fiverr-watermarked engraving | Licensed clean master + vector | Native | Vector / 4000+ | Existing master (designer) |
+| 9 | Album Artwork Tee (none) | Front, back, detail | 1:1 | 2400² | New photo |
+| 10 | `stickers.png` mockup | Real sticker photo (layout + one applied) | 1:1 | 2400² | New photo |
+| 11 | Gerard T-Shirt | Front, back, print detail | 1:1 | 2400² | New photo |
+| 12 | Arlon optimized poster | Existing 1920 original | 1.91:1 | 1920 | Data change |
+| 13 | Gallery chapters II/III | Photos from other dated shows | Native | 3000 long edge | New/existing photos |
+| 14 | App/manifest icons | Four-eye icon set with ~20% safe zone | 1:1 | 512² + SVG | Graphic design |
+| 15 | Album cover for press | Distribution master | 1:1 | 3000² | Existing master |
+| 16 | CD engraving (optional editorial) | Clean scan or vector | Native | Vector / 4000+ | Existing master/scan |
+| 17 | Posters for 10 other shows | Official posters if they exist | Native | 1500 long edge | Existing (organisers) |
+
+Merch mini shoot: one session, same surface (wood or matte charcoal), soft diffuse side light, 1:1, ≥2400². Press pack minimum: 3 clean band photos (landscape, vertical, live, ≥3000px, credited), 5 portraits, wordmark + four-eye (SVG/PNG, light/dark), album cover ≥3000², short and long bio (EN/FR), tech rider, credits/permitted-use sheet, contact email.
+
+**Priority**
+- **P0 (before final launch):** written permission and credit wording for the Henoumont session, Vangelder photos and the `band-test` photographer; mobile hero asset (#1); video poster frame (#2); Album Artwork Tee photo (#9) or deactivate it; four-eye mark and favicon set (#6, #14), with Gerard kept knowingly as temporary if launch cannot wait; licence and clean final Gerard files (#8).
+- **P1 (high-value polish):** clean Henoumont masters (#3, #4, also fixes the default OG image); five-member portrait session (#5); wordmark SVG (#7); merch mini shoot (#10, #11); Arlon original (#12); confirm which design is Gerard and whether the Henoumont session shows the current singer.
+- **P2 (later):** more shows (#13); album/press masters (#15); CD engraving editorial use (#16); missing posters (#17); press pack assembly; AVIF and removing double-compressed `/optimized` copies and unused public files (including `utfnez.png`); non-AI Tower Seven artwork.
 
 ### SEO launch pass (2026-10-25)
 
