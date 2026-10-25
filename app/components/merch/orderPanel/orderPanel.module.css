@@ -255,6 +255,21 @@
   color: var(--bone);
 }
 
+.privacyNote {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: var(--bone-dim);
+}
+
+.privacyNote a {
+  color: var(--bone);
+  text-decoration: underline;
+  text-decoration-color: var(--ember-text);
+  text-underline-offset: 3px;
+}
+
 .err {
   color: var(--ember-text);
 }

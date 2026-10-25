@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import type { CartItem } from "@/app/lib/products";
 import { calculateShipping } from "@/app/lib/shipping";
+import NewTabLink from "@/app/components/newTabLink";
 import { CONTACT_EMAIL } from "@/app/lib/contact";
 import type { MerchOrderStatus } from "@/lib/merch-order-result";
 import styles from "./orderPanel.module.css";
@@ -234,6 +235,12 @@ export default function OrderPanel({
             </span>
           ) : null}
           {orderStatus.type === "error" ? <span className={styles.err}>{orderStatus.message}</span> : null}
+        </p>
+
+        {/* Information only; a new tab keeps the order request open */}
+        <p className={styles.privacyNote}>
+          We use your details to handle your merch request and to contact you about availability,
+          payment and delivery. See our <NewTabLink href="/privacy">Privacy Policy</NewTabLink>.
         </p>
 
         <button type="submit" className={styles.submit} disabled={!hasItems || isLoading}>

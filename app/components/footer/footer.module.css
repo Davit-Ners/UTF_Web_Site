@@ -89,6 +89,17 @@
   color: var(--grey);
 }
 
+.legal {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--bone-dim);
+}
+
+.legal:hover {
+  color: var(--bone);
+}
+
 .contact {
   color: var(--bone-dim);
   text-transform: none;

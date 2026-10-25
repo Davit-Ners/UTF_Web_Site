@@ -1,0 +1,121 @@
+/* Plain reading document: masthead, language index, two policies */
+.page {
+  background: var(--ink);
+  color: var(--bone);
+}
+
+/* === Masthead === */
+.masthead {
+  padding: clamp(24px, 3vw, 40px) var(--margin) var(--space-s);
+  border-bottom: 1px solid var(--rule);
+}
+
+.word {
+  margin-left: -0.04em;
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 16vw, 16rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 0.76;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.updated {
+  margin-top: clamp(16px, 2vw, 28px);
+  color: var(--bone-dim);
+}
+
+.languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 32px;
+  margin-top: 20px;
+}
+
+/* === Policy === */
+.policy {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  padding: var(--space-s) var(--margin);
+  border-bottom: 1px solid var(--rule);
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
+.policyTitle {
+  grid-column: 1 / 4;
+  align-self: start;
+  color: var(--bone-dim);
+}
+
+.body {
+  grid-column: 4 / 11;
+  max-width: 68ch;
+  color: var(--bone-dim);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.body h3 {
+  margin: 48px 0 12px;
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  font-stretch: 80%;
+  font-weight: 850;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.body h3:first-child {
+  margin-top: 0;
+}
+
+.body p + p,
+.body p + ul,
+.body ul + p {
+  margin-top: 12px;
+}
+
+.body ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 1.1em;
+  list-style: square;
+}
+
+.body li::marker {
+  color: var(--ember-text);
+}
+
+.body strong {
+  color: var(--bone);
+  font-weight: 600;
+}
+
+.body code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  overflow-wrap: anywhere;
+}
+
+.body a {
+  color: var(--bone);
+  text-decoration: underline;
+  text-decoration-color: var(--ember-text);
+  text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .policy {
+    display: block;
+  }
+
+  .policyTitle {
+    margin-bottom: 32px;
+  }
+}

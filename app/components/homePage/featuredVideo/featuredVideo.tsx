@@ -2,6 +2,7 @@
 
 import NewTabLink from "@/app/components/newTabLink";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import styles from "./featuredVideo.module.css";
@@ -66,6 +67,12 @@ export default function FeaturedVideo({ videoId, title, label = "Official video"
           YouTube <span className="arrow" aria-hidden="true">↗</span>
         </NewTabLink>
       </div>
+
+      {/* Shown before playback; the player itself still mounts only on click */}
+      <p className={styles.notice}>
+        Pressing play loads the video from YouTube (Google), which may then process your data and
+        store identifiers on your device. <Link href="/privacy">Privacy Policy</Link>
+      </p>
     </section>
   );
 }

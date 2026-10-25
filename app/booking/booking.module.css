@@ -430,6 +430,22 @@
   cursor: default;
 }
 
+.privacyNote {
+  max-width: 64ch;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: var(--bone-dim);
+}
+
+.privacyNote a {
+  color: var(--bone);
+  text-decoration: underline;
+  text-decoration-color: var(--ember-text);
+  text-underline-offset: 4px;
+}
+
 .altContact {
   font-family: var(--font-mono);
   font-size: 0.8125rem;

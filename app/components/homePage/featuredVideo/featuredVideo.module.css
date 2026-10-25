@@ -103,6 +103,24 @@
   margin-bottom: clamp(10px, 1.6vw, 24px);
 }
 
+/* Third-party notice, set under the poster */
+.notice {
+  grid-column: 1 / 10;
+  max-width: 72ch;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: var(--bone-dim);
+}
+
+.notice a {
+  color: var(--bone);
+  text-decoration: underline;
+  text-decoration-color: var(--ember-text);
+  text-underline-offset: 3px;
+}
+
 @media (max-width: 900px) {
   .video {
     display: flex;

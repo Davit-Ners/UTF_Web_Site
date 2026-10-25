@@ -1,5 +1,6 @@
 "use client";
 
+import NewTabLink from "@/app/components/newTabLink";
 import { CONTACT_EMAIL } from "@/app/lib/contact";
 import { useEffect, useRef } from "react";
 import { type BookingField, type BookingFieldErrors } from "@/lib/booking";
@@ -190,6 +191,12 @@ export default function BookingForm({
               Booking reference: <strong>{savedResult.bookingRequestId}</strong>.
             </span>
           ) : null}
+        </p>
+
+        {/* Information only: no consent is asked for here */}
+        <p className={styles.privacyNote}>
+          We use these details to handle your booking request and to organise the show if it goes
+          ahead. See our <NewTabLink href="/privacy">Privacy Policy</NewTabLink>.
         </p>
 
         <div className={styles.actionsRow}>
