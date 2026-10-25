@@ -1,3 +1,4 @@
+import SignatureOnce from "@/app/components/motion/signatureOnce";
 import NewTabLink from "@/app/components/newTabLink";
 import Image from "next/image";
 import type { CSSProperties } from "react";
@@ -30,8 +31,10 @@ export default function Hero() {
   } as CSSProperties;
 
   return (
-    <section className={styles.hero} aria-labelledby="hero-title" style={imageVars}>
-      <div className={styles.media}>
+    /* Signature: the photo is uncovered (R1 Plate, from first paint), then the wordmark prints into register (R2) */
+    <section className={styles.hero} aria-labelledby="hero-title" style={imageVars} data-signature="hero">
+      <SignatureOnce name="hero" />
+      <div className={`${styles.media} plate plate-load`}>
         <Image
           src={HERO_IMAGE.src}
           alt={HERO_IMAGE.alt}
@@ -48,7 +51,7 @@ export default function Hero() {
 
       <div className={styles.content}>
         <h1 id="hero-title" className="srOnly">Until They Fall</h1>
-        <div className={styles.logo} aria-hidden="true">
+        <div className={`${styles.logo} registration`} aria-hidden="true">
           <Image
             src="/optimized/logo-typo.webp"
             alt=""

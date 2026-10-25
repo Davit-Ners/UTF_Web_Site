@@ -18,18 +18,9 @@
 .photo {
   object-fit: cover;
   object-position: var(--hero-position, 50% 50%);
+  /* Static crop only (pushes the baked border out); the photo never animates */
   transform: scale(var(--hero-bleed, 1));
   transform-origin: var(--hero-origin, 50% 50%);
-  animation: settle 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes settle {
-  from {
-    transform: scale(calc(var(--hero-bleed, 1) * 1.04));
-  }
-  to {
-    transform: scale(var(--hero-bleed, 1));
-  }
 }
 
 /* Bottom scrim for type legibility; the header carries its own top scrim */
@@ -62,7 +53,13 @@
   width: min(100%, 46vh);
   width: min(100%, 46svh);
   margin-left: -1%;
-  animation: reveal 1.2s ease-out 0.35s both;
+  /*
+   * R2: the ember copy prints while the plate is finishing. The mask is a
+   * 640px rendition from the image optimizer (about 66 KB); while it is not
+   * loaded the copy renders nothing, so the wordmark is never blocked.
+   */
+  --registration-mask: url("/_next/image?url=%2Foptimized%2Flogo-typo.webp&w=640&q=75");
+  --registration-delay: calc(var(--motion-stagger) * 3);
 }
 
 .logoImage {
@@ -109,15 +106,6 @@
   writing-mode: vertical-rl;
   font-size: 0.625rem;
   color: var(--bone-dim);
-}
-
-@keyframes reveal {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 /* === Tablet === */

@@ -278,9 +278,71 @@ a:hover {
   transition: transform var(--rule-cut-duration) var(--ease-press);
 }
 
+/* Page-load variant (Hero): CSS only, starts with the first paint, no JS */
+.plate.plate-load::after {
+  animation: plate-open var(--plate-duration) var(--ease-press) both;
+}
+@keyframes plate-open {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
+
+/*
+ * === R2 Registration: an ember copy prints off-register, then snaps in ===
+ * The copy is a decorative ::before behind the target (the owner isolates
+ * its stacking context and sets --registration-mask to the artwork, e.g.
+ * url(/logo.webp)). It appears after --registration-delay, steps into
+ * alignment and is hidden when registered, so the final target is clean.
+ */
+.registration {
+  --registration-color: var(--ember);
+  --registration-x: 4px;
+  --registration-y: -2px;
+  --registration-delay: 0ms;
+  --registration-duration: 210ms;
+  position: relative;
+  isolation: isolate;
+}
+.registration::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--registration-color);
+  -webkit-mask: var(--registration-mask) center / contain no-repeat;
+  mask: var(--registration-mask) center / contain no-repeat;
+  visibility: hidden;
+  pointer-events: none;
+  animation: registration-snap var(--registration-duration) steps(3, jump-end) var(--registration-delay) forwards;
+}
+@keyframes registration-snap {
+  from {
+    visibility: visible;
+    transform: translate(var(--registration-x), var(--registration-y));
+  }
+  to {
+    visibility: hidden;
+    transform: none;
+  }
+}
+
+/* A signature already played in this tab: show the settled state at once */
+[data-signature-played] .plate-load::after,
+[data-signature-played] .registration::before {
+  animation: none;
+}
+
 @media (max-width: 720px) {
   .plate {
     --plate-duration: 360ms;
+  }
+  .registration {
+    --registration-x: 2px;
+    --registration-y: -1px;
   }
 }
 
@@ -371,9 +433,14 @@ a:hover {
     transform: none !important;
   }
 
-  /* Editorial primitives are static: no shutter, full rule */
+  /* Editorial primitives are static: no shutter, full rule, already in register */
   .plate::after {
+    animation: none !important;
     transform: scaleY(0) !important;
+  }
+  .registration::before {
+    animation: none !important;
+    visibility: hidden !important;
   }
   .rule-cut[data-reveal]::before {
     transform: none !important;

@@ -272,7 +272,8 @@ Language (approved; status per rule):
 - **R4 Cut link** (implemented): the underline is a rule; on hover, keyboard focus and press it snaps to ember and the arrow steps 3px. No colour fades.
 - **R6 Functional** (existing menu/drawer motion on shared tokens): fast, conventional, predictable.
 - **R1 Plate** (implemented: `.plate` + `<Reveal>`; pilot on the homepage Latest Release cover): an ink shutter retracts from the top edge to uncover a major image or title. The content never moves or fades.
-- **R2 Registration** (planned): an off-register ghost snaps into register in a few hard steps.
+- **R2 Registration** (implemented: `.registration`; used only on the homepage Hero wordmark): one ember copy of the artwork prints 4px/−2px off-register (2px/−1px on phones) and steps into alignment in three hard steps (`steps(3)`), then disappears behind the clean wordmark. No glow, blur, RGB split, loop or jitter.
+- **Hero sequence** (the homepage signature; CSS only, from the first paint): 0 ms the photo plate starts retracting top → bottom (R1, 480 ms; 360 ms on phones) while the photo itself stays static; ≈240 ms the wordmark registration prints and snaps (≈210 ms); everything is settled in ≈500 ms. Genre line and actions are static and usable at once. It plays on a real page load and not again on client navigation back to Home in the same tab.
 - **R3 Rule cut** (implemented: `.rule-cut` + `<Reveal>`; pilot on the homepage Live top rule): a hairline draws from the left and stops dead; optionally a real label follows (label step not built yet).
 - Editorial reveals (R1/R3) are limited to three per page, play once, and never hide content without JS.
 - **R5 Four-eye registration** (planned, blocked until the four-eye SVG exists).

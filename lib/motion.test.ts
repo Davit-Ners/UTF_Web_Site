@@ -64,8 +64,9 @@ test("R1 Plate and R3 Rule cut: transform-only primitives, hidden only while pen
   assert.match(globals, /\.rule-cut\[data-reveal="pending"\]::before \{\n  transform: scaleX\(0\);/);
   assert.match(globals, /\.rule-cut\[data-reveal="done"\]::before \{\n  transition: transform var\(--rule-cut-duration\) var\(--ease-press\);/);
   assert.match(globals, /@media \(max-width: 720px\) \{\n  \.plate \{\n    --plate-duration: 360ms;/);
-  assert.match(globals, /prefers-reduced-motion: reduce[\s\S]*\.plate::after \{\n    transform: scaleY\(0\) !important;[\s\S]*\.rule-cut\[data-reveal\]::before \{\n    transform: none !important;/);
-  const primitives = globals.slice(globals.indexOf("=== R1 Plate"), globals.indexOf("=== Mono metadata"));
+  assert.match(globals, /prefers-reduced-motion: reduce[\s\S]*\.plate::after \{\n    animation: none !important;\n    transform: scaleY\(0\) !important;[\s\S]*\.rule-cut\[data-reveal\]::before \{\n    transform: none !important;/);
+  /* R1 + R3 only (R2 legitimately translates its ghost and is checked separately) */
+  const primitives = globals.slice(globals.indexOf("=== R1 Plate"), globals.indexOf("=== R2 Registration"));
   assert.doesNotMatch(primitives, /opacity|filter|clip-path|box-shadow|translate/);
 });
 
@@ -85,4 +86,31 @@ test("pilot markup is visible as served: no data-reveal until the client decides
   assert.match(list, /<ol class="rows rule-cut">/);
   assert.equal((list.match(/rule-cut/g) ?? []).length, 1);
   for (const markup of [empty, list]) assert.doesNotMatch(markup, /data-reveal|\bplate\b/);
+});
+
+test("Hero: old settle and fade are gone; photo plate and wordmark registration replace them", async () => {
+  const hero = await css("app/components/homePage/hero/hero.module.css");
+  assert.doesNotMatch(hero, /animation|@keyframes|opacity: 0/);
+  assert.match(hero, /--registration-mask: url\("\/_next\/image\?url=%2Foptimized%2Flogo-typo\.webp&w=640&q=75"\);/);
+  assert.match(hero, /--registration-delay: calc\(var\(--motion-stagger\) \* 3\);/);
+  const { default: Hero } = await import("../app/components/homePage/hero/hero");
+  const markup = renderToStaticMarkup(createElement(Hero));
+  assert.match(markup, /<section class="hero"[^>]*data-signature="hero"/);
+  assert.equal((markup.match(/class="media plate plate-load"/g) ?? []).length, 1);
+  assert.match(markup, /<div class="logo registration" aria-hidden="true">/);
+  assert.match(markup, /<span hidden=""><\/span>/);
+  assert.doesNotMatch(markup, /data-signature-played|data-reveal/);
+});
+
+test("R2 Registration primitive: one stepped ember copy, hidden when registered, static when reduced or already played", async () => {
+  const globals = await css("app/globals.css");
+  assert.match(globals, /\.registration::before \{[^}]*z-index: -1;[^}]*mask: var\(--registration-mask\) center \/ contain no-repeat;[^}]*visibility: hidden;[^}]*pointer-events: none;[^}]*animation: registration-snap var\(--registration-duration\) steps\(3, jump-end\) var\(--registration-delay\) forwards;/);
+  assert.match(globals, /@keyframes registration-snap \{\n  from \{\n    visibility: visible;\n    transform: translate\(var\(--registration-x\), var\(--registration-y\)\);\n  \}\n  to \{\n    visibility: hidden;\n    transform: none;/);
+  assert.match(globals, /--registration-x: 4px;\n  --registration-y: -2px;/);
+  assert.match(globals, /\.registration \{\n    --registration-x: 2px;\n    --registration-y: -1px;/);
+  assert.match(globals, /\.plate\.plate-load::after \{\n  animation: plate-open var\(--plate-duration\) var\(--ease-press\) both;/);
+  assert.match(globals, /\[data-signature-played\] \.plate-load::after,\n\[data-signature-played\] \.registration::before \{\n  animation: none;/);
+  assert.match(globals, /prefers-reduced-motion: reduce[\s\S]*\.plate::after \{\n    animation: none !important;\n    transform: scaleY\(0\) !important;[\s\S]*\.registration::before \{\n    animation: none !important;\n    visibility: hidden !important;/);
+  const r2 = globals.slice(globals.indexOf("=== R2 Registration"), globals.indexOf("A signature already played"));
+  assert.doesNotMatch(r2, /filter|blur|glow|infinite|opacity/);
 });
