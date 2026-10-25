@@ -56,9 +56,18 @@ export default function Footer() {
 
       <div className={styles.base}>
         <p className={styles.copy}>© {year} Until They Fall</p>
-        <Link href="/privacy" className={styles.legal}>
-          Privacy
-        </Link>
+        <ul className={styles.legalLinks} aria-label="Legal">
+          <li>
+            <Link href="/privacy" className={styles.legal}>
+              Privacy
+            </Link>
+          </li>
+          <li>
+            <Link href="/legal" className={styles.legal}>
+              Legal
+            </Link>
+          </li>
+        </ul>
         <a href={`mailto:${CONTACT_EMAIL}`} className={styles.contact}>
           {CONTACT_EMAIL}
         </a>

@@ -1,0 +1,31 @@
+/* Identity facts; the document layout itself is shared with /privacy */
+.identity {
+  border-top: 1px solid var(--rule);
+}
+
+.identity div {
+  display: grid;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+  gap: 4px 24px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.identity dt {
+  color: var(--grey);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  line-height: 1.6rem;
+  text-transform: uppercase;
+}
+
+.identity dd {
+  color: var(--bone);
+}
+
+@media (max-width: 480px) {
+  .identity div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
