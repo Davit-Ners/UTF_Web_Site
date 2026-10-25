@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { randomUUID } from "node:crypto";
 
 test("merch API separates persistence from notification delivery", async (t) => {
   const previousDatabaseUrl = process.env.DATABASE_URL;
@@ -23,6 +24,8 @@ test("merch API separates persistence from notification delivery", async (t) => 
 
     const originalFindMany = prisma.product.findMany;
     const originalCreate = prisma.customerOrder.create;
+    const originalFindUnique = prisma.customerOrder.findUnique;
+    const originalUpdate = prisma.customerOrder.update;
     const findMany = t.mock.fn(async () => [{ id: "p1", name: "Test tee", price: 25, stock: 5 }]);
     const create = t.mock.fn(async () => {
       if (storageFails) throw new Error(privateError);
@@ -33,11 +36,15 @@ test("merch API separates persistence from notification delivery", async (t) => 
     // The fixture returns only the fields selected by this handler, not every generic Prisma result.
     prisma.product.findMany = findMany as unknown as typeof prisma.product.findMany;
     prisma.customerOrder.create = create as unknown as typeof prisma.customerOrder.create;
+    prisma.customerOrder.findUnique = t.mock.fn(async () => null) as unknown as typeof prisma.customerOrder.findUnique;
+    prisma.customerOrder.update = t.mock.fn(async () => ({ id: "saved-order-id" })) as unknown as typeof prisma.customerOrder.update;
     assert.equal(prisma.product.findMany, findMany);
     assert.equal(prisma.customerOrder.create, create);
     t.after(() => {
       prisma.product.findMany = originalFindMany;
       prisma.customerOrder.create = originalCreate;
+      prisma.customerOrder.findUnique = originalFindUnique;
+      prisma.customerOrder.update = originalUpdate;
     });
     t.mock.method(emailPrototype, "send", (input: { to: string[] }) => {
       sends++;
@@ -53,7 +60,7 @@ test("merch API separates persistence from notification delivery", async (t) => 
 
     const request = () => new Request("https://example.com/api/merch/order", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "Idempotency-Key": randomUUID() },
       body: JSON.stringify({ name: "Customer", email: customer, country: "Belgium", notes: "M", items: [{ productId: "p1", quantity: 2 }] }),
     });
 

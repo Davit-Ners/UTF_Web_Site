@@ -9,6 +9,7 @@ import { needsSize } from "../lib/merchPresentation";
 import type { CartItem, Product } from "../lib/products";
 import styles from "./merch.module.css";
 import { getSavedMerchOrderStatus, type MerchOrderStatus } from "@/lib/merch-order-result";
+import { createMerchOrderAttempt } from "@/lib/merch-order-attempt";
 
 type Props = {
     products: Product[];
@@ -36,6 +37,8 @@ function clampQty(product: Product, quantity: number) {
 export default function MerchStoreClient({ products, masthead }: Props) {
     const [cart, setCart] = useState<CartItem[]>([]);
     const [orderStatus, setOrderStatus] = useState<MerchOrderStatus>({ type: "idle" });
+    const attemptRef = useRef<ReturnType<typeof createMerchOrderAttempt> | null>(null);
+    const submissionInFlight = useRef(false);
     const dialogRef = useRef<HTMLDialogElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -99,14 +102,21 @@ export default function MerchStoreClient({ products, masthead }: Props) {
         notes: string;
         faxNumber: string;
     }): Promise<boolean> {
-        if (!cart.length) return false;
+        if (!cart.length || submissionInFlight.current) return false;
 
+        submissionInFlight.current = true;
         setOrderStatus({ type: "loading" });
 
         try {
+            if (!attemptRef.current) {
+                let storage: Storage | null = null;
+                try { storage = window.sessionStorage; } catch { /* Use an in-memory key. */ }
+                attemptRef.current = createMerchOrderAttempt(storage);
+            }
+            const idempotencyKey = attemptRef.current.getKey();
             const res = await fetch("/api/merch/order", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", "Idempotency-Key": idempotencyKey },
                 body: JSON.stringify({
                     ...input,
                     items: cart.map((item) => ({
@@ -120,6 +130,7 @@ export default function MerchStoreClient({ products, masthead }: Props) {
 
             const saved = getSavedMerchOrderStatus(result);
             if (saved) {
+                attemptRef.current.complete(idempotencyKey);
                 setCart([]);
                 setOrderStatus(saved);
                 return true;
@@ -139,6 +150,8 @@ export default function MerchStoreClient({ products, masthead }: Props) {
                         : "Order request failed. Please try again.",
             });
             return false;
+        } finally {
+            submissionInFlight.current = false;
         }
     }
 

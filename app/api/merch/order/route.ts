@@ -12,6 +12,8 @@ import { calculateShipping } from "@/app/lib/shipping";
 import { Resend } from "resend";
 import { CONTACT_EMAIL } from "@/app/lib/contact";
 import type { StoredMerchOrderResponse } from "@/lib/merch-order-result";
+import { createHash } from "node:crypto";
+import { isMerchIdempotencyKey } from "@/lib/merch-order-attempt";
 
 /* Only these business-validation messages are safe to return to a customer. */
 class MerchAvailabilityError extends Error {}
@@ -185,6 +187,30 @@ async function sendMerchEmails(order: MerchOrderSummary) {
   return { emailed, confirmationEmailed, errors };
 }
 
+async function findProcessedOrder(idempotencyKey: string) {
+  return prisma.customerOrder.findUnique({
+    where: { idempotencyKey },
+    select: { id: true, orderNumber: true, idempotencyRequestHash: true, merchNotificationResult: true },
+  });
+}
+
+function processedOrderResponse(order: NonNullable<Awaited<ReturnType<typeof findProcessedOrder>>>, requestHash: string) {
+  if (order.idempotencyRequestHash !== requestHash) {
+    return Response.json({ error: "This checkout attempt was already used for different order details. Please contact the band if you need to change the request." }, { status: 409 });
+  }
+  if (!order.orderNumber) throw new Error("Stored merch order is missing its reference.");
+  const result = order.merchNotificationResult;
+  const known = result !== null && typeof result === "object" && !Array.isArray(result)
+    && typeof result.emailed === "boolean" && typeof result.confirmationEmailed === "boolean";
+  const emailed = known && result.emailed === true;
+  const confirmationEmailed = known && result.confirmationEmailed === true;
+  return Response.json({
+    success: true, stored: true, orderId: order.id, orderNumber: order.orderNumber,
+    emailed, confirmationEmailed, alreadyProcessed: true,
+    notificationStatus: !known ? "pending" : emailed && confirmationEmailed ? "complete" : "incomplete",
+  } satisfies StoredMerchOrderResponse);
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -203,36 +229,60 @@ export async function POST(req: Request) {
       );
     }
 
+    const key = req.headers.get("Idempotency-Key")?.trim();
+    if (!isMerchIdempotencyKey(key)) {
+      return Response.json({ error: "This checkout attempt is invalid. Please refresh the page and try again." }, { status: 400 });
+    }
+    const idempotencyKey = key.toLowerCase();
+    const requestHash = createHash("sha256").update(JSON.stringify({
+      ...validation.data,
+      items: [...validation.data.items].sort((a, b) => a.productId.localeCompare(b.productId) || a.quantity - b.quantity),
+    })).digest("hex");
+    const existing = await findProcessedOrder(idempotencyKey);
+    if (existing) return processedOrderResponse(existing, requestHash);
+
     const orderNumber = buildOrderNumber();
     const summary = await buildOrderSummary(validation.data);
 
-    const savedOrder = await prisma.customerOrder.create({
-      data: {
-        orderNumber,
-        status: "PENDING_PAYMENT",
-        source: "PUBLIC_SITE",
-        currency: "EUR",
-        subtotalAmount: summary.subtotal,
-        shippingAmount: summary.shipping,
-        totalAmount: summary.total,
-        customerName: summary.customerName,
-        email: summary.email,
-        shippingCountry: summary.country,
-        notes: summary.notes || null,
-        items: {
-          create: summary.items.map((item) => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            unitPrice: item.unitPrice,
-            lineTotal: item.lineTotal,
-            productNameSnapshot: item.name,
-          })),
+    let savedOrder: { id: string };
+    try {
+      savedOrder = await prisma.customerOrder.create({
+        data: {
+          idempotencyKey,
+          idempotencyRequestHash: requestHash,
+          orderNumber,
+          status: "PENDING_PAYMENT",
+          source: "PUBLIC_SITE",
+          currency: "EUR",
+          subtotalAmount: summary.subtotal,
+          shippingAmount: summary.shipping,
+          totalAmount: summary.total,
+          customerName: summary.customerName,
+          email: summary.email,
+          shippingCountry: summary.country,
+          notes: summary.notes || null,
+          items: {
+            create: summary.items.map((item) => ({
+              productId: item.productId,
+              quantity: item.quantity,
+              unitPrice: item.unitPrice,
+              lineTotal: item.lineTotal,
+              productNameSnapshot: item.name,
+            })),
+          },
         },
-      },
-      select: {
-        id: true,
-      },
-    });
+        select: {
+          id: true,
+        },
+      });
+    } catch (error) {
+      if (typeof error === "object" && error !== null && "code" in error && error.code === "P2002") {
+        // The unique index chooses one winner; losing requests replay its row.
+        const winner = await findProcessedOrder(idempotencyKey);
+        if (winner) return processedOrderResponse(winner, requestHash);
+      }
+      throw error;
+    }
 
     const order: MerchOrderSummary = {
       ...summary,
@@ -249,6 +299,17 @@ export async function POST(req: Request) {
       console.error("MERCH NOTIFICATION ERROR:", error);
     }
 
+    try {
+      await prisma.customerOrder.update({
+        where: { id: savedOrder.id },
+        data: { merchNotificationResult: { emailed, confirmationEmailed } },
+        select: { id: true },
+      });
+    } catch (error) {
+      // Never resend on replay when delivery status could not be recorded.
+      console.error("MERCH NOTIFICATION STATUS ERROR:", error);
+    }
+
     return Response.json({
       success: true,
       stored: true,
@@ -256,6 +317,7 @@ export async function POST(req: Request) {
       confirmationEmailed,
       orderId: order.orderId,
       orderNumber: order.orderNumber,
+      alreadyProcessed: false,
       notificationStatus: emailed && confirmationEmailed ? "complete" : "incomplete",
     } satisfies StoredMerchOrderResponse);
   } catch (error) {

@@ -33,3 +33,13 @@ test("failed storage and unconfirmed responses are not accepted as saved", () =>
     assert.equal(getSavedMerchOrderStatus(result), null);
   }
 });
+
+test("replays identify an existing request and pending delivery never claims email failure", () => {
+  const complete = getSavedMerchOrderStatus({ stored: true, alreadyProcessed: true, orderNumber: "UTF-ORIGINAL", emailed: true, confirmationEmailed: true });
+  assert.match(complete!.message, /already received/);
+  assert.match(complete!.message, /UTF-ORIGINAL/);
+  const pending = getSavedMerchOrderStatus({ stored: true, alreadyProcessed: true, orderNumber: "UTF-ORIGINAL", notificationStatus: "pending" });
+  assert.equal(pending?.type, "success-with-warning");
+  assert.match(pending!.message, /not yet confirmed/);
+  assert.doesNotMatch(pending!.message, /failed|try again|retry/i);
+});

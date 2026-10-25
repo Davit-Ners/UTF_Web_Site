@@ -186,6 +186,9 @@ model InventoryMovement {
 model CustomerOrder {
   id                 String              @id @default(cuid())
   orderNumber        String?             @unique
+  idempotencyKey     String?             @unique
+  idempotencyRequestHash String?
+  merchNotificationResult Json?
   status             OrderStatus         @default(DRAFT)
   source             OrderSource         @default(PUBLIC_SITE)
   currency           String              @default("EUR")
