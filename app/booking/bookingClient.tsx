@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { buildBookingPayload, validateBookingPayload } from "@/lib/booking";
+import { readSavedBookingResult, type SavedBookingResult } from "@/lib/booking-result";
 import BookingForm from "../components/bookingPage/bookingForm";
 import { BOOKING_UNAVAILABLE_MESSAGE, type BookingTurnstileConfig } from "@/lib/turnstile.shared";
 import { CONTACT_EMAIL } from "@/app/lib/contact";
@@ -9,7 +10,7 @@ import styles from "./booking.module.css";
 
 export default function BookingClient({ turnstileConfig }: { turnstileConfig: BookingTurnstileConfig }) {
   const [loading, setLoading] = useState(false);
-  const [ok, setOk] = useState<null | boolean>(null);
+  const [savedResult, setSavedResult] = useState<SavedBookingResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState("");
   const [turnstileResetCounter, setTurnstileResetCounter] = useState(0);
@@ -24,7 +25,7 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
     e.preventDefault();
     if (unavailable) return;
     setLoading(true);
-    setOk(null);
+    setSavedResult(null);
     setError(null);
 
     const form = e.currentTarget;
@@ -69,7 +70,8 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
         return;
       }
 
-      if (!res.ok) {
+      const saved = readSavedBookingResult(result);
+      if (!saved) {
         throw new Error(
           typeof result?.error === "string"
             ? result.error
@@ -77,12 +79,11 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
         );
       }
 
-      setOk(true);
+      setSavedResult(saved);
       setTurnstileToken("");
       setTurnstileResetCounter((current) => current + 1);
       form.reset();
     } catch (error) {
-      setOk(false);
       setTurnstileToken("");
 
       if (turnstileEnabled) {
@@ -120,7 +121,7 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
         handleSubmit={handleSubmit}
         error={error}
         loading={loading}
-        ok={ok}
+        savedResult={savedResult}
         onTurnstileTokenChange={setTurnstileToken}
         onTurnstileUnavailable={handleTurnstileUnavailable}
         submitDisabled={loading || (turnstileEnabled && !turnstileToken)}

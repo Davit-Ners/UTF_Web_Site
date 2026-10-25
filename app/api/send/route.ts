@@ -7,6 +7,7 @@ import {
   validateBookingPayload,
 } from "@/lib/booking";
 import prisma from "@/lib/prisma";
+import { type SavedBookingResult } from "@/lib/booking-result";
 import { validateTurnstileToken } from "@/lib/turnstile";
 import { BOOKING_TURNSTILE_ACTION } from "@/lib/turnstile.shared";
 import { Resend } from "resend";
@@ -46,14 +47,14 @@ async function sendBookingEmails(payload: ValidBookingRequestPayload) {
 
   const [bookingEmailResult, confirmationEmailResult] =
     await Promise.allSettled([
-      resend.emails.send({
+      Promise.resolve().then(() => resend.emails.send({
         from: bookingFromEmail,
         to: [bookingToEmail],
         replyTo: payload.email,
         subject: `New booking request from ${payload.name}`,
         react: EmailTemplate(payload),
-      }),
-      resend.emails.send({
+      })),
+      Promise.resolve().then(() => resend.emails.send({
         from: bookingFromEmail,
         to: [payload.email],
         replyTo: bookingToEmail,
@@ -62,7 +63,7 @@ async function sendBookingEmails(payload: ValidBookingRequestPayload) {
           bookingEmail: bookingToEmail,
           request: payload,
         }),
-      }),
+      })),
     ]);
 
   let emailed = false;
@@ -152,15 +153,17 @@ export async function POST(req: Request) {
       validation.data
     );
 
-    return Response.json({
+    const result: SavedBookingResult = {
       success: true,
       stored: true,
       emailed,
       confirmationEmailed,
+      notificationStatus: emailed && confirmationEmailed ? "complete" : "incomplete",
       bookingRequestId: savedRequest.id,
-    });
+    };
+    return Response.json(result);
   } catch (error) {
     console.error("SERVER ERROR:", error);
-    return Response.json({ error: "Server error" }, { status: 500 });
+    return Response.json({ success: false, stored: false, error: "Server error" }, { status: 500 });
   }
 }

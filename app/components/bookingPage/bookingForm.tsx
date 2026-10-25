@@ -1,6 +1,7 @@
 "use client";
 
 import { CONTACT_EMAIL } from "@/app/lib/contact";
+import { type SavedBookingResult } from "@/lib/booking-result";
 import BookingTurnstile from "./bookingTurnstile";
 import styles from "../../booking/booking.module.css";
 
@@ -8,7 +9,7 @@ type BookingFormProps = {
   error: null | string;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   loading: boolean;
-  ok: null | boolean;
+  savedResult: SavedBookingResult | null;
   onTurnstileTokenChange: (token: string) => void;
   onTurnstileUnavailable: () => void;
   submitDisabled: boolean;
@@ -29,7 +30,7 @@ export default function BookingForm({
   error,
   handleSubmit,
   loading,
-  ok,
+  savedResult,
   onTurnstileTokenChange,
   onTurnstileUnavailable,
   submitDisabled,
@@ -136,7 +137,20 @@ export default function BookingForm({
 
         <p className={styles.status} role="status" aria-live="polite">
           {error ? <span className={styles.error}>{error}</span> : null}
-          {ok ? <span className={styles.success}>Thanks. We&apos;ll get back to you shortly.</span> : null}
+          {savedResult ? (
+            <span className={styles.success}>
+              {savedResult.notificationStatus === "complete" ? (
+                <>Thanks. We&apos;ll get back to you shortly.</>
+              ) : (
+                <>
+                  Your booking request was saved. We couldn&apos;t deliver all notification emails.
+                  Please don&apos;t submit the form again. Keep this reference and email{" "}
+                  <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> if you want to confirm reception.
+                </>
+              )}{" "}
+              Booking reference: <strong>{savedResult.bookingRequestId}</strong>.
+            </span>
+          ) : null}
         </p>
 
         <div className={styles.actionsRow}>
