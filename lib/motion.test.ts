@@ -50,7 +50,11 @@ test("audited images no longer dim or zoom on hover", async () => {
 test("functional header and drawer motion run on the shared tokens", async () => {
   const header = await css("app/components/header/header.module.css");
   assert.match(header, /transition: background-color var\(--motion-ui\) var\(--ease-ui\), border-color var\(--motion-ui\) var\(--ease-ui\);/);
-  assert.match(header, /transition: opacity var\(--motion-ui\) var\(--ease-ui\), visibility 0s linear var\(--motion-ui\);/);
+  /* Mobile menu: R6 top-down shutter (transform only), faster close, no opacity fade */
+  assert.match(header, /\.panel \{[^}]*transform: translateY\(calc\(-1 \* var\(--panel-h\)\)\);[^}]*transition: transform var\(--panel-close\) var\(--ease-ui\), visibility 0s linear var\(--panel-close\);/);
+  assert.match(header, /\.panelInner \{[^}]*transform: translateY\(var\(--panel-h\)\);/);
+  assert.match(header, /\.panelOpen \{\n    visibility: visible;\n    transform: none;\n    transition: transform var\(--motion-ui\) var\(--ease-ui\);/);
+  assert.doesNotMatch(header, /\.panel \{[^}]*opacity|\.panelOpen \{[^}]*opacity|\.panelInner \{[^}]*opacity/);
   const merch = await css("app/merch/merch.module.css");
   assert.match(merch, /animation: slideIn var\(--motion-ui\) var\(--ease-ui\);/);
 });
@@ -184,4 +188,25 @@ test("route markup carries exactly the planned editorial motion, visible as serv
   }
 
   for (const markup of [first, release, empty, list, dossier, about, notFound]) assert.doesNotMatch(markup, /data-reveal/);
+});
+
+test("Batch 5 functional motion: viewer shutters, backdrop fades, drawer without fade, gallery opener plate", async () => {
+  const viewer = await css("app/components/photoViewer/photoViewer.module.css");
+  assert.match(viewer, /\.viewer\[open\]::backdrop \{\n  animation: ui-backdrop-in 160ms var\(--ease-ui\) both;/);
+  assert.match(viewer, /\.frame\[data-shutter="open"\]::after \{\n  transform-origin: 50% 100%;\n  animation: viewer-open var\(--motion-ui\) var\(--ease-press\) both;/);
+  assert.match(viewer, /\.frame\[data-shutter="next"\]::after \{\n  transform-origin: 0 50%;\n  animation: viewer-step 120ms var\(--ease-ui\) both;/);
+  assert.match(viewer, /\.frame\[data-shutter="prev"\]::after \{\n  transform-origin: 100% 50%;/);
+  assert.match(viewer, /prefers-reduced-motion: reduce[\s\S]*animation: none !important;/);
+  assert.doesNotMatch(viewer, /filter|blur|scale\(0\.|scale\(1\.|translate/);
+  const merch = await css("app/merch/merch.module.css");
+  assert.match(merch, /@keyframes slideIn \{\n  from \{\n    transform: translateX\(24px\);\n  \}\n  to \{\n    transform: none;\n  \}\n\}/);
+  assert.match(merch, /\.drawer\[open\]::backdrop \{\n  animation: ui-backdrop-in 160ms var\(--ease-ui\) both;/);
+  const globals = await css("app/globals.css");
+  assert.match(globals, /\*, \*::before, \*::after, \*::backdrop \{/);
+  const { default: PhotoBook } = await import("../app/components/gallery/photoBook/photoBook");
+  const book = renderToStaticMarkup(createElement(PhotoBook));
+  assert.equal(classCount(book, "plate"), 1);
+  assert.match(book, /<span class="frame plate plate-load">/);
+  assert.equal(classCount(book, "rule-cut") + classCount(book, "registration"), 0);
+  assert.doesNotMatch(book, /data-reveal/);
 });

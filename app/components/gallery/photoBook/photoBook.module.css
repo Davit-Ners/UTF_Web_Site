@@ -90,6 +90,8 @@
 }
 
 .frame {
+  /* Containing block for the opener's R1 plate; no offset, so no layout change */
+  position: relative;
   display: block;
   overflow: hidden;
 }

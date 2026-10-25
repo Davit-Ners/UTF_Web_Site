@@ -137,18 +137,27 @@
   background: rgb(11 11 10 / 0.72);
 }
 
+/* R6: the panel slides 24px in (no fade); only the backdrop uses opacity */
 .drawer[open] {
   animation: slideIn var(--motion-ui) var(--ease-ui);
+}
+
+.drawer[open]::backdrop {
+  animation: ui-backdrop-in 160ms var(--ease-ui) both;
 }
 
 @keyframes slideIn {
   from {
     transform: translateX(24px);
-    opacity: 0;
   }
   to {
     transform: none;
-    opacity: 1;
+  }
+}
+
+@keyframes ui-backdrop-in {
+  from {
+    opacity: 0;
   }
 }
 
@@ -276,7 +285,9 @@
     border-left: 0;
   }
 
-  .drawer[open] {
+  /* Full-screen sheet: instant */
+  .drawer[open],
+  .drawer[open]::backdrop {
     animation: none;
   }
 }

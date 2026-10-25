@@ -48,6 +48,9 @@
 }
 
 .row {
+  /* Above the mobile panel, whose shutter box travels behind the bar */
+  position: relative;
+  z-index: 1;
   height: var(--header-h);
   display: flex;
   align-items: center;
@@ -177,24 +180,51 @@
     justify-content: flex-end;
   }
 
+  /*
+   * R6 top-down shutter, transform only: the panel box moves down from above
+   * by its own height while .panelInner moves the opposite way, so the
+   * content stays still and the panel's edge travels down over it.
+   * Opens in --motion-ui; closes faster so navigation is never held up.
+   */
   .panel {
+    --panel-h: calc(100dvh - var(--header-h));
+    --panel-close: 120ms;
     position: fixed;
     inset: var(--header-h) 0 0 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 24px var(--margin) 32px;
+    display: block;
     background: var(--ink);
     overflow-y: auto;
     visibility: hidden;
-    opacity: 0;
-    transition: opacity var(--motion-ui) var(--ease-ui), visibility 0s linear var(--motion-ui);
+    transform: translateY(calc(-1 * var(--panel-h)));
+    transition: transform var(--panel-close) var(--ease-ui), visibility 0s linear var(--panel-close);
+  }
+
+  .panelInner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+    padding: 24px var(--margin) 32px;
+    transform: translateY(var(--panel-h));
+    transition: transform var(--panel-close) var(--ease-ui);
   }
 
   .panelOpen {
     visibility: visible;
-    opacity: 1;
-    transition: opacity var(--motion-ui) var(--ease-ui);
+    transform: none;
+    transition: transform var(--motion-ui) var(--ease-ui);
+  }
+
+  .panelOpen .panelInner {
+    transform: none;
+    transition: transform var(--motion-ui) var(--ease-ui);
+  }
+}
+
+@media (max-width: 980px) and (prefers-reduced-motion: reduce) {
+  .panel,
+  .panelInner {
+    transition: none !important;
   }
 }
 

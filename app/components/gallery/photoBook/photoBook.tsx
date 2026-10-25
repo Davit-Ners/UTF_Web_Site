@@ -1,3 +1,4 @@
+import Reveal from "@/app/components/motion/reveal";
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
@@ -38,21 +39,29 @@ function chapterCredits(photos: GalleryPhoto[]) {
   return Array.from(new Set(photos.flatMap((p) => (p.credit ? [p.credit.name] : []))));
 }
 
-function Photo({ photo, sizes, priority = false }: { photo: Numbered; sizes: string; priority?: boolean }) {
+function Photo({ photo, sizes, priority = false, plate = false }: { photo: Numbered; sizes: string; priority?: boolean; plate?: boolean }) {
+  const image = (
+    <Image
+      src={photo.src}
+      alt=""
+      width={photo.width}
+      height={photo.height}
+      sizes={sizes}
+      priority={priority}
+      className={`${styles.image} ${photo.bakedBorder ? styles.trimmed : ""}`}
+    />
+  );
   return (
     <figure className={styles.figure}>
       <PhotoTrigger index={photo.n - 1} className={styles.trigger}>
-        <span className={styles.frame}>
-          <Image
-            src={photo.src}
-            alt=""
-            width={photo.width}
-            height={photo.height}
-            sizes={sizes}
-            priority={priority}
-            className={`${styles.image} ${photo.bakedBorder ? styles.trimmed : ""}`}
-          />
-        </span>
+        {/* R1 on the Gallery opener only: on load if visible, otherwise once on scroll */}
+        {plate ? (
+          <Reveal as="span" className={`${styles.frame} plate plate-load`}>
+            {image}
+          </Reveal>
+        ) : (
+          <span className={styles.frame}>{image}</span>
+        )}
       </PhotoTrigger>
       <figcaption className={styles.caption}>
         <span className={styles.number}>{pad(photo.n)}</span>
@@ -132,7 +141,7 @@ export default function PhotoBook() {
               <div className={styles.spreads}>
                 {opener ? (
                   <div className={styles.opener}>
-                    <Photo photo={opener} sizes="100vw" priority={ci === 0} />
+                    <Photo photo={opener} sizes="100vw" priority={ci === 0} plate={ci === 0} />
                   </div>
                 ) : null}
 

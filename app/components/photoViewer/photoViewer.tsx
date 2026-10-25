@@ -22,10 +22,13 @@ export function PhotoViewer({ photos, children }: { photos: ViewerPhoto[]; child
   const triggerRef = useRef<HTMLElement | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const [index, setIndex] = useState<number | null>(null);
+  /* Which R6 shutter the next frame plays: on open, or in the direction of travel */
+  const [shutter, setShutter] = useState<"open" | "next" | "prev">("open");
   const total = photos.length;
 
   const open: OpenFn = (i, trigger) => {
     triggerRef.current = trigger;
+    setShutter("open");
     setIndex(i);
   };
 
@@ -37,8 +40,15 @@ export function PhotoViewer({ photos, children }: { photos: ViewerPhoto[]; child
     }
   }, [index]);
 
-  const go = (next: number) => setIndex(Math.max(0, Math.min(total - 1, next)));
-  const step = (delta: number) => setIndex((i) => (i === null ? i : (i + delta + total) % total));
+  const go = (next: number) => {
+    const target = Math.max(0, Math.min(total - 1, next));
+    setShutter(index !== null && target < index ? "prev" : "next");
+    setIndex(target);
+  };
+  const step = (delta: number) => {
+    setShutter(delta > 0 ? "next" : "prev");
+    setIndex((i) => (i === null ? i : (i + delta + total) % total));
+  };
   const current = index === null ? null : photos[index];
 
   return (
@@ -68,7 +78,8 @@ export function PhotoViewer({ photos, children }: { photos: ViewerPhoto[]; child
       >
         {current ? (
           <>
-            <div className={styles.frame}>
+            {/* Keyed by photo: each new image mounts under the shutter, which then retracts (CSS) */}
+            <div key={index} className={styles.frame} data-shutter={shutter}>
               <Image src={current.src} alt={current.label} fill sizes="100vw" className={styles.image} />
             </div>
             <div className={styles.bar}>

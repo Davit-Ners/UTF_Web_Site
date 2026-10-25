@@ -164,41 +164,44 @@ export default function Header({ tickets }: Props) {
         className={`${styles.panel} ${open ? styles.panelOpen : ""}`}
         inert={!open}
       >
-        <nav className={styles.panelNav} aria-label="Mobile">
-          {NAV.map((item, index) => {
-            const active = pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`${styles.panelLink} ${active ? styles.active : ""}`}
-                aria-current={active ? "page" : undefined}
-                onClick={closeMenu}
-              >
-                <span className={styles.index} aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
+        {/* Shutter: the panel's edge travels down while this layer holds the content still */}
+        <div className={styles.panelInner}>
+          <nav className={styles.panelNav} aria-label="Mobile">
+            {NAV.map((item, index) => {
+              const active = pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`${styles.panelLink} ${active ? styles.active : ""}`}
+                  aria-current={active ? "page" : undefined}
+                  onClick={closeMenu}
+                >
+                  <span className={styles.index} aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-        <div className={styles.panelFoot}>
-          {tickets ? (
-            <NewTabLink href={tickets.href} className="action-link">
-              Tickets {tickets.date} <span className="arrow" aria-hidden="true">↗</span>
-            </NewTabLink>
-          ) : null}
-          <a href={`mailto:${CONTACT_EMAIL}`} className={styles.panelMeta}>
-            {CONTACT_EMAIL}
-          </a>
-          <div className={styles.panelExternals}>
-            {EXTERNALS.map((item) => (
-              <NewTabLink key={item.href} href={item.href} className={styles.panelMeta}>
-                {item.label}
+          <div className={styles.panelFoot}>
+            {tickets ? (
+              <NewTabLink href={tickets.href} className="action-link">
+                Tickets {tickets.date} <span className="arrow" aria-hidden="true">↗</span>
               </NewTabLink>
-            ))}
+            ) : null}
+            <a href={`mailto:${CONTACT_EMAIL}`} className={styles.panelMeta}>
+              {CONTACT_EMAIL}
+            </a>
+            <div className={styles.panelExternals}>
+              {EXTERNALS.map((item) => (
+                <NewTabLink key={item.href} href={item.href} className={styles.panelMeta}>
+                  {item.label}
+                </NewTabLink>
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -1,3 +1,8 @@
+/*
+ * R6 functional motion. The ink plane is the backdrop, so it can appear over
+ * 160ms while the dialog itself (controls, caption) is there and interactive
+ * at once. Close is the native, immediate dialog close.
+ */
 .viewer {
   width: 100vw;
   max-width: none;
@@ -6,12 +11,16 @@
   margin: 0;
   padding: 0;
   border: 0;
-  background: var(--ink);
+  background: transparent;
   color: var(--bone);
 }
 
 .viewer::backdrop {
-  background: rgb(11 11 10 / 0.92);
+  background: var(--ink);
+}
+
+.viewer[open]::backdrop {
+  animation: ui-backdrop-in 160ms var(--ease-ui) both;
 }
 
 .viewer[open] {
@@ -23,6 +32,66 @@
   position: relative;
   flex: 1;
   margin: var(--margin) var(--margin) 0;
+}
+
+/* Decorative shutter over the image (a pseudo-element: not in the accessibility tree) */
+.frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: scaleY(0);
+  pointer-events: none;
+}
+
+/* Open: a short R1-style plate, top to bottom */
+.frame[data-shutter="open"]::after {
+  transform-origin: 50% 100%;
+  animation: viewer-open var(--motion-ui) var(--ease-press) both;
+}
+
+/* Next uncovers from the right (forward), previous from the left */
+.frame[data-shutter="next"]::after {
+  transform-origin: 0 50%;
+  animation: viewer-step 120ms var(--ease-ui) both;
+}
+.frame[data-shutter="prev"]::after {
+  transform-origin: 100% 50%;
+  animation: viewer-step 120ms var(--ease-ui) both;
+}
+
+@keyframes ui-backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes viewer-open {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes viewer-step {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewer[open]::backdrop,
+  .frame::after {
+    animation: none !important;
+  }
+  .frame::after {
+    transform: scaleY(0) !important;
+  }
 }
 
 .image {
