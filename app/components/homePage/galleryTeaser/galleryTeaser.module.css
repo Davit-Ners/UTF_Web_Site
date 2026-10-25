@@ -9,6 +9,7 @@
   row-gap: clamp(20px, 2.4vw, 36px);
   padding: var(--space-m) var(--margin);
   background: var(--bone);
+  --focus-outline: var(--ember);
   color: var(--ink);
 }
 

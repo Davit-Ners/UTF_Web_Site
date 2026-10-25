@@ -92,6 +92,7 @@
 
 /* === II. Technical sheet (bone) === */
 .sheet {
+  --focus-outline: var(--ember);
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);

@@ -7,6 +7,7 @@
   align-items: end;
   padding: var(--space-m) var(--margin);
   background: var(--bone);
+  --focus-outline: var(--ember);
   color: var(--ink);
 }
 

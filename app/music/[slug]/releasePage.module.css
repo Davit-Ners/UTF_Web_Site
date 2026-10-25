@@ -134,6 +134,7 @@
 
 /* === Songs === */
 .songs {
+  --focus-outline: var(--ember);
   padding: var(--space-m) var(--margin) var(--space-s);
   background: var(--bone);
   color: var(--ink);
@@ -223,6 +224,7 @@
 
 /* === Story === */
 .story {
+  --focus-outline: var(--ember);
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);

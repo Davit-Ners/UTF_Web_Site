@@ -247,6 +247,7 @@
 
 /* === Archive (bone) === */
 .archive {
+  --focus-outline: var(--ember);
   scroll-margin-top: var(--header-h);
   padding: var(--space-m) var(--margin) var(--space-s);
   background: var(--bone);
@@ -418,6 +419,7 @@
 
 /* === End === */
 .end {
+  --focus-outline: var(--ember);
   padding: 0 var(--margin) var(--space-m);
   background: var(--bone);
 }

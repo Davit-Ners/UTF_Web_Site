@@ -73,6 +73,7 @@
 }
 
 .sheet {
+  --focus-outline: var(--ember);
   grid-column: 10 / 13;
   grid-row: 2 / 4;
   display: flex;

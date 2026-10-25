@@ -62,6 +62,7 @@
   column-gap: var(--gap);
   padding: var(--space-m) var(--margin);
   background: var(--bone);
+  --focus-outline: var(--ember);
   color: var(--ink);
 }
 
@@ -256,6 +257,7 @@
 
 /* === IV. On stage (bone) === */
 .stage {
+  --focus-outline: var(--ember);
   padding: var(--space-m) var(--margin);
   background: var(--bone);
   color: var(--ink);

@@ -39,6 +39,7 @@
 
 /* === Featured: the editorial core, on bone === */
 .featured {
+  --focus-outline: var(--ember);
   padding: var(--space-m) var(--margin);
   background: var(--bone);
   color: var(--ink);

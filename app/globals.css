@@ -13,6 +13,7 @@
   --rule-ink: rgb(11 11 10 / 0.18);
   --ember: #a8321c;       /* accent as fill */
   --ember-text: #e0563a;  /* accent as text / focus on ink */
+  --focus-outline: var(--ember-text); /* light surfaces override with --ember */
   --accent: var(--ember); /* era alias: swap per Seven Sins chapter */
 
   /* === Type families === */
@@ -117,7 +118,7 @@ a:hover {
 }
 
 :focus-visible {
-  outline: 2px solid var(--ember-text);
+  outline: 2px solid var(--focus-outline);
   outline-offset: 3px;
 }
 
@@ -166,6 +167,7 @@ a:hover {
   transform: translateX(2px);
 }
 .action-link.on-bone {
+  --focus-outline: var(--ember);
   color: var(--ink);
 }
 .action-link.on-bone:hover {
