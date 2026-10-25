@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { completeBookingAttempt, getBookingAttempt } from "@/lib/booking-attempt";
-import { buildBookingPayload, validateBookingPayload } from "@/lib/booking";
+import { buildBookingPayload, getBookingFieldErrors, validateBookingPayload, type BookingField, type BookingFieldErrors } from "@/lib/booking";
 import { readSavedBookingResult, type SavedBookingResult } from "@/lib/booking-result";
 import BookingForm from "../components/bookingPage/bookingForm";
 import { BOOKING_UNAVAILABLE_MESSAGE, type BookingTurnstileConfig } from "@/lib/turnstile.shared";
@@ -14,6 +14,8 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
   const submitting = useRef(false);
   const [savedResult, setSavedResult] = useState<SavedBookingResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<BookingFieldErrors>({});
+  const [validationAttempt, setValidationAttempt] = useState(0);
   const [turnstileToken, setTurnstileToken] = useState("");
   const [turnstileResetCounter, setTurnstileResetCounter] = useState(0);
   const [verificationUnavailable, setVerificationUnavailable] = useState(false);
@@ -23,12 +25,29 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
   const unavailable = turnstileConfig.state === "unavailable" || verificationUnavailable;
   const turnstileSiteKey = turnstileConfig.state === "enabled" ? turnstileConfig.siteKey : "";
 
+  function handleFieldBlur(e: React.FocusEvent<HTMLFormElement>) {
+    if (!validationAttempt || loading) return;
+    const target = e.target;
+    if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement)) return;
+    const payload = buildBookingPayload(new FormData(e.currentTarget));
+    if (target.name === "faxNumber" || !Object.prototype.hasOwnProperty.call(payload, target.name)) return;
+    const field = target.name as BookingField;
+    const message = getBookingFieldErrors(payload)[field];
+    setFieldErrors((current) => {
+      const next = { ...current };
+      if (message) next[field] = message;
+      else delete next[field];
+      return next;
+    });
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (unavailable || submitting.current) return;
     setLoading(true);
     setSavedResult(null);
     setError(null);
+    setFieldErrors({});
 
     const form = e.currentTarget;
     const data = new FormData(form);
@@ -45,7 +64,8 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
         return;
       }
 
-      setError(validation.error ?? "Please check the form and try again.");
+      setFieldErrors(validation.fieldErrors ?? {});
+      setValidationAttempt((current) => current + 1);
       return;
     }
 
@@ -84,6 +104,8 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
       }
 
       setSavedResult(saved);
+      setFieldErrors({});
+      setValidationAttempt(0);
       setTurnstileToken("");
       setTurnstileResetCounter((current) => current + 1);
       form.reset();
@@ -130,7 +152,10 @@ export default function BookingClient({ turnstileConfig }: { turnstileConfig: Bo
   return (
       <BookingForm
         handleSubmit={handleSubmit}
-        error={error}
+        error={Object.keys(fieldErrors).length ? "Please check the highlighted fields." : error}
+        fieldErrors={fieldErrors}
+        handleFieldBlur={handleFieldBlur}
+        validationAttempt={validationAttempt}
         loading={loading}
         savedResult={savedResult}
         onTurnstileTokenChange={setTurnstileToken}
