@@ -2,11 +2,12 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import styles from "./visualBreak.module.css";
+import { SHOW_PHOTO_CREDITS } from "@/app/lib/gallery";
 
 /*
  * Temporary asset: the best available live shot, used at its 2048px source size.
  * It has a thin border baked in, trimmed by `trim`; the photographer's signature
- * stays visible. Set `credit` once the name is confirmed.
+ * stays visible. The credit is known from the source EXIF, not a permission grant.
  */
 const BREAK_IMAGE = {
   src: "/gallery/band1.jpg",
@@ -15,7 +16,7 @@ const BREAK_IMAGE = {
   alt: "Until They Fall live: the singer screams into the microphone, two guitarists behind him in orange stage light",
   positionMobile: "70% 50%",
   trim: 1.045,
-  credit: undefined as string | undefined,
+  credit: "Laurent Henoumont",
 };
 
 export default function VisualBreak() {
@@ -39,7 +40,7 @@ export default function VisualBreak() {
           blurDataURL={IMAGE_BLUR_DATA_URL}
         />
       </div>
-      {BREAK_IMAGE.credit ? (
+      {SHOW_PHOTO_CREDITS && BREAK_IMAGE.credit ? (
         <p className={`meta ${styles.credit}`}>Photo — {BREAK_IMAGE.credit}</p>
       ) : null}
     </section>

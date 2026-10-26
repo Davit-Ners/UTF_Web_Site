@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Concert } from "@/app/lib/concerts";
-import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
+import { getOriginalImagePath, IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
+import { concertPosterDimensions } from "@/app/lib/concertPosters";
 
 type Props = {
   show: Concert;
@@ -13,16 +14,20 @@ type Props = {
 
 export default function ConcertPoster({ show, alt, sizes, className, priority, blur }: Props) {
   if (!show.posterUrl) return null;
-  if (!show.posterDimensions) {
+  // Choose the existing local master only in the image presentation; stored data
+  // and social metadata retain their current URLs.
+  const src = getOriginalImagePath(show.posterUrl);
+  const dimensions = concertPosterDimensions(src) ?? show.posterDimensions;
+  if (!dimensions) {
     // Unknown artwork must keep its natural ratio without invented intrinsic sizes.
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={show.posterUrl} alt={alt} className={className} loading={priority ? "eager" : "lazy"} />;
+    return <img src={src} alt={alt} className={className} loading={priority ? "eager" : "lazy"} />;
   }
   return (
     <Image
-      src={show.posterUrl}
+      src={src}
       alt={alt}
-      {...show.posterDimensions}
+      {...dimensions}
       sizes={sizes}
       className={className}
       priority={priority}

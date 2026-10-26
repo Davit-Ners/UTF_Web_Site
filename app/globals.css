@@ -63,8 +63,8 @@
   /* === Motion (design-rules §12): 80% quiet / 20% signature === */
   --motion-snap: 90ms;       /* hover, focus, press, state changes */
   --motion-ui: 200ms;        /* menu, drawer, viewer */
-  --motion-editorial: 480ms; /* planned plates and rule cuts */
-  --motion-signature: 560ms; /* planned hero print-in, four-eye */
+  --motion-editorial: 480ms; /* plates and rule cuts */
+  --motion-signature: 560ms; /* signature timing budget */
   --motion-stagger: 80ms;    /* at most two steps in any sequence */
   --ease-press: cubic-bezier(0.8, 0, 0.2, 1);
   --ease-ui: cubic-bezier(0.2, 0, 0, 1);
@@ -323,8 +323,10 @@ a:hover {
 .rule-cut.rule-cut-label[data-reveal] {
   animation: none;
 }
-.rule-cut.rule-cut-label[data-reveal="pending"] {
-  color: transparent;
+@media (prefers-reduced-motion: no-preference) {
+  .rule-cut.rule-cut-label[data-reveal="pending"] {
+    color: transparent;
+  }
 }
 .rule-cut.rule-cut-label[data-reveal="done"] {
   transition: color 0s linear var(--rule-cut-duration);
@@ -512,7 +514,9 @@ a:hover {
   *, *::before, *::after, *::backdrop {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
 

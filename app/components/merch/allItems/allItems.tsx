@@ -36,6 +36,7 @@ function Row({ product, n, ...add }: AddProps & NumberedProduct) {
       <span className={styles.number}>{catalogueNumber(n)}</span>
       <span className={styles.main}>
         <span className={styles.name}>{product.name}</span>
+        {!image ? <span className={styles.desc}>Product photo pending.</span> : null}
         {product.shortDesc ? <span className={styles.desc}>{product.shortDesc}</span> : null}
         {needsSize(product.slug) && state !== "Sold out" ? (
           <span className={styles.sizeNote}>Size: add it in your request notes</span>

@@ -269,16 +269,34 @@ Motion should be:
 
 Language (approved; status per rule):
 
-- **R4 Cut link** (implemented): the underline is a rule; on hover, keyboard focus and press it snaps to ember and the arrow steps 3px. No colour fades.
-- **R6 Functional** (implemented): fast, conventional, predictable, ≤200 ms, never blocking input or focus. Photo viewer: ink backdrop 160 ms, image uncovered by a 200 ms plate on open, a 120 ms directional shutter on next/previous (new image already in place, caption updated at once), native instant close. Mobile menu: top-down shutter by two opposite transforms (the panel edge moves, the content stays still), 200 ms open, 120 ms close. Merch drawer: 24 px slide (no fade) plus a 160 ms backdrop on desktop; the full-screen mobile sheet is instant. Opacity is used only for backdrops.
-- **R1 Plate** (implemented: `.plate` + `<Reveal>`; pilot on the homepage Latest Release cover): an ink shutter retracts from the top edge to uncover a major image or title. The content never moves or fades.
-- **R2 Registration** (implemented: `.registration`; used only on the homepage Hero wordmark): one ember copy of the artwork prints 4px/−2px off-register (2px/−1px on phones) and steps into alignment in three hard steps (`steps(3)`), then disappears behind the clean wordmark. No glow, blur, RGB split, loop or jitter.
+- **R4 Cut link** (final): the underline is a rule; on hover, keyboard focus and press it snaps to ember and the arrow steps 3px. No colour fades.
+- **R6 Functional** (final): fast, conventional, predictable, ≤200 ms, never blocking input or focus. Photo viewer: ink backdrop 160 ms, image uncovered by a 200 ms plate on open, a 120 ms directional shutter on next/previous (new image already in place, caption updated at once), native instant close. Mobile menu: top-down shutter by two opposite transforms (the panel edge moves, the content stays still), 200 ms open, 120 ms close. Merch drawer: 24 px slide (no fade) plus a 160 ms backdrop on desktop; the full-screen mobile sheet is instant. Viewer/drawer opacity is used only for backdrops; the Header's existing functional scrim transition remains.
+- **R1 Plate** (final: `.plate` + `<Reveal>` or CSS page-load variant): an ink shutter retracts from the top edge to uncover a major image or title. The content never moves or fades.
+- **R2 Registration** (final: `.registration`; homepage Hero wordmark and 404 text variant): one ember copy prints 4px/−2px off-register (2px/−1px on phones) and steps into alignment in three hard steps (`steps(3)`), then disappears behind the clean target. No glow, blur, RGB split, loop or jitter.
 - **Hero sequence** (the homepage signature; CSS only, from the first paint): 0 ms the photo plate starts retracting top → bottom (R1, 480 ms; 360 ms on phones) while the photo itself stays static; ≈240 ms the wordmark registration prints and snaps (≈210 ms); everything is settled in ≈500 ms. Genre line and actions are static and usable at once. It plays on a real page load and not again on client navigation back to Home in the same tab.
-- **R3 Rule cut** (implemented: `.rule-cut` + `<Reveal>`; pilot on the homepage Live top rule): a hairline draws from the left and stops dead; optionally a real label follows (label step not built yet).
+- **R3 Rule cut** (final: `.rule-cut` + `<Reveal>` or CSS page-load variant): a hairline draws from the left and stops dead; the concert dossier's real status label prints in one hard colour step after the rule. No duplicate accessible text.
 - Editorial reveals (R1/R3) are limited to three per page, play once, and never hide content without JS.
 - Above-the-fold targets play on page load (CSS, sequenced: the rule starts when the plate has opened); targets off screen at hydration reveal on scroll instead. Repeated rows, lists, posters, portraits and body copy never animate.
-- Route usage: `/music` sleeve plate + tracklist rule; release page cover plate + Songs and Credits rules; `/concerts` LIVE plate + upcoming top rule; concert dossier date rule with its real label printing after it; `/about` group cover plate only; 404 registration on "404". Booking, Privacy and Legal stay static.
-- **R5 Four-eye registration** (planned, blocked until the four-eye SVG exists).
+- **R5 Four-eye registration** remains deferred pending a future Gérard/four-eye asset, if the band still decides to use it. It is not a release requirement and has no active implementation.
+
+Final route allocation (R4 link feedback and shared R6 UI remain functional, outside editorial counts):
+
+| Route | Allowed editorial/signature motion |
+| --- | --- |
+| `/` | Hero R1 + R2; Latest Release R1; Live R3 when its empty/list top rule exists |
+| `/music` | First sleeve R1 + its tracklist R3; later releases static |
+| `/music/sent-to-die` | Cover R1 + at most two R3 (Songs, first Credits heading) |
+| `/concerts` | LIVE R1 + at most one R3 on the upcoming top rule; single-show state has no R3 |
+| `/concerts/[slug]` | Date/status R3 only |
+| `/about` | Group cover R1 only; portraits static |
+| `/gallery` | First opener R1 only; viewer open/next/previous/close uses R6 |
+| 404 | R2 on "404" only |
+| `/booking`, `/privacy`, `/legal`, `/merch` | No editorial motion; Merch drawer R6 only |
+| `/concerts/[slug]/gallery` | Legacy static photo grid; functional instant lightbox, no added editorial motion |
+
+No event, poster, archive, song, credit or cart row animates. Reduced motion removes shutters, registration offsets, rule draws and delays; menu, viewer and drawer are instant. A live preference change also settles pending Reveal targets. Without JS, Reveal markup has no pending state; CSS load variants finish with content visible.
+
+**Release freeze:** R1/R2/R3/R4/R6 are final. No new motion before release. R5 stays deferred; replacing an asset or revisiting that decision requires a separate phase.
 
 Timing tokens live in `app/globals.css` (`--motion-snap`, `--motion-ui`, `--motion-editorial`, `--motion-signature`, `--motion-stagger`, `--ease-press`, `--ease-ui`, `--ease-snap`).
 

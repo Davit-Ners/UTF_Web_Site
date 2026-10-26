@@ -53,16 +53,27 @@ function inView(element: HTMLElement) {
 
 function watch(element: HTMLElement) {
   if (element.dataset.reveal === "done") return undefined;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   if (element.dataset.reveal !== "pending") {
     const capable =
       typeof IntersectionObserver !== "undefined" &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      !reducedMotion.matches;
     if (!capable || inView(element)) return undefined;
     element.dataset.reveal = "pending";
   }
   const io = getObserver();
   io.observe(element);
-  return () => io.unobserve(element);
+  // A preference changed while scrolling must also settle already pending targets.
+  const onReducedMotion = () => {
+    if (!reducedMotion.matches) return;
+    io.unobserve(element);
+    element.dataset.reveal = "done";
+  };
+  reducedMotion.addEventListener("change", onReducedMotion);
+  return () => {
+    io.unobserve(element);
+    reducedMotion.removeEventListener("change", onReducedMotion);
+  };
 }
 
 type Props = HTMLAttributes<HTMLElement> & {

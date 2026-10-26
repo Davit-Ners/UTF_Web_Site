@@ -75,6 +75,7 @@ export default function Header({ tickets }: Props) {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setOpenOn(null);
+        headerRef.current?.querySelector<HTMLButtonElement>('[aria-controls="mobile-menu"]')?.focus();
         return;
       }
       if (event.key !== "Tab" || !headerRef.current) return;

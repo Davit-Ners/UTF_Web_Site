@@ -40,7 +40,7 @@ export default function FeaturedRelease({ release }: Props) {
       {/* R1 Plate pilot: only the cover is uncovered, top to bottom */}
       <Reveal className={`${styles.cover} plate`}>
         <Image
-          src={release.cover}
+          src={release.coverMaster ?? release.cover}
           alt={`${release.title} album cover`}
           width={1000}
           height={1000}

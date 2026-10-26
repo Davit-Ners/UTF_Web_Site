@@ -125,7 +125,7 @@ test("Batch 4 primitive extensions: load/hybrid rule cut, label step, ink rules,
   assert.match(globals, /\.rule-cut\.rule-cut-load\[data-reveal\]::before \{\n  animation: none;/);
   assert.match(globals, /\.plate\.plate-load\[data-reveal\]::after \{\n  animation: none;/);
   assert.match(globals, /\.rule-cut\.rule-cut-label\.rule-cut-load \{\n  animation: rule-cut-label calc\(var\(--rule-cut-delay\) \+ var\(--rule-cut-duration\)\) steps\(1, jump-end\) both;/);
-  assert.match(globals, /\.rule-cut\.rule-cut-label\[data-reveal="pending"\] \{\n  color: transparent;/);
+  assert.match(globals, /@media \(prefers-reduced-motion: no-preference\) \{\n  \.rule-cut\.rule-cut-label\[data-reveal="pending"\] \{\n    color: transparent;/);
   assert.match(globals, /\.rule-cut\.rule-cut-label\[data-reveal="done"\] \{\n  transition: color 0s linear var\(--rule-cut-duration\);/);
   assert.match(globals, /\.rule-cut\.rule-cut-ink \{\n  --rule-cut-color: var\(--rule-ink\);/);
   assert.match(globals, /\.after-plate \{\n  --rule-cut-delay: var\(--motion-editorial\);/);

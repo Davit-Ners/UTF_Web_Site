@@ -161,6 +161,13 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .drawer[open],
+  .drawer[open]::backdrop {
+    animation: none !important;
+  }
+}
+
 .drawerInner {
   display: flex;
   flex-direction: column;

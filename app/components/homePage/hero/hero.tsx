@@ -4,6 +4,7 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import { IMAGE_BLUR_DATA_URL } from "@/app/lib/imageOptimization";
 import { latestRelease } from "@/app/lib/music";
+import { SHOW_PHOTO_CREDITS } from "@/app/lib/gallery";
 import styles from "./hero.module.css";
 
 /*
@@ -13,13 +14,13 @@ import styles from "./hero.module.css";
  * For a clean master, set bleed to 1.
  */
 const HERO_IMAGE = {
-  src: "/optimized/bandphoto-hero.webp",
+  src: "/bandphoto.jpg",
   alt: "Until They Fall on stage under white beams of light",
   position: "50% 38%",
   positionMobile: "56% 50%",
   bleed: 1.1,
   origin: "50% 28%",
-  credit: undefined as string | undefined,
+  credit: "Laurent Henoumont",
 };
 
 export default function Hero() {
@@ -84,7 +85,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {HERO_IMAGE.credit ? (
+      {SHOW_PHOTO_CREDITS && HERO_IMAGE.credit ? (
         <p className={`meta ${styles.credit}`}>Photo — {HERO_IMAGE.credit}</p>
       ) : null}
     </section>

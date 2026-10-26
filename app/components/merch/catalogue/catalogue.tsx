@@ -30,6 +30,7 @@ function Label({ product, n, ...add }: AddProps & { product: Product; n: number 
     <div className={styles.label}>
       <p className={styles.number}>{catalogueNumber(n)}</p>
       <h3 className={styles.name}>{product.name}</h3>
+      {!merchImage(product.image) ? <p className={styles.desc}>Product photo pending.</p> : null}
       {product.shortDesc ? <p className={styles.desc}>{product.shortDesc}</p> : null}
       <p className={styles.priceRow}>
         <span className={styles.price}>{formatPrice(product.price)}</span>

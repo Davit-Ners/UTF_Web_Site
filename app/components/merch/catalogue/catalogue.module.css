@@ -190,6 +190,12 @@
   .plateA .product {
     display: flex;
     flex-direction: column;
+    /* Reserve the settled image column before lazy images decode. */
+    width: 100%;
+  }
+
+  .plateA .media {
+    width: 100%;
   }
 
   .product,
