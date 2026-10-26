@@ -1,0 +1,82 @@
+{
+  "target": "isolated localhost audit instance only",
+  "steps": [
+    {
+      "command": "prisma migrate diff --from-config-datasource --to-schema prisma/audit/pre-idempotency.prisma --exit-code",
+      "exitCode": 0,
+      "stdout": "No difference detected.\n\n",
+      "stderr": "Loaded Prisma config from prisma.config.ts.\n\n"
+    },
+    {
+      "command": "prisma migrate resolve --applied 0_init_pre_idempotency",
+      "exitCode": 0,
+      "stdout": "Datasource \"db\": PostgreSQL database \"postgres\", schema \"public\" at \"127.0.0.1:55439\"\n\nMigration 0_init_pre_idempotency marked as applied.\n\n",
+      "stderr": "Loaded Prisma config from prisma.config.ts.\n\nPrisma schema loaded from prisma\\schema.prisma.\n"
+    },
+    {
+      "command": "prisma migrate status",
+      "exitCode": 1,
+      "stdout": "Datasource \"db\": PostgreSQL database \"postgres\", schema \"public\" at \"127.0.0.1:55439\"\n\n3 migrations found in prisma/migrations\nFollowing migrations have not yet been applied:\n20261023120000_merch_order_idempotency\n20261025120000_booking_idempotency\n\nTo apply migrations in development run prisma migrate dev.\nTo apply migrations in production run prisma migrate deploy.\n",
+      "stderr": "Loaded Prisma config from prisma.config.ts.\n\nPrisma schema loaded from prisma\\schema.prisma.\n"
+    },
+    {
+      "command": "prisma migrate deploy",
+      "exitCode": 0,
+      "stdout": "Datasource \"db\": PostgreSQL database \"postgres\", schema \"public\" at \"127.0.0.1:55439\"\n\n3 migrations found in prisma/migrations\n\nApplying migration `20261023120000_merch_order_idempotency`\nApplying migration `20261025120000_booking_idempotency`\n\nThe following migration(s) have been applied:\n\nmigrations/\n  └─ 20261023120000_merch_order_idempotency/\n    └─ migration.sql\n  └─ 20261025120000_booking_idempotency/\n    └─ migration.sql\n\nAll migrations have been successfully applied.\n",
+      "stderr": "Loaded Prisma config from prisma.config.ts.\n\nPrisma schema loaded from prisma\\schema.prisma.\n"
+    },
+    {
+      "command": "prisma migrate status",
+      "exitCode": 0,
+      "stdout": "Datasource \"db\": PostgreSQL database \"postgres\", schema \"public\" at \"127.0.0.1:55439\"\n\n3 migrations found in prisma/migrations\n\nDatabase schema is up to date!\n",
+      "stderr": "Loaded Prisma config from prisma.config.ts.\n\nPrisma schema loaded from prisma\\schema.prisma.\n"
+    },
+    {
+      "command": "prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --exit-code",
+      "exitCode": 0,
+      "stdout": "No difference detected.\n\n",
+      "stderr": "Loaded Prisma config from prisma.config.ts.\n\n"
+    }
+  ],
+  "checksums": {
+    "0_init_pre_idempotency": "18bcf884a13271cb301989a0945ffa58faeb7ca7dc9ec2240cf5746f170d7b34",
+    "20261023120000_merch_order_idempotency": "1338f688d77eeed6f94a3f57fcaf193890698bf917759134f5748ec24718d909",
+    "20261025120000_booking_idempotency": "781249ba0ba5489c3fde42449cfb5003d1a02389661763945c36b7898ee3a4da"
+  },
+  "baselineCatalogMatchesProduction": {
+    "columns": 148,
+    "indexes": 35,
+    "constraints": 21,
+    "enums": 13
+  },
+  "pendingAfterBaselineOnly": [
+    "20261023120000_merch_order_idempotency",
+    "20261025120000_booking_idempotency"
+  ],
+  "legacyRowsPreserved": true,
+  "multipleNullKeysAllowed": true,
+  "duplicateNonNullKeysRejected": true,
+  "finalHistory": [
+    {
+      "migration_name": "0_init_pre_idempotency",
+      "checksum": "18bcf884a13271cb301989a0945ffa58faeb7ca7dc9ec2240cf5746f170d7b34",
+      "finished_at": "2026-10-26T20:00:43.534Z",
+      "rolled_back_at": null,
+      "applied_steps_count": 0
+    },
+    {
+      "migration_name": "20261023120000_merch_order_idempotency",
+      "checksum": "1338f688d77eeed6f94a3f57fcaf193890698bf917759134f5748ec24718d909",
+      "finished_at": "2026-10-26T20:00:48.335Z",
+      "rolled_back_at": null,
+      "applied_steps_count": 1
+    },
+    {
+      "migration_name": "20261025120000_booking_idempotency",
+      "checksum": "781249ba0ba5489c3fde42449cfb5003d1a02389661763945c36b7898ee3a4da",
+      "finished_at": "2026-10-26T20:00:48.337Z",
+      "rolled_back_at": null,
+      "applied_steps_count": 1
+    }
+  ]
+}

@@ -1,0 +1,4379 @@
+{
+  "auditedAt": "2026-10-26T20:10:24.748Z",
+  "endpointFingerprint": "0818c701b9205bb92d5e0eb82ef06176def066e1e99e0414184f0680734f331d",
+  "session": {
+    "database": "railway",
+    "postgres_version": "18.6 (Debian 18.6-1.pgdg13+2)",
+    "transaction_read_only": "on",
+    "default_transaction_read_only": "on",
+    "search_path": "\"$user\", public"
+  },
+  "schemas": [
+    {
+      "name": "public"
+    }
+  ],
+  "tables": [
+    {
+      "schema": "public",
+      "name": "booking_request",
+      "kind": "r",
+      "persistence": "p",
+      "rls": false,
+      "force_rls": false,
+      "partition_key": null
+    },
+    {
+      "schema": "public",
+      "name": "concert",
+      "kind": "r",
+      "persistence": "p",
+      "rls": false,
+      "force_rls": false,
+      "partition_key": null
+    },
+    {
+      "schema": "public",
+      "name": "concert_image",
+      "kind": "r",
+      "persistence": "p",
+      "rls": false,
+      "force_rls": false,
+      "partition_key": null
+    },
+    {
+      "schema": "public",
+      "name": "concert_lineup_entry",
+      "kind": "r",
+      "persistence": "p",
+      "rls": false,
+      "force_rls": false,
+      "partition_key": null
+    },
+    {
+      "schema": "public",
+      "name": "customer_order",
+      "kind": "r",
+      "persistence": "p",
+      "rls": false,
+      "force_rls": false,
+      "partition_key": null
+    },
+    {
+      "schema": "public",
+      "name": "inventory_movement",
+      "kind": "r",
+      "persistence": "p",
+      "rls": false,
+      "force_rls": false,
+      "partition_key": null
+    },
+    {
+      "schema": "public",
+      "name": "newsletter_subscriber",
+      "kind": "r",
+      "persistence": "p",
+      "rls": false,
+      "force_rls": false,
+      "partition_key": null
+    },
+    {
+      "schema": "public",
+      "name": "order_item",
+      "kind": "r",
+      "persistence": "p",
+      "rls": false,
+      "force_rls": false,
+      "partition_key": null
+    },
+    {
+      "schema": "public",
+      "name": "product",
+      "kind": "r",
+      "persistence": "p",
+      "rls": false,
+      "force_rls": false,
+      "partition_key": null
+    },
+    {
+      "schema": "public",
+      "name": "product_image",
+      "kind": "r",
+      "persistence": "p",
+      "rls": false,
+      "force_rls": false,
+      "partition_key": null
+    },
+    {
+      "schema": "public",
+      "name": "product_variant",
+      "kind": "r",
+      "persistence": "p",
+      "rls": false,
+      "force_rls": false,
+      "partition_key": null
+    }
+  ],
+  "columns": [
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 1,
+      "name": "id",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 2,
+      "name": "status",
+      "type": "\"BookingRequestStatus\"",
+      "not_null": true,
+      "default_expression": "'NEW'::\"BookingRequestStatus\"",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 3,
+      "name": "source",
+      "type": "\"BookingRequestSource\"",
+      "not_null": true,
+      "default_expression": "'PUBLIC_SITE'::\"BookingRequestSource\"",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 4,
+      "name": "name",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 5,
+      "name": "email",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 6,
+      "name": "organization",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 7,
+      "name": "eventType",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 8,
+      "name": "city",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 9,
+      "name": "venueCapacity",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 10,
+      "name": "requestedDate",
+      "type": "timestamp(3) without time zone",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 11,
+      "name": "budgetLabel",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 12,
+      "name": "message",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 13,
+      "name": "createdAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "position": 14,
+      "name": "updatedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 1,
+      "name": "id",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 2,
+      "name": "slug",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 3,
+      "name": "status",
+      "type": "\"ConcertStatus\"",
+      "not_null": true,
+      "default_expression": "'DRAFT'::\"ConcertStatus\"",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 4,
+      "name": "title",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 5,
+      "name": "subtitle",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 6,
+      "name": "note",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 7,
+      "name": "description",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 8,
+      "name": "startsAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 9,
+      "name": "doorsAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 10,
+      "name": "showAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 11,
+      "name": "timezone",
+      "type": "text",
+      "not_null": true,
+      "default_expression": "'Europe/Brussels'::text",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 12,
+      "name": "venueName",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 13,
+      "name": "venueAddress",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 14,
+      "name": "city",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 15,
+      "name": "region",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 16,
+      "name": "postalCode",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 17,
+      "name": "countryCode",
+      "type": "text",
+      "not_null": true,
+      "default_expression": "'BE'::text",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 18,
+      "name": "ticketUrl",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 19,
+      "name": "facebookEventUrl",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 20,
+      "name": "posterUrl",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 21,
+      "name": "priceLabel",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 22,
+      "name": "featured",
+      "type": "boolean",
+      "not_null": true,
+      "default_expression": "false",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 23,
+      "name": "publishedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 24,
+      "name": "createdAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "position": 25,
+      "name": "updatedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "position": 1,
+      "name": "id",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "position": 2,
+      "name": "concertId",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "position": 3,
+      "name": "kind",
+      "type": "\"ConcertImageKind\"",
+      "not_null": true,
+      "default_expression": "'GALLERY'::\"ConcertImageKind\"",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "position": 4,
+      "name": "url",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "position": 5,
+      "name": "alt",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "position": 6,
+      "name": "caption",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "position": 7,
+      "name": "isPrimary",
+      "type": "boolean",
+      "not_null": true,
+      "default_expression": "false",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "position": 8,
+      "name": "sortOrder",
+      "type": "integer",
+      "not_null": true,
+      "default_expression": "0",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "position": 9,
+      "name": "createdAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "position": 10,
+      "name": "updatedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "position": 1,
+      "name": "id",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "position": 2,
+      "name": "concertId",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "position": 3,
+      "name": "name",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "position": 4,
+      "name": "role",
+      "type": "\"ConcertLineupRole\"",
+      "not_null": true,
+      "default_expression": "'SUPPORT'::\"ConcertLineupRole\"",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "position": 5,
+      "name": "sortOrder",
+      "type": "integer",
+      "not_null": true,
+      "default_expression": "0",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "position": 6,
+      "name": "createdAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "position": 7,
+      "name": "updatedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 1,
+      "name": "id",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 2,
+      "name": "orderNumber",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 3,
+      "name": "status",
+      "type": "\"OrderStatus\"",
+      "not_null": true,
+      "default_expression": "'DRAFT'::\"OrderStatus\"",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 4,
+      "name": "source",
+      "type": "\"OrderSource\"",
+      "not_null": true,
+      "default_expression": "'PUBLIC_SITE'::\"OrderSource\"",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 5,
+      "name": "currency",
+      "type": "text",
+      "not_null": true,
+      "default_expression": "'EUR'::text",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 6,
+      "name": "subtotalAmount",
+      "type": "double precision",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 7,
+      "name": "shippingAmount",
+      "type": "double precision",
+      "not_null": true,
+      "default_expression": "0",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 8,
+      "name": "totalAmount",
+      "type": "double precision",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 9,
+      "name": "customerName",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 10,
+      "name": "email",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 11,
+      "name": "phone",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 12,
+      "name": "notes",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 13,
+      "name": "shippingName",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 14,
+      "name": "shippingLine1",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 15,
+      "name": "shippingLine2",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 16,
+      "name": "shippingPostalCode",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 17,
+      "name": "shippingCity",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 18,
+      "name": "shippingCountry",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 19,
+      "name": "paidAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 20,
+      "name": "fulfilledAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 21,
+      "name": "cancelledAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 22,
+      "name": "createdAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "position": 23,
+      "name": "updatedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "position": 1,
+      "name": "id",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "position": 2,
+      "name": "productId",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "position": 3,
+      "name": "variantId",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "position": 4,
+      "name": "orderId",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "position": 5,
+      "name": "type",
+      "type": "\"InventoryMovementType\"",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "position": 6,
+      "name": "quantityDelta",
+      "type": "integer",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "position": 7,
+      "name": "reason",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "position": 8,
+      "name": "reference",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "position": 9,
+      "name": "happenedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "position": 10,
+      "name": "createdAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "position": 1,
+      "name": "id",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "position": 2,
+      "name": "email",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "position": 3,
+      "name": "status",
+      "type": "\"NewsletterSubscriberStatus\"",
+      "not_null": true,
+      "default_expression": "'PENDING'::\"NewsletterSubscriberStatus\"",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "position": 4,
+      "name": "source",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "position": 5,
+      "name": "subscribedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "position": 6,
+      "name": "unsubscribedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "position": 7,
+      "name": "createdAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "position": 8,
+      "name": "updatedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 1,
+      "name": "id",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 2,
+      "name": "orderId",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 3,
+      "name": "productId",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 4,
+      "name": "variantId",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 5,
+      "name": "quantity",
+      "type": "integer",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 6,
+      "name": "unitPrice",
+      "type": "double precision",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 7,
+      "name": "lineTotal",
+      "type": "double precision",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 8,
+      "name": "productNameSnapshot",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 9,
+      "name": "variantNameSnapshot",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 10,
+      "name": "skuSnapshot",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 11,
+      "name": "createdAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "position": 12,
+      "name": "updatedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 1,
+      "name": "id",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 2,
+      "name": "name",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 3,
+      "name": "price",
+      "type": "double precision",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 4,
+      "name": "image",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 5,
+      "name": "category",
+      "type": "\"ProductCategory\"",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 6,
+      "name": "badge",
+      "type": "\"ProductBadge\"",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 7,
+      "name": "shortDesc",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 8,
+      "name": "stock",
+      "type": "integer",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 9,
+      "name": "createdAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 10,
+      "name": "updatedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 11,
+      "name": "currency",
+      "type": "text",
+      "not_null": true,
+      "default_expression": "'EUR'::text",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 12,
+      "name": "description",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 13,
+      "name": "featured",
+      "type": "boolean",
+      "not_null": true,
+      "default_expression": "false",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 14,
+      "name": "publishedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 15,
+      "name": "slug",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 16,
+      "name": "sortOrder",
+      "type": "integer",
+      "not_null": true,
+      "default_expression": "0",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "position": 17,
+      "name": "status",
+      "type": "\"ProductStatus\"",
+      "not_null": true,
+      "default_expression": "'DRAFT'::\"ProductStatus\"",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "position": 1,
+      "name": "id",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "position": 2,
+      "name": "productId",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "position": 3,
+      "name": "url",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "position": 4,
+      "name": "alt",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "position": 5,
+      "name": "caption",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "position": 6,
+      "name": "isPrimary",
+      "type": "boolean",
+      "not_null": true,
+      "default_expression": "false",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "position": 7,
+      "name": "sortOrder",
+      "type": "integer",
+      "not_null": true,
+      "default_expression": "0",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "position": 8,
+      "name": "createdAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "position": 9,
+      "name": "updatedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 1,
+      "name": "id",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 2,
+      "name": "productId",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 3,
+      "name": "sku",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 4,
+      "name": "name",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 5,
+      "name": "size",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 6,
+      "name": "color",
+      "type": "text",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 7,
+      "name": "price",
+      "type": "double precision",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 8,
+      "name": "stock",
+      "type": "integer",
+      "not_null": false,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 9,
+      "name": "status",
+      "type": "\"ProductVariantStatus\"",
+      "not_null": true,
+      "default_expression": "'ACTIVE'::\"ProductVariantStatus\"",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 10,
+      "name": "isDefault",
+      "type": "boolean",
+      "not_null": true,
+      "default_expression": "false",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 11,
+      "name": "sortOrder",
+      "type": "integer",
+      "not_null": true,
+      "default_expression": "0",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 12,
+      "name": "createdAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": "CURRENT_TIMESTAMP",
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "position": 13,
+      "name": "updatedAt",
+      "type": "timestamp(3) without time zone",
+      "not_null": true,
+      "default_expression": null,
+      "identity": "",
+      "generated": "",
+      "custom_collation": null
+    }
+  ],
+  "constraints": [
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "name": "booking_request_createdAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"createdAt\"",
+      "columns": [
+        "createdAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "name": "booking_request_email_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL email",
+      "columns": [
+        "email"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "name": "booking_request_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL id",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "name": "booking_request_message_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL message",
+      "columns": [
+        "message"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "name": "booking_request_name_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL name",
+      "columns": [
+        "name"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "name": "booking_request_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "PRIMARY KEY (id)",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "name": "booking_request_source_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL source",
+      "columns": [
+        "source"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "name": "booking_request_status_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL status",
+      "columns": [
+        "status"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "name": "booking_request_updatedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"updatedAt\"",
+      "columns": [
+        "updatedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_city_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL city",
+      "columns": [
+        "city"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_countryCode_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"countryCode\"",
+      "columns": [
+        "countryCode"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_createdAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"createdAt\"",
+      "columns": [
+        "createdAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_featured_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL featured",
+      "columns": [
+        "featured"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL id",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "PRIMARY KEY (id)",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_slug_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL slug",
+      "columns": [
+        "slug"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_startsAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"startsAt\"",
+      "columns": [
+        "startsAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_status_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL status",
+      "columns": [
+        "status"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_timezone_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL timezone",
+      "columns": [
+        "timezone"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_updatedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"updatedAt\"",
+      "columns": [
+        "updatedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_venueName_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"venueName\"",
+      "columns": [
+        "venueName"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_concertId_fkey",
+      "type": "f",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "FOREIGN KEY (\"concertId\") REFERENCES concert(id) ON UPDATE CASCADE ON DELETE CASCADE",
+      "columns": [
+        "concertId"
+      ],
+      "referenced_schema": "public",
+      "referenced_table": "concert",
+      "referenced_columns": [
+        "id"
+      ]
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_concertId_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"concertId\"",
+      "columns": [
+        "concertId"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_createdAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"createdAt\"",
+      "columns": [
+        "createdAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL id",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_isPrimary_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"isPrimary\"",
+      "columns": [
+        "isPrimary"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_kind_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL kind",
+      "columns": [
+        "kind"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "PRIMARY KEY (id)",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_sortOrder_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"sortOrder\"",
+      "columns": [
+        "sortOrder"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_updatedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"updatedAt\"",
+      "columns": [
+        "updatedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_url_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL url",
+      "columns": [
+        "url"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "name": "concert_lineup_entry_concertId_fkey",
+      "type": "f",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "FOREIGN KEY (\"concertId\") REFERENCES concert(id) ON UPDATE CASCADE ON DELETE CASCADE",
+      "columns": [
+        "concertId"
+      ],
+      "referenced_schema": "public",
+      "referenced_table": "concert",
+      "referenced_columns": [
+        "id"
+      ]
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "name": "concert_lineup_entry_concertId_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"concertId\"",
+      "columns": [
+        "concertId"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "name": "concert_lineup_entry_createdAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"createdAt\"",
+      "columns": [
+        "createdAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "name": "concert_lineup_entry_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL id",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "name": "concert_lineup_entry_name_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL name",
+      "columns": [
+        "name"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "name": "concert_lineup_entry_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "PRIMARY KEY (id)",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "name": "concert_lineup_entry_role_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL role",
+      "columns": [
+        "role"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "name": "concert_lineup_entry_sortOrder_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"sortOrder\"",
+      "columns": [
+        "sortOrder"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "name": "concert_lineup_entry_updatedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"updatedAt\"",
+      "columns": [
+        "updatedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_createdAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"createdAt\"",
+      "columns": [
+        "createdAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_currency_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL currency",
+      "columns": [
+        "currency"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_email_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL email",
+      "columns": [
+        "email"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL id",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "PRIMARY KEY (id)",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_shippingAmount_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"shippingAmount\"",
+      "columns": [
+        "shippingAmount"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_source_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL source",
+      "columns": [
+        "source"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_status_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL status",
+      "columns": [
+        "status"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_subtotalAmount_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"subtotalAmount\"",
+      "columns": [
+        "subtotalAmount"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_totalAmount_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"totalAmount\"",
+      "columns": [
+        "totalAmount"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_updatedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"updatedAt\"",
+      "columns": [
+        "updatedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_createdAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"createdAt\"",
+      "columns": [
+        "createdAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_happenedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"happenedAt\"",
+      "columns": [
+        "happenedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL id",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_orderId_fkey",
+      "type": "f",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "FOREIGN KEY (\"orderId\") REFERENCES customer_order(id) ON UPDATE CASCADE ON DELETE SET NULL",
+      "columns": [
+        "orderId"
+      ],
+      "referenced_schema": "public",
+      "referenced_table": "customer_order",
+      "referenced_columns": [
+        "id"
+      ]
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "PRIMARY KEY (id)",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_productId_fkey",
+      "type": "f",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "FOREIGN KEY (\"productId\") REFERENCES product(id) ON UPDATE CASCADE ON DELETE RESTRICT",
+      "columns": [
+        "productId"
+      ],
+      "referenced_schema": "public",
+      "referenced_table": "product",
+      "referenced_columns": [
+        "id"
+      ]
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_productId_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"productId\"",
+      "columns": [
+        "productId"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_quantityDelta_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"quantityDelta\"",
+      "columns": [
+        "quantityDelta"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_type_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL type",
+      "columns": [
+        "type"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_variantId_fkey",
+      "type": "f",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "FOREIGN KEY (\"variantId\") REFERENCES product_variant(id) ON UPDATE CASCADE ON DELETE SET NULL",
+      "columns": [
+        "variantId"
+      ],
+      "referenced_schema": "public",
+      "referenced_table": "product_variant",
+      "referenced_columns": [
+        "id"
+      ]
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "name": "newsletter_subscriber_createdAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"createdAt\"",
+      "columns": [
+        "createdAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "name": "newsletter_subscriber_email_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL email",
+      "columns": [
+        "email"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "name": "newsletter_subscriber_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL id",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "name": "newsletter_subscriber_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "PRIMARY KEY (id)",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "name": "newsletter_subscriber_status_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL status",
+      "columns": [
+        "status"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "name": "newsletter_subscriber_subscribedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"subscribedAt\"",
+      "columns": [
+        "subscribedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "name": "newsletter_subscriber_updatedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"updatedAt\"",
+      "columns": [
+        "updatedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_createdAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"createdAt\"",
+      "columns": [
+        "createdAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL id",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_lineTotal_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"lineTotal\"",
+      "columns": [
+        "lineTotal"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_orderId_fkey",
+      "type": "f",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "FOREIGN KEY (\"orderId\") REFERENCES customer_order(id) ON UPDATE CASCADE ON DELETE CASCADE",
+      "columns": [
+        "orderId"
+      ],
+      "referenced_schema": "public",
+      "referenced_table": "customer_order",
+      "referenced_columns": [
+        "id"
+      ]
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_orderId_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"orderId\"",
+      "columns": [
+        "orderId"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "PRIMARY KEY (id)",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_productId_fkey",
+      "type": "f",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "FOREIGN KEY (\"productId\") REFERENCES product(id) ON UPDATE CASCADE ON DELETE RESTRICT",
+      "columns": [
+        "productId"
+      ],
+      "referenced_schema": "public",
+      "referenced_table": "product",
+      "referenced_columns": [
+        "id"
+      ]
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_productId_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"productId\"",
+      "columns": [
+        "productId"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_productNameSnapshot_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"productNameSnapshot\"",
+      "columns": [
+        "productNameSnapshot"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_quantity_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL quantity",
+      "columns": [
+        "quantity"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_unitPrice_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"unitPrice\"",
+      "columns": [
+        "unitPrice"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_updatedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"updatedAt\"",
+      "columns": [
+        "updatedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_variantId_fkey",
+      "type": "f",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "FOREIGN KEY (\"variantId\") REFERENCES product_variant(id) ON UPDATE CASCADE ON DELETE SET NULL",
+      "columns": [
+        "variantId"
+      ],
+      "referenced_schema": "public",
+      "referenced_table": "product_variant",
+      "referenced_columns": [
+        "id"
+      ]
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_category_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL category",
+      "columns": [
+        "category"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_createdAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"createdAt\"",
+      "columns": [
+        "createdAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_currency_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL currency",
+      "columns": [
+        "currency"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_featured_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL featured",
+      "columns": [
+        "featured"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL id",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_name_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL name",
+      "columns": [
+        "name"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "PRIMARY KEY (id)",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_price_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL price",
+      "columns": [
+        "price"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_sortOrder_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"sortOrder\"",
+      "columns": [
+        "sortOrder"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_status_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL status",
+      "columns": [
+        "status"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_updatedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"updatedAt\"",
+      "columns": [
+        "updatedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "name": "product_image_createdAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"createdAt\"",
+      "columns": [
+        "createdAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "name": "product_image_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL id",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "name": "product_image_isPrimary_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"isPrimary\"",
+      "columns": [
+        "isPrimary"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "name": "product_image_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "PRIMARY KEY (id)",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "name": "product_image_productId_fkey",
+      "type": "f",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "FOREIGN KEY (\"productId\") REFERENCES product(id) ON UPDATE CASCADE ON DELETE CASCADE",
+      "columns": [
+        "productId"
+      ],
+      "referenced_schema": "public",
+      "referenced_table": "product",
+      "referenced_columns": [
+        "id"
+      ]
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "name": "product_image_productId_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"productId\"",
+      "columns": [
+        "productId"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "name": "product_image_sortOrder_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"sortOrder\"",
+      "columns": [
+        "sortOrder"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "name": "product_image_updatedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"updatedAt\"",
+      "columns": [
+        "updatedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "name": "product_image_url_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL url",
+      "columns": [
+        "url"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_createdAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"createdAt\"",
+      "columns": [
+        "createdAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL id",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_isDefault_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"isDefault\"",
+      "columns": [
+        "isDefault"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_name_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL name",
+      "columns": [
+        "name"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "PRIMARY KEY (id)",
+      "columns": [
+        "id"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_productId_fkey",
+      "type": "f",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "FOREIGN KEY (\"productId\") REFERENCES product(id) ON UPDATE CASCADE ON DELETE RESTRICT",
+      "columns": [
+        "productId"
+      ],
+      "referenced_schema": "public",
+      "referenced_table": "product",
+      "referenced_columns": [
+        "id"
+      ]
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_productId_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"productId\"",
+      "columns": [
+        "productId"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_sku_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL sku",
+      "columns": [
+        "sku"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_sortOrder_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"sortOrder\"",
+      "columns": [
+        "sortOrder"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_status_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL status",
+      "columns": [
+        "status"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_updatedAt_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "deferred": false,
+      "definition": "NOT NULL \"updatedAt\"",
+      "columns": [
+        "updatedAt"
+      ],
+      "referenced_schema": null,
+      "referenced_table": null,
+      "referenced_columns": []
+    }
+  ],
+  "indexes": [
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "name": "booking_request_pkey",
+      "unique": true,
+      "primary": true,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX booking_request_pkey ON public.booking_request USING btree (id)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "booking_request",
+      "name": "booking_request_status_createdAt_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"booking_request_status_createdAt_idx\" ON public.booking_request USING btree (status, \"createdAt\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_featured_startsAt_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"concert_featured_startsAt_idx\" ON public.concert USING btree (featured, \"startsAt\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_pkey",
+      "unique": true,
+      "primary": true,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX concert_pkey ON public.concert USING btree (id)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_slug_key",
+      "unique": true,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX concert_slug_key ON public.concert USING btree (slug)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert",
+      "name": "concert_status_startsAt_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"concert_status_startsAt_idx\" ON public.concert USING btree (status, \"startsAt\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_concertId_kind_sortOrder_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"concert_image_concertId_kind_sortOrder_idx\" ON public.concert_image USING btree (\"concertId\", kind, \"sortOrder\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_image",
+      "name": "concert_image_pkey",
+      "unique": true,
+      "primary": true,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX concert_image_pkey ON public.concert_image USING btree (id)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "name": "concert_lineup_entry_concertId_sortOrder_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"concert_lineup_entry_concertId_sortOrder_idx\" ON public.concert_lineup_entry USING btree (\"concertId\", \"sortOrder\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "concert_lineup_entry",
+      "name": "concert_lineup_entry_pkey",
+      "unique": true,
+      "primary": true,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX concert_lineup_entry_pkey ON public.concert_lineup_entry USING btree (id)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_orderNumber_key",
+      "unique": true,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX \"customer_order_orderNumber_key\" ON public.customer_order USING btree (\"orderNumber\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_pkey",
+      "unique": true,
+      "primary": true,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX customer_order_pkey ON public.customer_order USING btree (id)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_source_createdAt_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"customer_order_source_createdAt_idx\" ON public.customer_order USING btree (source, \"createdAt\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "customer_order",
+      "name": "customer_order_status_createdAt_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"customer_order_status_createdAt_idx\" ON public.customer_order USING btree (status, \"createdAt\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_orderId_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"inventory_movement_orderId_idx\" ON public.inventory_movement USING btree (\"orderId\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_pkey",
+      "unique": true,
+      "primary": true,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX inventory_movement_pkey ON public.inventory_movement USING btree (id)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_productId_happenedAt_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"inventory_movement_productId_happenedAt_idx\" ON public.inventory_movement USING btree (\"productId\", \"happenedAt\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "inventory_movement",
+      "name": "inventory_movement_variantId_happenedAt_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"inventory_movement_variantId_happenedAt_idx\" ON public.inventory_movement USING btree (\"variantId\", \"happenedAt\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "name": "newsletter_subscriber_email_key",
+      "unique": true,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX newsletter_subscriber_email_key ON public.newsletter_subscriber USING btree (email)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "name": "newsletter_subscriber_pkey",
+      "unique": true,
+      "primary": true,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX newsletter_subscriber_pkey ON public.newsletter_subscriber USING btree (id)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "newsletter_subscriber",
+      "name": "newsletter_subscriber_status_subscribedAt_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"newsletter_subscriber_status_subscribedAt_idx\" ON public.newsletter_subscriber USING btree (status, \"subscribedAt\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_orderId_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"order_item_orderId_idx\" ON public.order_item USING btree (\"orderId\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_pkey",
+      "unique": true,
+      "primary": true,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX order_item_pkey ON public.order_item USING btree (id)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_productId_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"order_item_productId_idx\" ON public.order_item USING btree (\"productId\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "order_item",
+      "name": "order_item_variantId_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"order_item_variantId_idx\" ON public.order_item USING btree (\"variantId\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_featured_status_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX product_featured_status_idx ON public.product USING btree (featured, status)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_pkey",
+      "unique": true,
+      "primary": true,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX product_pkey ON public.product USING btree (id)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_slug_key",
+      "unique": true,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX product_slug_key ON public.product USING btree (slug)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product",
+      "name": "product_status_sortOrder_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"product_status_sortOrder_idx\" ON public.product USING btree (status, \"sortOrder\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "name": "product_image_pkey",
+      "unique": true,
+      "primary": true,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX product_image_pkey ON public.product_image USING btree (id)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_image",
+      "name": "product_image_productId_sortOrder_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"product_image_productId_sortOrder_idx\" ON public.product_image USING btree (\"productId\", \"sortOrder\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_pkey",
+      "unique": true,
+      "primary": true,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX product_variant_pkey ON public.product_variant USING btree (id)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_productId_sortOrder_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"product_variant_productId_sortOrder_idx\" ON public.product_variant USING btree (\"productId\", \"sortOrder\")",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_productId_status_idx",
+      "unique": false,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE INDEX \"product_variant_productId_status_idx\" ON public.product_variant USING btree (\"productId\", status)",
+      "predicate": null,
+      "expressions": null
+    },
+    {
+      "schema": "public",
+      "table_name": "product_variant",
+      "name": "product_variant_sku_key",
+      "unique": true,
+      "primary": false,
+      "valid": true,
+      "ready": true,
+      "definition": "CREATE UNIQUE INDEX product_variant_sku_key ON public.product_variant USING btree (sku)",
+      "predicate": null,
+      "expressions": null
+    }
+  ],
+  "enums": [
+    {
+      "schema": "public",
+      "name": "BookingRequestSource",
+      "values": [
+        "PUBLIC_SITE",
+        "INTERNAL_ADMIN"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "BookingRequestStatus",
+      "values": [
+        "NEW",
+        "CONTACTED",
+        "CONFIRMED",
+        "DECLINED",
+        "SPAM",
+        "ARCHIVED"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "ConcertImageKind",
+      "values": [
+        "POSTER",
+        "HERO",
+        "GALLERY"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "ConcertLineupRole",
+      "values": [
+        "HEADLINER",
+        "SUPPORT",
+        "GUEST"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "ConcertStatus",
+      "values": [
+        "DRAFT",
+        "PUBLISHED",
+        "CANCELLED",
+        "ARCHIVED"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "InventoryMovementType",
+      "values": [
+        "INITIAL_IMPORT",
+        "MANUAL_ADJUSTMENT",
+        "RESTOCK",
+        "SALE",
+        "RETURN",
+        "CANCELLATION"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "NewsletterSubscriberStatus",
+      "values": [
+        "PENDING",
+        "ACTIVE",
+        "UNSUBSCRIBED",
+        "BOUNCED"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "OrderSource",
+      "values": [
+        "PUBLIC_SITE",
+        "INTERNAL_ADMIN",
+        "MANUAL"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "OrderStatus",
+      "values": [
+        "DRAFT",
+        "PENDING_PAYMENT",
+        "PAID",
+        "FULFILLED",
+        "CANCELLED",
+        "REFUNDED"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "ProductBadge",
+      "values": [
+        "New",
+        "Limited",
+        "Pre-order"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "ProductCategory",
+      "values": [
+        "apparel",
+        "music",
+        "accessories"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "ProductStatus",
+      "values": [
+        "DRAFT",
+        "ACTIVE",
+        "ARCHIVED"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "ProductVariantStatus",
+      "values": [
+        "ACTIVE",
+        "DISCONTINUED"
+      ]
+    }
+  ],
+  "extensions": [
+    {
+      "name": "plpgsql",
+      "version": "1.0"
+    }
+  ],
+  "sequences": [],
+  "triggers": [],
+  "routines": [],
+  "policies": [],
+  "rowCounts": [
+    {
+      "schema": "public",
+      "table": "booking_request",
+      "rows": "4"
+    },
+    {
+      "schema": "public",
+      "table": "concert",
+      "rows": "12"
+    },
+    {
+      "schema": "public",
+      "table": "concert_image",
+      "rows": "5"
+    },
+    {
+      "schema": "public",
+      "table": "concert_lineup_entry",
+      "rows": "9"
+    },
+    {
+      "schema": "public",
+      "table": "customer_order",
+      "rows": "2"
+    },
+    {
+      "schema": "public",
+      "table": "inventory_movement",
+      "rows": "0"
+    },
+    {
+      "schema": "public",
+      "table": "newsletter_subscriber",
+      "rows": "0"
+    },
+    {
+      "schema": "public",
+      "table": "order_item",
+      "rows": "2"
+    },
+    {
+      "schema": "public",
+      "table": "product",
+      "rows": "6"
+    },
+    {
+      "schema": "public",
+      "table": "product_image",
+      "rows": "0"
+    },
+    {
+      "schema": "public",
+      "table": "product_variant",
+      "rows": "0"
+    }
+  ],
+  "migrationHistory": null,
+  "foreignKeyChecks": [
+    {
+      "name": "concert_image_concertId_fkey",
+      "orphan_rows": "0"
+    },
+    {
+      "name": "concert_lineup_entry_concertId_fkey",
+      "orphan_rows": "0"
+    },
+    {
+      "name": "inventory_movement_orderId_fkey",
+      "orphan_rows": "0"
+    },
+    {
+      "name": "inventory_movement_productId_fkey",
+      "orphan_rows": "0"
+    },
+    {
+      "name": "inventory_movement_variantId_fkey",
+      "orphan_rows": "0"
+    },
+    {
+      "name": "order_item_orderId_fkey",
+      "orphan_rows": "0"
+    },
+    {
+      "name": "order_item_productId_fkey",
+      "orphan_rows": "0"
+    },
+    {
+      "name": "order_item_variantId_fkey",
+      "orphan_rows": "0"
+    },
+    {
+      "name": "product_image_productId_fkey",
+      "orphan_rows": "0"
+    },
+    {
+      "name": "product_variant_productId_fkey",
+      "orphan_rows": "0"
+    }
+  ],
+  "idempotency": {
+    "customer_order": {
+      "columns": [],
+      "indexes": []
+    },
+    "booking_request": {
+      "columns": [],
+      "indexes": []
+    }
+  }
+}
