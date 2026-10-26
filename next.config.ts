@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 import { PRODUCTION_SITE_URL } from "./lib/site";
 
 const nextConfig: NextConfig = {
+  // Dev only: lets a phone on the local network load dev resources (hydration, HMR)
+  allowedDevOrigins: ["192.168.*.*"],
   async redirects() {
     return [
       // Safety net for www -> apex; the hosting domain setting should redirect first.
