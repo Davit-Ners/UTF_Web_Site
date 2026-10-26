@@ -128,10 +128,23 @@
   }
 }
 
-/* === Mobile === */
+/*
+ * === Mobile ===
+ * The live photo becomes atmosphere (darker, softened, vignetted) and the
+ * wordmark becomes the composition: large, anchored left, centred in the
+ * frame. Genre line and actions stay at the foot. Static treatment only.
+ */
 @media (max-width: 720px) {
   .photo {
     object-position: var(--hero-position-mobile, 50% 50%);
+    /* Softened and darkened so stage detail never competes with the wordmark */
+    filter: blur(3px) brightness(0.66);
+  }
+
+  .scrim {
+    background:
+      radial-gradient(130% 85% at 28% 46%, rgb(11 11 10 / 0) 0%, rgb(11 11 10 / 0.5) 62%, rgb(11 11 10 / 0.88) 100%),
+      linear-gradient(180deg, rgb(11 11 10 / 0.55) 0%, rgb(11 11 10 / 0.12) 34%, rgb(11 11 10 / 0.25) 62%, rgb(11 11 10 / 0.94) 100%);
   }
 
   .era,
@@ -139,8 +152,11 @@
     display: none;
   }
 
+  /* Full-height grid: the wordmark takes the open middle, the rest sits at the foot */
   .content {
+    top: var(--header-h);
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto auto;
     row-gap: 12px;
     padding-bottom: 16px;
   }
@@ -154,7 +170,12 @@
 
   .logo {
     grid-row: 1;
-    width: 80%;
+    align-self: center;
+    width: 108%;
+    max-width: 520px;
+    margin-left: -4%;
+    margin-bottom: 6vh;
+    margin-bottom: 6svh;
   }
   .genre {
     grid-row: 2;

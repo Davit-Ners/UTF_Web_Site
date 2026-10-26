@@ -59,7 +59,7 @@ export default function Hero() {
             height={772}
             priority
             className={styles.logoImage}
-            sizes="(max-width: 720px) 92vw, 50vw"
+            sizes="(max-width: 720px) 108vw, 50vw"
           />
         </div>
 

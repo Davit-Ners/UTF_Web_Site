@@ -1205,6 +1205,8 @@ Goal: keep the Band Catalogue identity as the top of the page, add a practical l
 
 ## Unresolved: mobile Hero visual is temporary
 
+**Update 2026-10-26 — mobile composition reworked (≤720 px only; desktop/tablet untouched):** the live photo is now atmosphere rather than subject: same source and crop, with a static `filter: blur(3px) brightness(0.66)` and a stronger mobile scrim (radial vignette centred on the wordmark + top/bottom darkening). The existing wordmark becomes the composition, close to the old mobile spirit: the content grid now spans header → bottom (`grid-template-rows: 1fr auto auto`), the logo sits in the open middle, anchored left (`width: 108%`, `max-width: 520px`, `margin-left: -4%`, slightly above centre), and the genre line and Listen/Live actions stay at the foot. `sizes` of the wordmark updated to `108vw` on mobile so it stays sharp. The Hero signature (R1 plate, R2 registration, mobile offsets) and reduced motion are unchanged and re-verified at 375/820/1440; actions hit-testable from the first frame; no horizontal overflow at 375/390/430; mobile CLS 0. A dedicated vertical asset (asset audit #1) would still improve it further; the notes below remain valid for that.
+
 - The current live photograph works on desktop, but its mobile crop is not satisfactory.
 - A dedicated mobile hero visual will be selected or created later. Candidates:
   - a dedicated vertical live photo;
