@@ -181,6 +181,29 @@ test("concert detail outage metadata is truthful and route-specific", async (t) 
   assert.equal((metadata.openGraph as { url?: string }).url, "/concerts/utf-arlon");
 });
 
+test("concert social images use the real poster or the existing band fallback", async (t) => {
+  const prisma = await withDatabaseMocks(t);
+  const row = {
+    slug: "test-show", startsAt: new Date("2025-03-01T19:00:00Z"), city: "Arlon", countryCode: "BE", venueName: "Entrepôt",
+    timezone: "Europe/Brussels", posterUrl: null as string | null, doorsAt: null, showAt: null, lineupEntries: [], images: [],
+  };
+  prisma.concert.findMany = (async () => [row]) as unknown as typeof prisma.concert.findMany;
+  const { generateMetadata } = await import("../app/concerts/[slug]/page");
+  const params = { params: Promise.resolve({ slug: row.slug }) };
+  const fallback = await generateMetadata(params);
+  assert.deepEqual((fallback.openGraph as { images: object[] }).images, [{
+    url: "/gallery/band-test.jpg", width: 2048, height: 1363,
+    alt: "Until They Fall, the five members posed in an empty room, black and white",
+  }]);
+  assert.deepEqual((fallback.twitter as { images: string[] }).images, ["/gallery/band-test.jpg"]);
+  row.posterUrl = "/concerts/utf-arlon/poster.jpg";
+  const poster = await generateMetadata(params);
+  assert.deepEqual((poster.openGraph as { images: object[] }).images, [{
+    url: "/optimized/concerts/utf-arlon/poster.webp", width: 1400, height: 733, alt: "Entrepôt poster",
+  }]);
+  assert.deepEqual((poster.twitter as { images: string[] }).images, ["/optimized/concerts/utf-arlon/poster.webp"]);
+});
+
 test("concert gallery metadata: eligible, ineligible and outage", async (t) => {
   const prisma = await withDatabaseMocks(t);
   const { galleryPhotos } = await import("../app/lib/gallery");

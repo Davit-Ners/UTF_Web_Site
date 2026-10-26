@@ -206,7 +206,74 @@ Merch mini shoot: one session, same surface (wood or matte charcoal), soft diffu
 - **P1 (high-value polish):** clean Henoumont masters (#3, #4, also fixes the default OG image); five-member portrait session (#5); wordmark SVG (#7); merch mini shoot (#10, #11); Arlon original (#12); confirm which design is Gerard and whether the Henoumont session shows the current singer.
 - **P2 (later):** more shows (#13); album/press masters (#15); CD engraving editorial use (#16); missing posters (#17); press pack assembly; AVIF and removing double-compressed `/optimized` copies and unused public files (including `utfnez.png`); non-AI Tower Seven artwork.
 
-### SEO launch pass (2026-10-25)
+### Final SEO pre-release verification (2026-10-26)
+
+**SEO READY FOR RELEASE** for the audited production build. This is a code/build
+SEO status; public hosting/domain and search-engine checks remain post-deploy.
+No redesign, motion, asset file, legal/privacy content, API, schema or database
+change. No commit, push, deployment or external service configuration.
+
+- **Only real SEO fix:** the 10 published concert dossiers without posters had
+  no OG/Twitter image: defining route-level social metadata replaced the root
+  object, so the root image did not carry through. Their metadata now explicitly
+  uses the existing `BAND_SHARE_IMAGE` (`/gallery/band-test.jpg`, 2048×1363).
+  Dossiers with posters keep their actual poster. Titles/descriptions/canonicals
+  and all image files remain unchanged. A regression test exercises both cases.
+- **Canonical / redirects:** every major route and all 12 published dossiers
+  have their own apex canonical and og:url. The homepage origin with/without a
+  trailing slash is the same URL. No www, vercel.app, localhost or query leaks.
+  Native HTTP Host tests prove www → apex 308 with path/query preserved, and
+  apex → 200 without a loop. Existing internal redirect aliases remain absent
+  from important crawl links and sitemap.
+- **Robots / sitemap:** `/robots.txt` 200, public Allow `/`, Disallow `/api/`,
+  apex sitemap. No global noindex or X-Robots-Tag leak. Normal sitemap: **22**
+  canonical/indexable URLs = nine static routes, one release and 12 valid concert
+  dossiers. No APIs, aliases, invalid galleries, 404s, www/deployment hosts,
+  duplicate URLs or invented lastModified. No concert currently has an explicit
+  confirmed-photo association, so zero concert galleries are listed.
+- **Real outage simulation:** a separate copy of the application was built and
+  served in production mode with only an unreachable localhost DB and deliberately
+  wrong preview-origin environment values. Sitemap still returns HTTP 200 with
+  all **10** static/release entries. Dossier/gallery fallbacks retain their own
+  apex canonical and truthful generic metadata, without invented venue/city/date
+  or MusicEvent data. No request in that copy can reach Railway. Temporary source
+  copies were removed after the test; the actual app/env files were untouched.
+- **Metadata / social / crawl:** useful descriptions, unique titles on the 11
+  major routes, route-specific OG URL/title/description and Twitter fields.
+  Seven distinct social image files respond 200; advertised dimensions match
+  actual files, including retained optimized poster URLs. Merch remains a
+  catalogue/request-by-email description without false Product/Offer markup.
+  Home→Music/Concerts/Merch, Music→release, Concerts→dossiers, dossier→archive,
+  Booking/Merch→Privacy and Footer→Privacy/Legal are crawlable direct links.
+- **404:** random URL, unknown Music slug, unknown concert, unknown concert
+  gallery and known-but-ineligible gallery each return true HTTP 404, branded
+  title and noindex for browser/Googlebot/Bingbot (15 cases). Normal pages have
+  no noindex. No 404 inherits the homepage canonical.
+- **Structured data:** one authoritative homepage MusicGroup, correct apex,
+  founding year 2018, Brussels/BE, five current members, official profiles and
+  album relation. MusicAlbum has eight ordered tracks with exact ISO durations,
+  2023-12-01, master artwork and band reference; no invented commercial fields.
+  All 12 current MusicEvents have stored venue/date, Until They Fall first as
+  performer, scheduled status, and no past-show offers. Unit cases cover Brussels
+  winter/summer offsets, unreliable times omitted and future-ticket conditions;
+  no invented availability, sold-out status or price.
+- **Evidence / checks:** `scripts/audit-seo.mjs`: **43 HTTP cases + 11 hydrated
+  DOM routes**, zero failures. Separate outage build: **18 HTTP cases**, zero
+  failures. Googlebot, Bingbot, Twitterbot and Facebook crawler metadata checked;
+  HTML-limited bots receive social metadata in head. Files/logs under OS temp
+  `utf-seo-final` (`production.json`, `outage.json`). SEO + Concerts resilience:
+  **20 tests pass**; full suite **94 pass / 2 opt-in DB integrations skipped**.
+  Type-check, full lint, `git diff --check` and normal production build pass.
+  No visual viewport pass was needed because only social metadata changed.
+
+After deploy, use the short checklist below. Domain-property verification uses
+DNS ([Google ownership verification](https://support.google.com/webmasters/answer/9008080));
+URL checks/indexing requests use
+[URL Inspection](https://support.google.com/webmasters/answer/9012289).
+Structured-data syntax/coherence was checked locally; hosted Google Rich Results
+and Schema.org validator checks remain to be run against public URLs.
+
+### SEO launch pass (2026-10-25; historical implementation, final verification above)
 
 - **Canonical strategy:** `lib/site.ts` exports `PRODUCTION_SITE_URL = "https://untiltheyfall.com"`. `getSiteUrl()` returns it whenever `NODE_ENV === "production"` (Vercel production **and** preview builds, `next start`), so metadataBase, canonicals, OG URLs, sitemap, robots and JSON-LD can never use a deployment URL; the old `SITE_URL`/`VERCEL_PROJECT_PRODUCTION_URL`/`VERCEL_URL` fallbacks are removed. In development only, `NEXT_PUBLIC_SITE_URL` may override the origin, otherwise `http://localhost:3000`. **Production environment:** no site-URL variable is required; `NEXT_PUBLIC_SITE_URL` is ignored in production builds.
 - **www → apex:** `next.config.ts` adds a permanent redirect for requests whose host is exactly `www.untiltheyfall.com` → `https://untiltheyfall.com/:path*` (path and query preserved; the apex host never matches, so no loop). The primary mechanism must be the Vercel domain setting above.
@@ -221,7 +288,7 @@ Merch mini shoot: one session, same surface (wood or matte charcoal), soft diffu
 - **Verification:** `lib/seo.test.ts` (13 tests: origin rules incl. production with deployment URLs set; www redirect shape and no apex match; production robots; production outage sitemap exact apex URL list; layout no longer owns canonical/og:url; privacy/legal/merch metadata; MusicGroup members/sameAs/album; MusicAlbum tracks/durations/order and absence of label/catalogue/producer/offers; MusicEvent winter/summer offsets, performer, status, mode, future offer vs past none, unreliable times, absolute ticket URL; concert outage metadata; gallery eligible/ineligible/outage metadata; 404 links/noindex; homepage merch label and archive link) plus all suites: 82/82 pass. `next build` succeeds. On `next start` (production): 200 for all public routes; true 404 for `/music/does-not-exist`, `/concerts/does-not-exist`, `/concerts/does-not-exist/gallery`, `/concerts/utf-arlon/gallery` and a random route; 308 for both redirect aliases; `Host: www.untiltheyfall.com` → 308 `https://untiltheyfall.com/music/sent-to-die?x=1`, apex host 200; robots/sitemap (HTTP 200, apex, privacy/legal, 12 live dossiers, no aliases) as above; every major route has its own canonical, og:url, og:title and twitter:title; JSON-LD: one MusicGroup id on Home and Booking, MusicAlbum on the release, past MusicEvents without offers; the 404 has no canonical and `noindex`. Browser at 1440, 820 and 375: branded 404 on all three 404 cases with Home/Music/Live, no overflow, Live link navigates; homepage merch link and layout unchanged apart from the label. Type-check and full ESLint pass. No commit or push.
 - **After deployment (launch checklist):**
   1. Open `https://untiltheyfall.com` and confirm it serves the production build over HTTPS.
-  2. Confirm `https://www.untiltheyfall.com/any/path?x=1` returns a single 308 to `https://untiltheyfall.com/any/path?x=1`.
+  2. In Vercel confirm both apex/www domains are attached and www redirects to the apex; confirm `https://www.untiltheyfall.com/any/path?x=1` returns a single 308 to `https://untiltheyfall.com/any/path?x=1` without looping.
   3. Check `https://untiltheyfall.com/robots.txt` (Allow /, Disallow /api/, apex sitemap) and that no production page sends `X-Robots-Tag: noindex`.
   4. Check `https://untiltheyfall.com/sitemap.xml` (HTTP 200, apex URLs, `/privacy`, `/legal`, release and dossier pages).
   5. Add a Google Search Console **Domain property** for `untiltheyfall.com` with the DNS TXT record (DNS at OVH).

@@ -4,7 +4,7 @@ import { cache } from "react";
 import ShowDossier, { ShowUnavailable } from "@/app/components/concerts/showDossier/showDossier";
 import { getPublishedConcerts, isPastConcert, type Concert } from "@/app/lib/concerts";
 import { formatLongDate, splitCity, usefulTitle } from "@/app/lib/concertFormat";
-import { socialMetadata } from "@/app/lib/seo";
+import { BAND_SHARE_IMAGE, socialMetadata } from "@/app/lib/seo";
 import { jsonLd, musicEventJsonLd } from "@/app/lib/structuredData";
 import { getSiteUrl } from "@/lib/site";
 
@@ -57,6 +57,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = [title, `Until They Fall live archive: ${show.venue}, ${show.city}, ${formatLongDate(show.date)}.`]
     .filter(Boolean)
     .join(" — ");
+  const image = show.posterUrl
+    ? { url: show.posterUrl, ...(show.posterDimensions ?? {}), alt: `${title ?? show.venue} poster` }
+    : BAND_SHARE_IMAGE;
 
   return {
     title: heading,
@@ -66,15 +69,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${heading} | Until They Fall`,
       description,
       url: `/concerts/${show.id}`,
-      ...(show.posterUrl
-        ? { images: [{ url: show.posterUrl, ...(show.posterDimensions ?? {}), alt: `${title ?? show.venue} poster` }] }
-        : {}),
+      images: [image],
     },
     twitter: {
       card: show.posterUrl ? "summary_large_image" : "summary",
       title: `${heading} | Until They Fall`,
       description,
-      ...(show.posterUrl ? { images: [show.posterUrl] } : {}),
+      images: [image.url],
     },
   };
 }
