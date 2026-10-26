@@ -1,5 +1,13 @@
 # Prisma — baseline production et migrations idempotency
 
+> **État courant vérifié le 2026-10-26 lors du final pre-deploy audit : base
+> Railway à jour.** La baseline et les deux migrations idempotency sont déjà
+> enregistrées, terminées et conformes à leurs checksums ; le diff réel vers
+> `schema.prisma` est vide. **Ne pas relancer le resolve de baseline sur cette
+> base.** La procédure d'adoption ci-dessous est conservée comme historique et
+> référence pour une autre base réellement pré-idempotency. L'audit final a
+> seulement lu Railway ; il n'a appliqué aucune migration.
+
 Audit du 2026-10-26 : **SAFE TO RESOLVE BASELINE** `0_init_pre_idempotency`.
 **Aucun resolve/deploy n'a été exécuté sur Railway pendant cet audit.** Les
 commandes d'écriture ci-dessous sont le plan d'une phase ultérieure.

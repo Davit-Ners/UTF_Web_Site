@@ -1,5 +1,13 @@
 # Audit Prisma / baseline — 2026-10-26
 
+> **Preuve historique pré-migration.** Lors du final pre-deploy audit, Railway
+> contient désormais les trois migrations terminées et les six colonnes/deux
+> index attendus ; `migrate status` est à jour et le diff vers `schema.prisma`
+> est vide. Les snapshots ci-dessous sont volontairement conservés comme preuve
+> de l'état ancien ayant servi à valider la baseline, pas comme état courant.
+> Ne pas résoudre la baseline une seconde fois. Voir `passation.md` à la racine
+> pour la checklist de lancement actuelle.
+
 **SAFE TO RESOLVE BASELINE** `0_init_pre_idempotency`, avec nouveau contrôle
 de cible/catalogue juste avant exécution. Aucun resolve/deploy Railway, aucune
 modification ou export de donnée personnelle de production pendant cet audit.
