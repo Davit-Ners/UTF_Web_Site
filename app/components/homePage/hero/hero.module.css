@@ -158,7 +158,8 @@
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) auto auto;
     row-gap: 12px;
-    padding-bottom: 16px;
+    /* Keeps LISTEN / LIVE clear of the iOS home indicator (0 elsewhere) */
+    padding-bottom: calc(16px + var(--safe-bottom));
   }
 
   .logo,

@@ -105,7 +105,8 @@
   justify-content: space-between;
   gap: 8px 24px;
   margin-top: 12px;
-  padding: 12px var(--margin) 16px;
+  /* Controls stay clear of the iOS home indicator (0 elsewhere) */
+  padding: 12px var(--margin) calc(16px + var(--safe-bottom));
   border-top: 1px solid var(--rule);
 }
 

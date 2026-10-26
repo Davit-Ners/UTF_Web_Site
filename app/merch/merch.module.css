@@ -277,7 +277,7 @@
 
   /* Leave room so the bar never covers the last content */
   .page {
-    padding-bottom: 56px;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
   }
 
   .drawer {

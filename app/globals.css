@@ -27,6 +27,9 @@
   --margin: clamp(16px, 4vw, 56px);
   --gap: clamp(12px, 1.6vw, 24px);
   --header-h: 64px;
+  /* iOS safe areas: only applied on mobile; 0 elsewhere */
+  --safe-top: 0px;
+  --safe-bottom: 0px;
   --space-s: clamp(48px, 6vw, 96px);
   --space-m: clamp(96px, 11vw, 160px);
   --space-l: clamp(128px, 16vw, 240px);
@@ -71,9 +74,17 @@
   --transition: color var(--motion-snap) var(--ease-snap), background-color var(--motion-snap) var(--ease-snap), border-color var(--motion-snap) var(--ease-snap);
 }
 
+/*
+ * Mobile: --header-h is the full header height, including the iOS top inset
+ * (notch / Dynamic Island). The bar itself stays 56px and is pushed below the
+ * inset, so everything aligned to the header (menu panel, hero content,
+ * anchors) follows automatically. Without an inset this is exactly 56px.
+ */
 @media (max-width: 720px) {
   :root {
-    --header-h: 56px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --header-h: calc(56px + var(--safe-top));
   }
 }
 
@@ -137,7 +148,7 @@ a:hover {
 /* Native skip navigation: off-canvas until focused, above Header and grain. */
 .skip-link {
   position: fixed;
-  top: 12px;
+  top: calc(12px + var(--safe-top));
   left: var(--margin);
   z-index: 100;
   transform: translateY(calc(-100% - 16px));

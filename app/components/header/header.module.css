@@ -2,6 +2,8 @@
   position: sticky;
   top: 0;
   z-index: 60;
+  /* Background runs to the top edge; the bar starts below the iOS inset (0 elsewhere) */
+  padding-top: var(--safe-top);
   background: transparent;
   border-bottom: 1px solid transparent;
   isolation: isolate;
@@ -51,7 +53,8 @@
   /* Above the mobile panel, whose shutter box travels behind the bar */
   position: relative;
   z-index: 1;
-  height: var(--header-h);
+  /* --header-h includes the iOS top inset on mobile; the bar itself excludes it */
+  height: calc(var(--header-h) - var(--safe-top));
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/footer/footer";
@@ -37,6 +37,14 @@ async function getHeaderTickets(): Promise<HeaderTickets | null> {
     return null;
   }
 }
+
+/*
+ * Backgrounds run edge to edge behind iOS system areas; interactive and text
+ * content is inset with env(safe-area-inset-*) (0 on devices without them).
+ */
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
