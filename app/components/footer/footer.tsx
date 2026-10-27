@@ -71,6 +71,10 @@ export default function Footer() {
         <a href={`mailto:${CONTACT_EMAIL}`} className={styles.contact}>
           {CONTACT_EMAIL}
         </a>
+        <NewTabLink href="https://nersia.be" className={styles.credit}>
+          Design &amp; development — Nersia Technologies{" "}
+          <span className={styles.arrow} aria-hidden="true">↗</span>
+        </NewTabLink>
       </div>
     </footer>
   );
