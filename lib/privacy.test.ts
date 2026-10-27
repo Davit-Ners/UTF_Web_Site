@@ -59,9 +59,9 @@ test("merch order panel shows an information-only privacy notice before submitti
   assert.doesNotMatch(markup, /type="checkbox"/);
 });
 
-test("featured video explains YouTube before playback without loading the player", async () => {
-  const { default: FeaturedVideo } = await import("../app/components/homePage/featuredVideo/featuredVideo");
-  const markup = renderToStaticMarkup(createElement(FeaturedVideo, { videoId: "9Wvpovk_Tg4", title: "Sent To Die" }));
+test("live reference explains YouTube before playback without loading the player", async () => {
+  const { default: LiveReference } = await import("../app/components/liveReference/liveReference");
+  const markup = renderToStaticMarkup(createElement(LiveReference));
   assert.match(markup, /Pressing play loads the video from YouTube \(Google\)/);
   assert.match(markup, /href="\/privacy"/);
   assert.doesNotMatch(markup, /<iframe/);

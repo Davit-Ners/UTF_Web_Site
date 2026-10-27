@@ -79,8 +79,8 @@ export default function Hero() {
               Listen <span className="arrow" aria-hidden="true">↗</span>
             </NewTabLink>
           ) : null}
-          <a href="#live" className="action-link">
-            Live <span className="arrow" aria-hidden="true">→</span>
+          <a href="#live-reference" className="action-link">
+            Watch live <span className="arrow" aria-hidden="true">↓</span>
           </a>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import NewTabLink from "@/app/components/newTabLink";
+import LiveReference from "@/app/components/liveReference/liveReference";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { festivals, sharedBills } from "@/app/lib/about";
@@ -102,6 +103,7 @@ export default async function BookingPage() {
             <span aria-hidden="true">↗</span>
           </NewTabLink>
         </div>
+        <LiveReference variant="compact" />
       </header>
 
       {/* II — Technical sheet */}

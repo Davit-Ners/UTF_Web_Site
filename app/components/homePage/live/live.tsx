@@ -38,7 +38,7 @@ export default function Live({ shows }: Props) {
 function Unavailable() {
   return (
     <>
-      <p className={`meta ${styles.index}`}>02 — Live</p>
+      <p className={`meta ${styles.index}`}>03 — Live</p>
       <h2 id="live-title" className={`${styles.title} ${styles.titleSplit}`}>
         Live
       </h2>
@@ -55,7 +55,7 @@ function Unavailable() {
 function NoDates() {
   return (
     <>
-      <p className={`meta ${styles.index}`}>02 — Live</p>
+      <p className={`meta ${styles.index}`}>03 — Live</p>
       <h2 id="live-title" className={`${styles.title} ${styles.titleSplit}`}>
         Live
       </h2>
@@ -85,7 +85,7 @@ function FeaturedShow({ show }: { show: Concert }) {
 
   return (
     <>
-      <p className={`meta ${styles.index}`}>02 — Next live</p>
+      <p className={`meta ${styles.index}`}>03 — Next live</p>
       <h2 id="live-title" className="srOnly">
         Live
       </h2>
@@ -146,7 +146,7 @@ function FeaturedShow({ show }: { show: Concert }) {
 function TourList({ shows }: { shows: Concert[] }) {
   return (
     <>
-      <p className={`meta ${styles.index}`}>02 — Live</p>
+      <p className={`meta ${styles.index}`}>03 — Live</p>
       <p className={`meta ${styles.count}`}>{String(shows.length).padStart(2, "0")} upcoming</p>
       <h2 id="live-title" className={styles.title}>
         Live

@@ -33,7 +33,7 @@ test("R4 cut link: hover, focus and press share the ember rule and a 3px arrow s
 
 test("audited images no longer dim or zoom on hover", async () => {
   const files = [
-    "app/components/homePage/featuredVideo/featuredVideo.module.css",
+    "app/components/liveReference/liveReference.module.css",
     "app/components/homePage/featuredMerch/featuredMerch.module.css",
     "app/components/gallery/photoBook/photoBook.module.css",
     "app/components/concerts/showDossier/showDossier.module.css",
