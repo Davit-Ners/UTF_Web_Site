@@ -17,7 +17,7 @@ test("concert summaries keep reliable times and omit identical times without cor
 
 test("poster dimensions match the actual files; unknown artwork has no invented size", async () => {
   const { default: sharp } = await import("sharp");
-  for (const src of ["/optimized/concerts/utf-arlon/poster.webp", "/concerts/utf-arlon/poster.jpg", "/optimized/concerts/utf-braine/utf-braine-optimized.webp"]) {
+  for (const src of ["/optimized/concerts/utf-arlon/poster.webp", "/concerts/utf-arlon/poster.jpg", "/optimized/concerts/utf-braine/utf-braine-optimized.webp", "/optimized/concerts/utf-mule/utf-mule-optimized.webp"]) {
     const { width, height } = await sharp(join(process.cwd(), "public", src)).metadata();
     assert.deepEqual(concertPosterDimensions(src), { width, height });
   }
